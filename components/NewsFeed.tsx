@@ -4,7 +4,7 @@ import { useState, useRef, useCallback, useEffect, useMemo } from "react";
 import {
   NewsItem, N8nNewsItem, Category,
   mapN8nToNewsItem, normalizeN8nResponse, extractJsonFromString, superParseNewsItems,
-  inferCategory, inferEmoji, makeId, getTodayDateStr,
+  inferEmoji, makeId, getTodayDateStr,
 } from "./newsData";
 import NewsCard from "./NewsCard";
 import NewsModal from "./NewsModal";
