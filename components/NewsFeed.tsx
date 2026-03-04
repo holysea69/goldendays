@@ -81,15 +81,8 @@ function EmptyState({ onFetch, errorMsg }: { onFetch: () => void; errorMsg: stri
   );
 }
 
-// ── 직접 작성 모달 (기존과 동일하되 디자인 소폭 개선) ───────────────────────────────────
-const VALID_CATEGORIES: Category[] = ["건강", "복지", "일자리", "문화", "생활"];
-
-interface WriteModalProps {
-  onClose: () => void;
-  onSave: (item: NewsItem) => void;
-}
-
-function WriteModal({ onClose, onSave }: WriteModalProps) {
+// ── 직접 작성 모달 ───────────────────────────────────
+function WriteModal({ onClose, onSave }: { onClose: () => void; onSave: (item: NewsItem) => void }) {
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState<Category>("생활");
   const [content, setContent] = useState("");
@@ -246,29 +239,31 @@ export default function NewsFeed() {
   return (
     <section style={{ display: "flex", flexDirection: "column", height: "100%", backgroundColor: "#faf8f3" }}>
       
-      {/* ── 상단 헤더: 버튼 가로 정렬 및 크기 최적화 ── */}
-      <div style={{ flexShrink: 0, padding: "16px 16px 12px", borderBottom: "1px solid #e0d9cf", display: "flex", flexDirection: "column", gap: 12 }}>
+      {/* ── 상단 헤더: 골든 데이즈 타이틀 및 가로 정렬 버튼 ── */}
+      <div style={{ flexShrink: 0, padding: "16px 20px 12px", borderBottom: "2px solid #e0d9cf", backgroundColor: "#faf8f3", display: "flex", flexDirection: "column", gap: 14 }}>
         
-        {/* 로고 & 액션 버튼 */}
+        {/* 타이틀 & 액션 버튼 */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <span style={{ fontSize: 24 }}>📰</span>
-            <h1 style={{ fontSize: 22, fontWeight: 900, color: "#1a1a2e" }}>오늘의 정보</h1>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <span style={{ fontSize: 28 }}>☀️</span>
+            <h1 style={{ fontSize: 24, fontWeight: 900, color: "#1a1a2e", letterSpacing: "-0.5px" }}>골든 데이즈</h1>
           </div>
-          <div style={{ display: "flex", gap: 6 }}>
-            <button onClick={() => setShowWriteModal(true)} style={{ padding: "6px 12px", borderRadius: 8, fontSize: 14, fontWeight: 700, border: "1px solid #0046ff", color: "#0046ff", background: "#fff" }}>✏️ 작성</button>
-            <button onClick={fetchNews} disabled={isLoading} style={{ padding: "6px 12px", borderRadius: 8, fontSize: 14, fontWeight: 700, background: "#0046ff", color: "#fff", border: "none" }}>{isLoading ? "..." : "새소식"}</button>
+          <div style={{ display: "flex", gap: 8 }}>
+            <button onClick={() => setShowWriteModal(true)} style={{ padding: "8px 14px", borderRadius: 10, fontSize: 16, fontWeight: 800, border: "2px solid #0046ff", color: "#0046ff", background: "#fff", cursor: "pointer" }}>✏️ 작성</button>
+            <button onClick={fetchNews} disabled={isLoading} style={{ padding: "8px 14px", borderRadius: 10, fontSize: 16, fontWeight: 800, background: "#0046ff", color: "#fff", border: "none", cursor: isLoading ? "not-allowed" : "pointer" }}>
+              {isLoading ? "..." : "새소식"}
+            </button>
           </div>
         </div>
 
-        {/* ── 카테고리 탭 (가로 정렬 & 줄바꿈 허용) ── */}
-        <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+        {/* 카테고리 탭 (줄바꿈 허용 가로 정렬) */}
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
               style={{
-                padding: "6px 14px", borderRadius: 20, fontSize: 15, fontWeight: 700,
+                padding: "8px 16px", borderRadius: 20, fontSize: 17, fontWeight: 800,
                 backgroundColor: activeCategory === cat ? "#0046ff" : "#fff",
                 color: activeCategory === cat ? "#fff" : "#5a5a7a",
                 border: activeCategory === cat ? "none" : "1px solid #d0d8f0",
@@ -279,12 +274,11 @@ export default function NewsFeed() {
             </button>
           ))}
           
-          {/* 외부 링크 (유튜브/채팅) 도 가로로 함께 배치 */}
           {EXTERNAL_LINKS.map(({ key, label, url }) => (
             <button
               key={key}
               onClick={() => window.open(url, "_blank")}
-              style={{ padding: "6px 14px", borderRadius: 20, fontSize: 15, fontWeight: 700, backgroundColor: "#fff", color: "#5a5a7a", border: "1px solid #d0d8f0" }}
+              style={{ padding: "8px 16px", borderRadius: 20, fontSize: 17, fontWeight: 800, backgroundColor: "#fff", color: "#5a5a7a", border: "1px solid #d0d8f0", cursor: "pointer" }}
             >
               {label}
             </button>
@@ -314,7 +308,7 @@ export default function NewsFeed() {
       {selectedNews && <NewsModal item={selectedNews} onClose={() => setSelectedNews(null)} />}
       {showWriteModal && <WriteModal onClose={() => setShowWriteModal(false)} onSave={fetchNews} />}
       {toastMsg && (
-        <div style={{ position: "fixed", bottom: "38%", left: "50%", transform: "translateX(-50%)", padding: "10px 20px", background: "#333", color: "#fff", borderRadius: 30, fontSize: 14, zIndex: 2000 }}>
+        <div style={{ position: "fixed", bottom: "42%", left: "50%", transform: "translateX(-50%)", padding: "10px 20px", background: "#333", color: "#fff", borderRadius: 30, fontSize: 14, zIndex: 2000 }}>
           {toastMsg}
         </div>
       )}
