@@ -10,6 +10,7 @@ import NewsCard from "./NewsCard";
 import NewsModal from "./NewsModal";
 import { createClient } from '@supabase/supabase-js'
 
+// Supabase 설정
 const supabase = createClient(
   'https://ofdizlrhyodfhpcwjsfh.supabase.co',
   'sb_publishable_cVfSWepUT4dJMKKoS5NQhQ_EzymBgd1'
@@ -26,7 +27,7 @@ const EXTERNAL_LINKS: Array<{ key: string; label: string; url: string }> = [
   { key: "채팅방",   label: "💬 채팅방",    url: "https://t.me/CBSsenior_bot" },
 ];
 
-// ── 인라인 스피너 ─────────────────────────────────────────────────────────────
+// ── 인라인 스피너 ──
 function SpinnerInline() {
   return (
     <svg width={20} height={20} viewBox="0 0 24 24" fill="none"
@@ -37,7 +38,7 @@ function SpinnerInline() {
   );
 }
 
-// ── 로딩 배너 ─────────────────────────────────────────────────────────────────
+// ── 로딩 배너 ──
 function LoadingBanner() {
   const [elapsed, setElapsed] = useState(0);
   useEffect(() => {
@@ -57,7 +58,7 @@ function LoadingBanner() {
   );
 }
 
-// ── 초기 대기 화면 ────────────────────────────────────────────────────────────
+// ── 초기 대기 화면 ──
 function EmptyState({ onFetch, errorMsg }: { onFetch: () => void; errorMsg: string }) {
   const isRetryGuide = errorMsg.includes("정리 중") || errorMsg.includes("잠시 후");
   const hasError = !!errorMsg;
@@ -81,7 +82,9 @@ function EmptyState({ onFetch, errorMsg }: { onFetch: () => void; errorMsg: stri
   );
 }
 
-// ── 직접 작성 모달 ───────────────────────────────────
+// ── 직접 작성 모달 ──
+const VALID_CATEGORIES: Category[] = ["건강", "복지", "일자리", "문화", "생활"];
+
 function WriteModal({ onClose, onSave }: { onClose: () => void; onSave: (item: NewsItem) => void }) {
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState<Category>("생활");
@@ -139,19 +142,8 @@ function WriteModal({ onClose, onSave }: { onClose: () => void; onSave: (item: N
   );
 }
 
-// ── 유틸리티 ──────────────────────────────────────────────────────────────────
+// ── 유틸리티 ──
 function normalizeTitle(title: string): string { return title.trim().toLowerCase().replace(/[\s\-_·•.,!?'"]/g, ""); }
-function dedup(items: NewsItem[]): NewsItem[] {
-  const seenIds = new Set<string>();
-  const seenTitles = new Set<string>();
-  return items.filter((item) => {
-    const tk = normalizeTitle(item.title);
-    if (seenIds.has(item.id) || seenTitles.has(tk)) return false;
-    seenIds.add(item.id);
-    seenTitles.add(tk);
-    return true;
-  });
-}
 const LS_KEY = "golden_archive";
 function loadFromStorage(): NewsItem[] {
   if (typeof window === "undefined") return [];
@@ -165,7 +157,7 @@ function saveToStorage(items: NewsItem[]): void {
   localStorage.setItem(LS_KEY, JSON.stringify(items.slice(0, 200)));
 }
 
-// ── 메인 컴포넌트 ─────────────────────────────────────────────────────────────
+// ── 메인 컴포넌트 ──
 export default function NewsFeed() {
   const [mounted, setMounted] = useState(false);
   const [activeCategory, setActiveCategory] = useState<"전체" | Category>("전체");
@@ -239,10 +231,9 @@ export default function NewsFeed() {
   return (
     <section style={{ display: "flex", flexDirection: "column", height: "100%", backgroundColor: "#faf8f3" }}>
       
-      {/* ── 상단 헤더: 골든 데이즈 타이틀 및 가로 정렬 버튼 ── */}
+      {/* ── 상단 헤더: 골든 데이즈로 변경 ── */}
       <div style={{ flexShrink: 0, padding: "16px 20px 12px", borderBottom: "2px solid #e0d9cf", backgroundColor: "#faf8f3", display: "flex", flexDirection: "column", gap: 14 }}>
         
-        {/* 타이틀 & 액션 버튼 */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <span style={{ fontSize: 28 }}>☀️</span>
@@ -256,7 +247,6 @@ export default function NewsFeed() {
           </div>
         </div>
 
-        {/* 카테고리 탭 (줄바꿈 허용 가로 정렬) */}
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           {CATEGORIES.map((cat) => (
             <button
@@ -273,7 +263,6 @@ export default function NewsFeed() {
               {CAT_LABELS[cat]}
             </button>
           ))}
-          
           {EXTERNAL_LINKS.map(({ key, label, url }) => (
             <button
               key={key}
@@ -286,7 +275,6 @@ export default function NewsFeed() {
         </div>
       </div>
 
-      {/* ── 뉴스 목록 피드 ── */}
       <div style={{ flex: 1, overflowY: "auto", padding: "12px 16px" }}>
         {isLoading && archive.length === 0 ? (
           <LoadingBanner />
@@ -294,7 +282,7 @@ export default function NewsFeed() {
           <EmptyState onFetch={fetchNews} errorMsg={errorMsg} />
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-            <p style={{ fontSize: 13, color: "#9ba8bf", marginBottom: 10, fontWeight: 600 }}>
+            <p style={{ fontSize: 14, color: "#9ba8bf", marginBottom: 10, fontWeight: 600 }}>
               {activeCategory} 소식 · {lastUpdated || "최신"} 업데이트
             </p>
             {filtered.map((item) => (
@@ -304,11 +292,10 @@ export default function NewsFeed() {
         )}
       </div>
 
-      {/* 모달 및 알림 */}
       {selectedNews && <NewsModal item={selectedNews} onClose={() => setSelectedNews(null)} />}
       {showWriteModal && <WriteModal onClose={() => setShowWriteModal(false)} onSave={fetchNews} />}
       {toastMsg && (
-        <div style={{ position: "fixed", bottom: "42%", left: "50%", transform: "translateX(-50%)", padding: "10px 20px", background: "#333", color: "#fff", borderRadius: 30, fontSize: 14, zIndex: 2000 }}>
+        <div style={{ position: "fixed", bottom: "42%", left: "50%", transform: "translateX(-50%)", padding: "12px 24px", background: "#333", color: "#fff", borderRadius: 30, fontSize: 15, zIndex: 2000 }}>
           {toastMsg}
         </div>
       )}
