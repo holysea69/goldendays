@@ -43,9 +43,8 @@ export default function NewsFeed() {
           id: item.id.toString(),
           category: item.category || "생활",
           title: item.title || "제목 없음",
-          // Supabase 컬럼명이 url이므로 그대로 가져옵니다.
           url: item.url || "", 
-          summary: (item.content || "").slice(0, 100) + "...",
+          summary: (item.content || "").slice(0, 120) + "...", // PC를 위해 요약본을 조금 더 길게
           fullContent: item.content || "",
           source: item.source || "AI 뉴스",
           date: new Date().toLocaleDateString(),
@@ -69,53 +68,94 @@ export default function NewsFeed() {
   if (!mounted) return null;
 
   return (
-    <section style={{ display: "flex", flexDirection: "column", height: "100%", backgroundColor: "#faf8f3" }}>
+    <section style={{ 
+      display: "flex", 
+      flexDirection: "column", 
+      height: "100%", 
+      backgroundColor: "#faf8f3",
+      overflow: "hidden"
+    }}>
       
-      {/* ── 상단 헤더 ── */}
-      <div style={{ flexShrink: 0, padding: "12px 16px 10px", borderBottom: "1px solid #e0d9cf", backgroundColor: "#faf8f3", display: "flex", flexDirection: "column", gap: 10 }}>
-        
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <span style={{ fontSize: 22 }}>☀️</span>
-            <h1 style={{ fontSize: 20, fontWeight: 900, color: "#1a1a2e" }}>골든 데이즈</h1>
-          </div>
-          <button 
-            onClick={fetchNews} 
-            disabled={isLoading}
-            style={{ padding: "6px 12px", borderRadius: 8, fontSize: 13, fontWeight: 800, background: "#0046ff", color: "#fff", border: "none", cursor: isLoading ? "not-allowed" : "pointer" }}
-          >
-            {isLoading ? "..." : "새소식"}
-          </button>
-        </div>
-
-        <div style={{ display: "flex", gap: 5, flexWrap: "wrap" }}>
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              style={{
-                padding: "6px 12px", borderRadius: 16, fontSize: 14, fontWeight: 800,
-                backgroundColor: activeCategory === cat ? "#0046ff" : "#fff",
-                color: activeCategory === cat ? "#fff" : "#5a5a7a",
-                border: "1px solid #d0d8f0",
-                cursor: "pointer"
+      {/* ── 상단 헤더 (고정) ── */}
+      <header style={{ 
+        flexShrink: 0, 
+        padding: "20px 0", 
+        borderBottom: "1px solid #e0d9cf", 
+        backgroundColor: "rgba(250, 248, 243, 0.9)",
+        backdropFilter: "blur(10px)",
+        position: "sticky",
+        top: 0,
+        zIndex: 100
+      }}>
+        <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <span style={{ fontSize: 28 }}>☀️</span>
+              <h1 style={{ fontSize: 24, fontWeight: 900, color: "#1a1a2e", letterSpacing: "-0.5px" }}>골든 데이즈</h1>
+            </div>
+            <button 
+              onClick={fetchNews} 
+              disabled={isLoading}
+              style={{ 
+                padding: "10px 20px", borderRadius: 12, fontSize: 14, fontWeight: 800, 
+                background: "#0046ff", color: "#fff", border: "none", cursor: "pointer",
+                boxShadow: "0 4px 10px rgba(0, 70, 255, 0.2)",
+                transition: "all 0.2s ease"
               }}
             >
-              {CAT_LABELS[cat]}
+              {isLoading ? "불러오는 중..." : "새소식 확인"}
             </button>
-          ))}
-        </div>
-      </div>
+          </div>
 
-      {/* ── 뉴스 목록 피드 ── */}
-      <div style={{ flex: 1, overflowY: "auto", padding: "10px 16px" }}>
-        <p style={{ fontSize: 13, color: "#9ba8bf", marginBottom: 8, fontWeight: 600 }}>
-          {activeCategory} 소식 · {lastUpdated || "최신"} 업데이트
-        </p>
-        <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-          {filtered.map((item) => (
-            <NewsCard key={item.id} item={item} onClick={setSelectedNews} />
-          ))}
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                style={{
+                  padding: "8px 16px", borderRadius: 20, fontSize: 15, fontWeight: 700,
+                  backgroundColor: activeCategory === cat ? "#1a1a2e" : "#fff",
+                  color: activeCategory === cat ? "#fff" : "#5a5a7a",
+                  border: "1px solid #d0d8f0",
+                  cursor: "pointer",
+                  transition: "all 0.2s ease"
+                }}
+              >
+                {CAT_LABELS[cat]}
+              </button>
+            ))}
+          </div>
+        </div>
+      </header>
+
+      {/* ── 뉴스 목록 피드 (그리드 적용) ── */}
+      <div style={{ 
+        flex: 1, 
+        overflowY: "auto", 
+        padding: "30px 20px",
+        width: "100%"
+      }}>
+        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+            <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#1a1a2e" }}>
+              {activeCategory} 최신 소식
+            </h2>
+            <span style={{ fontSize: "13px", color: "#9ba8bf", fontWeight: 600 }}>
+              업데이트: {lastUpdated || "최신"}
+            </span>
+          </div>
+          
+          {/* 그리드 컨테이너: PC에서는 3열, 패드 2열, 모바일 1열 자동 조정 */}
+          <div style={{ 
+            display: "grid", 
+            gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", 
+            gap: "24px",
+            paddingBottom: "100px" // 챗봇 버튼과 겹치지 않게 여백
+          }}>
+            {filtered.map((item) => (
+              <NewsCard key={item.id} item={item} onClick={setSelectedNews} />
+            ))}
+          </div>
         </div>
       </div>
 
