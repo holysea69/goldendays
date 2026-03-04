@@ -55,7 +55,7 @@ export default function NewsModal({ item, onClose, onUpdate }: any) {
                   }}
                   style={{ flex: 2, padding: "14px", borderRadius: "12px", background: "#f0f2f5", fontWeight: "700", border: "none", cursor: "pointer" }}
                 >
-                  📰 신문사 원문보기
+                  📰 원문보기
                 </button>
               )}
               <button onClick={() => setIsEditing(true)} style={{ flex: 1, padding: "14px", borderRadius: "12px", border: "1px solid #ddd", background: "#fff" }}>✏️</button>
