@@ -43,8 +43,8 @@ export default function NewsFeed() {
           id: item.id.toString(),
           category: item.category || "생활",
           title: item.title || "제목 없음",
-          // 핵심: 구글 시트에서 넘어온 'link' 컬럼 데이터를 'url'로 저장합니다.
-          url: item.link || "", 
+          // Supabase 컬럼명이 url이므로 그대로 가져옵니다.
+          url: item.url || "", 
           summary: (item.content || "").slice(0, 100) + "...",
           fullContent: item.content || "",
           source: item.source || "AI 뉴스",
@@ -119,7 +119,7 @@ export default function NewsFeed() {
         </div>
       </div>
 
-      {/* 모달: 선택된 뉴스에 url 정보가 포함되어 전달됩니다. */}
+      {/* 모달 */}
       {selectedNews && (
         <NewsModal 
           item={selectedNews} 
