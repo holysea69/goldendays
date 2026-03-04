@@ -8,7 +8,15 @@ import {
 } from "./newsData";
 import NewsCard from "./NewsCard";
 import NewsModal from "./NewsModal";
+// --- 이 부분을 추가하세요 ---
+import { createClient } from '@supabase/supabase-js'
 
+// 주의: 아래 주소와 키는 아까 route.ts에 넣었던 것과 동일한 것으로 바꿔주세요!
+const supabase = createClient(
+  'https://ofdizlrhyodfhpcwjsfh.supabase.co', // 본인의 Supabase Project URL
+  'sb_publishable_cVfSWepUT4dJMKKoS5NQhQ_EzymBgd1'                   // 본인의 Supabase Anon Key
+)
+// -----------------------
 const CATEGORIES: Array<"전체" | Category> = ["전체", "건강", "복지", "일자리", "문화", "생활"];
 const CAT_LABELS: Record<string, string> = {
   전체: "📋 전체", 건강: "💚 건강", 복지: "💙 복지",
@@ -407,58 +415,69 @@ export default function NewsFeed() {
   }, []);
 
   // ── 뉴스 가져오기 (버튼 클릭) ──────────────────────────────────────────────
+  // ── 뉴스 가져오기 (n8n 대신 Supabase에서 직접 가져오기) ──────────────────────────────────────────────
   const fetchNews = useCallback(async () => {
     if (fetchingRef.current) return;
     fetchingRef.current = true;
     setIsLoading(true);
     setErrorMsg("");
 
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 305_000);
-
     try {
-      let result = await callAndParse(controller.signal, 1);
+      // 1. Supabase에서 데이터 가져오기 (news 테이블)
+      const { data, error } = await supabase
+        .from('news')
+        .select('*')
+        .order('id', { ascending: false }); // 최신글이 위로
 
-      // AI 헛소리 감지 시 1회 재시도
-      if (!result.ok && result.aiRambled) {
-        showToast("⚠️ AI 재응답 중...");
-        await new Promise((r) => setTimeout(r, 2000));
-        result = await callAndParse(controller.signal, 2);
-      }
+      if (error) throw error;
 
-      clearTimeout(timer);
+      if (data && data.length > 0) {
+        // 2. DB 데이터를 화면 형식(NewsItem)으로 변환 (중복 제거 버전)
+        const formattedItems: NewsItem[] = data.map((item: any, idx: number) => {
+          const rawContent = item.content || "본문 내용이 없습니다.";
+          
+          // 요약본 만들기: 본문이 너무 길면 앞부분만 자르고, 짧으면 그대로 둡니다.
+          const summaryText = rawContent.length > 120 
+            ? rawContent.slice(0, 120) + "..." 
+            : rawContent;
 
-      if (result.ok && result.items.length > 0) {
-        mergeIntoArchive(result.items);
-        setErrorMsg("");
+          return {
+            id: item.id.toString(),
+            category: (item.category as Category) || "생활",
+            title: item.title || "제목 없음",
+            summary: summaryText,     // 목록 카드에 보여줄 짧은 글
+            fullContent: rawContent,  // 자세히 보기 모달에 보여줄 전체 글
+            content: rawContent,      // (하위 호환용)
+            source: item.source || "AI 뉴스",
+            date: getTodayDateStr(),
+            fetchedAt: Date.now() - idx,
+            emoji: inferEmoji(item.category || "생활"),
+            readTime: "3분",
+            isHtml: false
+          };
+        });
+
+        // 3. 화면 업데이트 및 저장
+        setArchive(formattedItems);
+        archiveRef.current = formattedItems;
+        saveToStorage(formattedItems); // 브라우저에도 저장해둠
         setIsLive(true);
+        
         const now = new Date();
         setLastUpdated(`${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`);
-        showToast(`✅ 뉴스 ${result.items.length}건을 가져왔습니다!`);
-        return;
+        showToast(`✅ ${formattedItems.length}건의 뉴스를 불러왔습니다!`);
+      } else {
+        setErrorMsg("아직 등록된 뉴스가 없습니다. 구글 시트에서 승인해 주세요.");
       }
-
-      if (result.aiRambled) {
-        setErrorMsg("뉴스 데이터를 정리 중입니다. 잠시 후 다시 시도해 주세요.");
-        showToast("⏳ 잠시 후 다시 시도해 주세요.");
-        return;
-      }
-
-      const msg = (result as { errMsg?: string }).errMsg ?? "서버에서 오류가 반환됐습니다.";
-      setErrorMsg(msg.includes("정리 중") ? "뉴스 데이터를 정리 중입니다. 잠시 후 다시 시도해 주세요." : msg);
-      showToast(`❌ ${msg.slice(0, 30)}`);
-
-    } catch (err) {
-      clearTimeout(timer);
-      const isAbort = err instanceof Error && err.name === "AbortError";
-      const msg = isAbort ? "응답 시간 초과. n8n 워크플로우를 확인 후 다시 눌러주세요." : "서버 연결 오류가 발생했습니다.";
-      setErrorMsg(msg);
-      showToast(`❌ ${isAbort ? "시간 초과" : "연결 오류"}`);
+    } catch (err: any) {
+      console.error("데이터 로드 실패:", err);
+      setErrorMsg("데이터베이스 연결 오류가 발생했습니다.");
+      showToast("❌ 로드 실패");
     } finally {
       fetchingRef.current = false;
       setIsLoading(false);
     }
-  }, [showToast, mergeIntoArchive, callAndParse]);
+  }, [showToast]);
 
   // ── 카테고리 필터링 ───────────────────────────────────────────────────────────
   const filtered = useMemo(() => {

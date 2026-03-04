@@ -76,9 +76,6 @@ export default function NewsModal({ item, onClose, onUpdate }: NewsModalProps) {
         backdropFilter: "blur(5px)",
       }}
       onClick={isEditing ? undefined : onClose}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="modal-title"
     >
       <div
         className="modal-content"
@@ -100,7 +97,7 @@ export default function NewsModal({ item, onClose, onUpdate }: NewsModalProps) {
         <div
           style={{
             flexShrink: 0,
-            padding: "32px 32px 24px",
+            padding: "32px 32px 20px",
             background: isEditing
               ? "linear-gradient(135deg, #fff8e0 0%, #fff3d0 100%)"
               : "linear-gradient(135deg, #e8f0ff 0%, #f0ebe3 100%)",
@@ -108,7 +105,6 @@ export default function NewsModal({ item, onClose, onUpdate }: NewsModalProps) {
         >
           <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 16 }}>
             <div style={{ flex: 1 }}>
-              {/* 카테고리 배지 (편집 모드: 선택 버튼) */}
               {isEditing ? (
                 <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 14 }}>
                   {VALID_CATEGORIES.map((cat) => (
@@ -122,24 +118,11 @@ export default function NewsModal({ item, onClose, onUpdate }: NewsModalProps) {
                   ))}
                 </div>
               ) : (
-                <span
-                  style={{
-                    ...badgeStyle,
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 8,
-                    padding: "8px 20px",
-                    borderRadius: 999,
-                    fontSize: 22,
-                    fontWeight: 700,
-                    marginBottom: 14,
-                  }}
-                >
+                <span style={{ ...badgeStyle, display: "inline-flex", alignItems: "center", gap: 8, padding: "8px 20px", borderRadius: 999, fontSize: 22, fontWeight: 700, marginBottom: 14 }}>
                   {displayItem.emoji} {displayItem.category}
                 </span>
               )}
 
-              {/* 제목 (편집 모드: input) */}
               {isEditing ? (
                 <input
                   value={editTitle}
@@ -147,82 +130,32 @@ export default function NewsModal({ item, onClose, onUpdate }: NewsModalProps) {
                   style={{ width: "100%", padding: "10px 14px", borderRadius: 12, border: "2px solid #0046ff", fontSize: 24, fontWeight: 900, color: "#1a1a2e", fontFamily: "inherit", outline: "none", boxSizing: "border-box" }}
                 />
               ) : (
-                <h2
-                  id="modal-title"
-                  style={{ fontSize: 30, fontWeight: 900, color: "#1a1a2e", lineHeight: 1.4 }}
-                >
+                <h2 style={{ fontSize: 30, fontWeight: 900, color: "#1a1a2e", lineHeight: 1.4 }}>
                   {displayItem.title}
                 </h2>
               )}
             </div>
 
-            {/* 편집/닫기 버튼 영역 */}
             <div style={{ display: "flex", flexDirection: "column", gap: 8, flexShrink: 0 }}>
               {onUpdate && !isEditing && (
-                <button
-                  onClick={() => setIsEditing(true)}
-                  style={{ width: 52, height: 52, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, color: "#b85c00", border: "2px solid #e0a060", backgroundColor: "#fff8ee", cursor: "pointer", fontFamily: "inherit" }}
-                  aria-label="편집"
-                  title="편집"
-                >
-                  ✏️
-                </button>
+                <button onClick={() => setIsEditing(true)} style={{ width: 52, height: 52, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, color: "#b85c00", border: "2px solid #e0a060", backgroundColor: "#fff8ee", cursor: "pointer", fontFamily: "inherit" }} title="편집">✏️</button>
               )}
-              <button
-                onClick={isEditing ? () => setIsEditing(false) : onClose}
-                style={{ width: 52, height: 52, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, color: "#5a5a7a", border: "none", backgroundColor: "rgba(255,255,255,0.7)", cursor: "pointer", fontFamily: "inherit", transition: "background-color 0.2s" }}
-                aria-label={isEditing ? "취소" : "닫기"}
-              >
-                {isEditing ? "✕" : "✕"}
-              </button>
+              <button onClick={isEditing ? () => setIsEditing(false) : onClose} style={{ width: 52, height: 52, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, color: "#5a5a7a", border: "none", backgroundColor: "rgba(255,255,255,0.7)", cursor: "pointer", fontFamily: "inherit" }}>✕</button>
             </div>
           </div>
 
-          {/* 출처 및 날짜 */}
-          <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 14, fontSize: 19, color: "#5a5a7a", flexWrap: "wrap" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 14, fontSize: 18, color: "#5a5a7a", fontWeight: 500 }}>
             <span>📢 {item.source}</span>
-            <span style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: "#b0b8d0", display: "inline-block" }} />
+            <span style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: "#b0b8d0" }} />
             <span>📅 {item.date}</span>
-            <span style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: "#b0b8d0", display: "inline-block" }} />
-            <span>⏱ 읽는 시간 {item.readTime}</span>
           </div>
-
-          {isEditing && (
-            <div style={{ marginTop: 12, padding: "8px 14px", borderRadius: 10, backgroundColor: "#fff8e0", border: "1.5px solid #e0c060", fontSize: 15, color: "#a06000", fontWeight: 700 }}>
-              ✏️ 편집 모드 — 수정 후 [저장]을 눌러주세요. ESC 또는 ✕로 취소합니다.
-            </div>
-          )}
         </div>
 
-        {/* 모달 본문 */}
-        <div
-          style={{
-            flex: 1,
-            overflowY: "auto",
-            padding: "28px 32px",
-          }}
-        >
-          {/* 요약 강조 박스 (편집 모드에서는 숨김) */}
-          {!isEditing && (
-            <div
-              style={{
-                borderRadius: 18,
-                padding: 20,
-                marginBottom: 24,
-                backgroundColor: "#e8f0ff",
-                border: "2px solid rgba(0,70,255,0.15)",
-              }}
-            >
-              <p style={{ fontSize: 21, fontWeight: 700, color: "#0046ff", lineHeight: 1.7 }}>
-                💡 {item.summary}
-              </p>
-            </div>
-          )}
-
-          {/* 본문 내용 (편집 모드: textarea) */}
+        {/* 모달 본문 (요약 박스 제거됨) */}
+        <div style={{ flex: 1, overflowY: "auto", padding: "32px" }}>
           {isEditing ? (
             <div>
-              <label style={{ display: "block", fontSize: 15, fontWeight: 700, color: "#3a3a5a", marginBottom: 8 }}>본문 *</label>
+              <label style={{ display: "block", fontSize: 16, fontWeight: 700, color: "#3a3a5a", marginBottom: 8 }}>본문 *</label>
               <textarea
                 value={editContent}
                 onChange={(e) => { setEditContent(e.target.value); setEditErr(""); }}
@@ -232,51 +165,29 @@ export default function NewsModal({ item, onClose, onUpdate }: NewsModalProps) {
               {editErr && <p style={{ marginTop: 8, fontSize: 15, color: "#cc0000", fontWeight: 700 }}>🔴 {editErr}</p>}
             </div>
           ) : (
-            <p style={{ fontSize: 23, color: "#1a1a2e", lineHeight: 1.85, whiteSpace: "pre-line" }}>
-              {item.content}
+            <p style={{ 
+              fontSize: "24px", // 어르신들을 위해 글자 크기를 키웠습니다.
+              color: "#1a1a2e", 
+              lineHeight: "1.8", // 줄 간격을 넉넉히 주어 읽기 편하게 했습니다.
+              whiteSpace: "pre-wrap", // 줄바꿈을 그대로 보여줍니다.
+              fontWeight: 500
+            }}>
+              {item.fullContent || item.content}
             </p>
           )}
         </div>
 
         {/* 모달 하단 버튼 */}
-        <div
-          style={{
-            flexShrink: 0,
-            padding: "20px 32px",
-            display: "flex",
-            gap: 14,
-            borderTop: "2px solid #ede8df",
-          }}
-        >
+        <div style={{ flexShrink: 0, padding: "20px 32px", display: "flex", gap: 14, borderTop: "2px solid #ede8df" }}>
           {isEditing ? (
             <>
-              <button
-                onClick={() => setIsEditing(false)}
-                style={{ flex: 1, padding: "16px 0", borderRadius: 18, fontSize: 22, fontWeight: 700, color: "#5a5a7a", border: "2px solid #d0d8e8", backgroundColor: "white", cursor: "pointer", fontFamily: "inherit" }}
-              >
-                취소
-              </button>
-              <button
-                onClick={handleEditSave}
-                style={{ flex: 2, padding: "16px 24px", borderRadius: 18, fontSize: 22, fontWeight: 700, color: "white", border: "none", background: "linear-gradient(135deg, #e87000, #ff9900)", cursor: "pointer", fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, boxShadow: "0 4px 16px rgba(200,120,0,0.35)" }}
-              >
-                💾 저장하기
-              </button>
+              <button onClick={() => setIsEditing(false)} style={{ flex: 1, padding: "16px 0", borderRadius: 18, fontSize: 22, fontWeight: 700, color: "#5a5a7a", border: "2px solid #d0d8e8", backgroundColor: "white", cursor: "pointer", fontFamily: "inherit" }}>취소</button>
+              <button onClick={handleEditSave} style={{ flex: 2, padding: "16px 24px", borderRadius: 18, fontSize: 22, fontWeight: 700, color: "white", border: "none", background: "linear-gradient(135deg, #e87000, #ff9900)", cursor: "pointer", fontFamily: "inherit", boxShadow: "0 4px 16px rgba(200,120,0,0.35)" }}>💾 저장하기</button>
             </>
           ) : (
             <>
-              <button
-                onClick={onClose}
-                style={{ flex: 1, padding: "16px 0", borderRadius: 18, fontSize: 22, fontWeight: 700, color: "#5a5a7a", border: "2px solid #d0d8e8", backgroundColor: "white", cursor: "pointer", fontFamily: "inherit", transition: "all 0.2s" }}
-              >
-                닫기
-              </button>
-              <button
-                style={{ flex: 2, padding: "16px 24px", borderRadius: 18, fontSize: 22, fontWeight: 700, color: "white", border: "none", background: "linear-gradient(135deg, #0046ff, #0066ff)", cursor: "pointer", fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, boxShadow: "0 4px 16px rgba(0,70,255,0.35)" }}
-                onClick={onClose}
-              >
-                🤖 골든이에게 더 물어보기
-              </button>
+              <button onClick={onClose} style={{ flex: 1, padding: "16px 0", borderRadius: 18, fontSize: 22, fontWeight: 700, color: "#5a5a7a", border: "2px solid #d0d8e8", backgroundColor: "white", cursor: "pointer", fontFamily: "inherit" }}>닫기</button>
+              <button style={{ flex: 2, padding: "16px 24px", borderRadius: 18, fontSize: 22, fontWeight: 700, color: "white", border: "none", background: "linear-gradient(135deg, #0046ff, #0066ff)", cursor: "pointer", fontFamily: "inherit", boxShadow: "0 4px 16px rgba(0,70,255,0.35)" }} onClick={onClose}>🤖 골든이에게 더 물어보기</button>
             </>
           )}
         </div>
