@@ -1,17 +1,39 @@
-import NewsFeed from "@/components/NewsFeed";
-import ChatBot from "@/components/ChatBot";
+"use client";
+
+import React from "react";
+// 경로 오류를 방지하기 위해 가장 확실한 상대 경로(../) 방식을 사용합니다.
+import NewsFeed from "../components/NewsFeed";
+import ChatBot from "../components/ChatBot";
 
 export default function Home() {
   return (
-    <main className="flex flex-col md:flex-row w-screen h-[100dvh] overflow-hidden bg-[#faf8f3]">
+    <main style={{ 
+      display: "flex", 
+      flexDirection: "column", 
+      width: "100vw", 
+      height: "100dvh", 
+      overflow: "hidden", 
+      backgroundColor: "#faf8f3" 
+    }}>
       
-      {/* 1. 뉴스 피드 영역 (상단 75%) */}
-      <div className="w-full h-[75%] md:w-3/4 md:h-full flex flex-col overflow-y-auto bg-[#faf8f3] border-b-[2px] md:border-b-0 md:border-r-[3px] border-[#e0d9cf]">
+      {/* 1. 뉴스 영역 (상단 80% - 4/5 비율) */}
+      <div style={{ 
+        flex: "0 0 80%", 
+        width: "100%", 
+        overflowY: "auto", 
+        borderBottom: "1px solid #e0d9cf" 
+      }}>
         <NewsFeed />
       </div>
 
-      {/* 2. AI 상담창 영역 (하단 25% - 크기를 절반으로 축소) */}
-      <div className="w-full h-[25%] md:w-1/4 md:h-full flex flex-col bg-white shadow-[0_-10px_30px_rgba(0,0,0,0.08)] z-20">
+      {/* 2. AI 상담창 영역 (하단 20% - 절반으로 축소) */}
+      <div style={{ 
+        flex: "0 0 20%", 
+        width: "100%", 
+        backgroundColor: "#ffffff", 
+        boxShadow: "0 -4px 15px rgba(0,0,0,0.05)",
+        zIndex: 50 
+      }}>
         <ChatBot />
       </div>
 

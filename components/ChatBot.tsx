@@ -1,24 +1,25 @@
-{/* ChatBot.tsx 내 입력창 부분 수정 예시 */}
-<div style={{ padding: "10px 15px", backgroundColor: "#fff", borderTop: "1px solid #eee" }}>
-  <div style={{ position: "relative", display: "flex", alignItems: "center", gap: 8 }}>
-    <textarea 
-      placeholder="궁금하신 것을 적어주세요..."
-      style={{ 
-        width: "100%", 
-        height: "44px", // 높이 최적화
-        padding: "10px 12px", 
-        fontSize: "16px", // 가독성 향상
-        borderRadius: "12px", 
-        border: "1px solid #ddd",
-        resize: "none",
-        lineHeight: "1.4"
-      }}
-    />
-    <button style={{ background: "#0046ff", color: "#fff", border: "none", borderRadius: "50%", width: "36px", height: "36px" }}>
-      ➔
-    </button>
-  </div>
-  <p style={{ fontSize: "11px", color: "#999", marginTop: "5px", textAlign: "center" }}>
-    Enter 키로 전송 · Shift+Enter로 줄바꿈
-  </p>
-</div>
+"use client";
+
+import React, { useState } from "react";
+
+// 함수 앞에 'export default'가 반드시 붙어있어야 page.tsx의 빨간불이 꺼집니다.
+export default function ChatBot() {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", height: "100%", padding: "10px" }}>
+      <div style={{ flex: 1, overflowY: "auto", fontSize: "16px", color: "#333", marginBottom: "10px" }}>
+        안녕하세요! 무엇을 도와드릴까요?
+      </div>
+      <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+        <input 
+          type="text" 
+          placeholder="궁금한 것을 물어보세요" 
+          style={{ flex: 1, padding: "10px", borderRadius: "10px", border: "1px solid #ddd", fontSize: "16px" }} 
+        />
+        <button style={{ padding: "10px 15px", background: "#0046ff", color: "#fff", border: "none", borderRadius: "10px" }}>전송</button>
+      </div>
+      <p style={{ fontSize: "12px", color: "#999", marginTop: "5px", textAlign: "center" }}>
+        마이크로 음성 입력이 가능합니다
+      </p>
+    </div>
+  );
+}
