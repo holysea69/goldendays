@@ -5,6 +5,7 @@ import NewsCard from "./NewsCard";
 import NewsModal from "./NewsModal";
 import { createClient } from '@supabase/supabase-js'
 
+// Supabase 클라이언트 설정
 const supabase = createClient(
   'https://ofdizlrhyodfhpcwjsfh.supabase.co',
   'sb_publishable_cVfSWepUT4dJMKKoS5NQhQ_EzymBgd1'
@@ -38,18 +39,25 @@ export default function NewsFeed() {
       if (error) throw error;
       
       if (data) {
-        const items = data.map((item: any, idx: number) => ({
-          ...item,
-          id: item.id.toString(),
-          category: item.category || "생활",
-          title: item.title || "제목 없음",
-          url: item.url || "", 
-          summary: (item.content || "").slice(0, 120) + "...", // PC를 위해 요약본을 조금 더 길게
-          fullContent: item.content || "",
-          source: item.source || "AI 뉴스",
-          date: new Date().toLocaleDateString(),
-          fetchedAt: Date.now() - idx,
-        }));
+        const items = data.map((item: any, idx: number) => {
+          // [추가된 로직] 제목에서 ' - 출처' 부분을 떼어냅니다.
+          // 예: "뉴스제목 - 한국일보" -> "뉴스제목"만 남김
+          const rawTitle = item.title || "제목 없음";
+          const cleanTitle = rawTitle.split(' - ')[0].trim();
+
+          return {
+            ...item,
+            id: item.id.toString(),
+            category: item.category || "생활",
+            title: cleanTitle, // 깨끗해진 제목 적용
+            url: item.url || "", 
+            summary: (item.content || "").slice(0, 120) + "...", 
+            fullContent: item.content || "",
+            source: item.source || "AI 뉴스",
+            date: new Date().toLocaleDateString(),
+            fetchedAt: Date.now() - idx,
+          };
+        });
         
         setArchive(items);
         localStorage.setItem("golden_archive", JSON.stringify(items));
@@ -76,13 +84,13 @@ export default function NewsFeed() {
       overflow: "hidden"
     }}>
       
-      {/* ── 상단 헤더 (고정) ── */}
+      {/* 상단 헤더 영역 */}
       <header style={{ 
         flexShrink: 0, 
         padding: "20px 0", 
         borderBottom: "1px solid #e0d9cf", 
-        backgroundColor: "rgba(250, 248, 243, 0.9)",
-        backdropFilter: "blur(10px)",
+        backgroundColor: "rgba(250, 248, 243, 0.92)",
+        backdropFilter: "blur(12px)",
         position: "sticky",
         top: 0,
         zIndex: 100
@@ -91,7 +99,7 @@ export default function NewsFeed() {
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
               <span style={{ fontSize: 28 }}>☀️</span>
-              <h1 style={{ fontSize: 24, fontWeight: 900, color: "#1a1a2e", letterSpacing: "-0.5px" }}>골든 데이즈</h1>
+              <h1 style={{ fontSize: 24, fontWeight: 900, color: "#1a1a2e" }}>골든 데이즈</h1>
             </div>
             <button 
               onClick={fetchNews} 
@@ -99,21 +107,21 @@ export default function NewsFeed() {
               style={{ 
                 padding: "10px 20px", borderRadius: 12, fontSize: 14, fontWeight: 800, 
                 background: "#0046ff", color: "#fff", border: "none", cursor: "pointer",
-                boxShadow: "0 4px 10px rgba(0, 70, 255, 0.2)",
-                transition: "all 0.2s ease"
+                boxShadow: "0 4px 10px rgba(0, 70, 255, 0.2)"
               }}
             >
-              {isLoading ? "불러오는 중..." : "새소식 확인"}
+              {isLoading ? "..." : "새소식 확인"}
             </button>
           </div>
 
+          {/* 카테고리 탭 */}
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             {CATEGORIES.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
                 style={{
-                  padding: "8px 16px", borderRadius: 20, fontSize: 15, fontWeight: 700,
+                  padding: "8px 18px", borderRadius: 20, fontSize: 15, fontWeight: 700,
                   backgroundColor: activeCategory === cat ? "#1a1a2e" : "#fff",
                   color: activeCategory === cat ? "#fff" : "#5a5a7a",
                   border: "1px solid #d0d8f0",
@@ -128,29 +136,23 @@ export default function NewsFeed() {
         </div>
       </header>
 
-      {/* ── 뉴스 목록 피드 (그리드 적용) ── */}
-      <div style={{ 
-        flex: 1, 
-        overflowY: "auto", 
-        padding: "30px 20px",
-        width: "100%"
-      }}>
+      {/* 뉴스 리스트 영역 (그리드 적용) */}
+      <div style={{ flex: 1, overflowY: "auto", padding: "30px 20px" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 20 }}>
             <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#1a1a2e" }}>
               {activeCategory} 최신 소식
             </h2>
-            <span style={{ fontSize: "13px", color: "#9ba8bf", fontWeight: 600 }}>
+            <span style={{ fontSize: "13px", color: "#9ba8bf" }}>
               업데이트: {lastUpdated || "최신"}
             </span>
           </div>
           
-          {/* 그리드 컨테이너: PC에서는 3열, 패드 2열, 모바일 1열 자동 조정 */}
           <div style={{ 
             display: "grid", 
             gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", 
             gap: "24px",
-            paddingBottom: "100px" // 챗봇 버튼과 겹치지 않게 여백
+            paddingBottom: "120px" 
           }}>
             {filtered.map((item) => (
               <NewsCard key={item.id} item={item} onClick={setSelectedNews} />
@@ -159,7 +161,7 @@ export default function NewsFeed() {
         </div>
       </div>
 
-      {/* 모달 */}
+      {/* 모달 팝업 */}
       {selectedNews && (
         <NewsModal 
           item={selectedNews} 

@@ -1,7 +1,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from "next/server";
 
-const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY!);
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 export async function POST(req: Request) {
   try {
@@ -20,6 +20,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ reply: text });
   } catch (error) {
-    return NextResponse.json({ reply: "죄송해요, 잠시 목소리가 안 나오네요. 다시 말씀해 주시겠어요?" }, { status: 500 });
+    return NextResponse.json({ reply: "연결 상태가 불안정해요. 잠시 후 다시 질문해 주시겠어요?" }, { status: 500 });
   }
 }
