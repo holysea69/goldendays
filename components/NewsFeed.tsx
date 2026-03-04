@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useCallback, useMemo } from "react";
-// 오류를 일으킬 수 있는 복잡한 import를 최소화했습니다.
 import NewsCard from "./NewsCard";
 import NewsModal from "./NewsModal";
 import { createClient } from '@supabase/supabase-js'
@@ -37,25 +36,32 @@ export default function NewsFeed() {
     try {
       const { data, error } = await supabase.from('news').select('*').order('id', { ascending: false });
       if (error) throw error;
+      
       if (data) {
         const items = data.map((item: any, idx: number) => ({
           ...item,
           id: item.id.toString(),
           category: item.category || "생활",
           title: item.title || "제목 없음",
+          // 핵심: 구글 시트에서 넘어온 'link' 컬럼 데이터를 'url'로 저장합니다.
+          url: item.link || "", 
           summary: (item.content || "").slice(0, 100) + "...",
           fullContent: item.content || "",
           source: item.source || "AI 뉴스",
           date: new Date().toLocaleDateString(),
           fetchedAt: Date.now() - idx,
         }));
+        
         setArchive(items);
         localStorage.setItem("golden_archive", JSON.stringify(items));
         const now = new Date();
         setLastUpdated(`${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`);
       }
-    } catch (err) { console.error(err); }
-    finally { setIsLoading(false); }
+    } catch (err) { 
+      console.error("데이터 불러오기 에러:", err); 
+    } finally { 
+      setIsLoading(false); 
+    }
   }, [isLoading]);
 
   const filtered = useMemo(() => activeCategory === "전체" ? archive : archive.filter(n => n.category === activeCategory), [archive, activeCategory]);
@@ -65,21 +71,23 @@ export default function NewsFeed() {
   return (
     <section style={{ display: "flex", flexDirection: "column", height: "100%", backgroundColor: "#faf8f3" }}>
       
-      {/* ── 상단 헤더: 가로 정렬 최적화 ── */}
+      {/* ── 상단 헤더 ── */}
       <div style={{ flexShrink: 0, padding: "12px 16px 10px", borderBottom: "1px solid #e0d9cf", backgroundColor: "#faf8f3", display: "flex", flexDirection: "column", gap: 10 }}>
         
-        {/* 타이틀과 버튼 한 줄 배치 */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
             <span style={{ fontSize: 22 }}>☀️</span>
             <h1 style={{ fontSize: 20, fontWeight: 900, color: "#1a1a2e" }}>골든 데이즈</h1>
           </div>
-          <button onClick={fetchNews} style={{ padding: "6px 12px", borderRadius: 8, fontSize: 13, fontWeight: 800, background: "#0046ff", color: "#fff", border: "none" }}>
+          <button 
+            onClick={fetchNews} 
+            disabled={isLoading}
+            style={{ padding: "6px 12px", borderRadius: 8, fontSize: 13, fontWeight: 800, background: "#0046ff", color: "#fff", border: "none", cursor: isLoading ? "not-allowed" : "pointer" }}
+          >
             {isLoading ? "..." : "새소식"}
           </button>
         </div>
 
-        {/* 카테고리 탭: 가로 정렬 */}
         <div style={{ display: "flex", gap: 5, flexWrap: "wrap" }}>
           {CATEGORIES.map((cat) => (
             <button
@@ -89,7 +97,8 @@ export default function NewsFeed() {
                 padding: "6px 12px", borderRadius: 16, fontSize: 14, fontWeight: 800,
                 backgroundColor: activeCategory === cat ? "#0046ff" : "#fff",
                 color: activeCategory === cat ? "#fff" : "#5a5a7a",
-                border: "1px solid #d0d8f0"
+                border: "1px solid #d0d8f0",
+                cursor: "pointer"
               }}
             >
               {CAT_LABELS[cat]}
@@ -110,8 +119,17 @@ export default function NewsFeed() {
         </div>
       </div>
 
-      {/* 모달 */}
-      {selectedNews && <NewsModal item={selectedNews} onClose={() => setSelectedNews(null)} />}
+      {/* 모달: 선택된 뉴스에 url 정보가 포함되어 전달됩니다. */}
+      {selectedNews && (
+        <NewsModal 
+          item={selectedNews} 
+          onClose={() => setSelectedNews(null)} 
+          onUpdate={(updated: any) => {
+            setArchive(prev => prev.map(n => n.id === updated.id ? updated : n));
+            setSelectedNews(updated);
+          }}
+        />
+      )}
     </section>
   );
 }

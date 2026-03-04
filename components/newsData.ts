@@ -31,6 +31,7 @@ export interface N8nNewsItem {
   readTime?: string;
   read_time?: string;
   emoji?: string;
+  link?: string;
   output?: string;
   text?: string;
   answer?: string;
