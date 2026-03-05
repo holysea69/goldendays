@@ -40,16 +40,17 @@ export default function NewsFeed() {
       
       if (data) {
         const items = data.map((item: any, idx: number) => {
-          // [추가된 로직] 제목에서 ' - 출처' 부분을 떼어냅니다.
-          // 예: "뉴스제목 - 한국일보" -> "뉴스제목"만 남김
           const rawTitle = item.title || "제목 없음";
-          const cleanTitle = rawTitle.split(' - ')[0].trim();
+          
+          // [수정 포인트] 제목 정제 로직 강화
+          // ' - ', ' | ', ' -' 등 다양한 형태의 출처 구분자를 찾아 그 뒤를 모두 제거합니다.
+          const cleanTitle = rawTitle.split(/ - | \|| -/)[0].trim();
 
           return {
             ...item,
             id: item.id.toString(),
             category: item.category || "생활",
-            title: cleanTitle, // 깨끗해진 제목 적용
+            title: cleanTitle, // 깨끗하게 정제된 제목 적용
             url: item.url || "", 
             summary: (item.content || "").slice(0, 120) + "...", 
             fullContent: item.content || "",
@@ -84,7 +85,7 @@ export default function NewsFeed() {
       overflow: "hidden"
     }}>
       
-      {/* 상단 헤더 영역 */}
+      {/* 상단 헤더 */}
       <header style={{ 
         flexShrink: 0, 
         padding: "20px 0", 
@@ -114,7 +115,6 @@ export default function NewsFeed() {
             </button>
           </div>
 
-          {/* 카테고리 탭 */}
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             {CATEGORIES.map((cat) => (
               <button
@@ -136,7 +136,7 @@ export default function NewsFeed() {
         </div>
       </header>
 
-      {/* 뉴스 리스트 영역 (그리드 적용) */}
+      {/* 뉴스 그리드 영역 */}
       <div style={{ flex: 1, overflowY: "auto", padding: "30px 20px" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 20 }}>
@@ -161,7 +161,6 @@ export default function NewsFeed() {
         </div>
       </div>
 
-      {/* 모달 팝업 */}
       {selectedNews && (
         <NewsModal 
           item={selectedNews} 
