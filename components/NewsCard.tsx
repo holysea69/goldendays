@@ -2,86 +2,66 @@
 
 import React from "react";
 
-export default function NewsCard({ item, onClick }: any) {
+export default function NewsCard({ item, onClick }: { item: any; onClick: (item: any) => void }) {
   return (
     <div 
       onClick={() => onClick(item)}
       style={{
         backgroundColor: "#fff",
         borderRadius: "20px",
-        padding: "24px",
+        padding: "20px",
         cursor: "pointer",
-        transition: "all 0.3s ease",
-        border: "1px solid #f0f0f0",
         display: "flex",
         flexDirection: "column",
-        gap: "16px",
-        boxShadow: "0 4px 12px rgba(0,0,0,0.03)",
+        justifyContent: "space-between",
+        transition: "all 0.2s ease",
+        border: "1px solid #f0ece5",
+        height: "100%",
+        boxShadow: "0 2px 8px rgba(0,0,0,0.02)"
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = "translateY(-5px)";
-        e.currentTarget.style.boxShadow = "0 12px 24px rgba(0,0,0,0.08)";
+        e.currentTarget.style.boxShadow = "0 10px 20px rgba(0,0,0,0.05)";
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.transform = "translateY(0)";
-        e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.03)";
+        e.currentTarget.style.boxShadow = "0 2px 8px rgba(0,0,0,0.02)";
       }}
     >
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <span style={{ 
-          padding: "6px 12px", 
-          borderRadius: "10px", 
-          fontSize: "13px", 
-          fontWeight: "bold",
-          backgroundColor: "#f0f7ff",
-          color: "#0046ff" 
+      <div>
+        {/* 상단 태그 및 날짜 */}
+        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "12px", alignItems: "center" }}>
+          <span style={{ 
+            fontSize: "11px", color: "#0046ff", fontWeight: "800", 
+            backgroundColor: "#f0f4ff", padding: "3px 8px", borderRadius: "6px" 
+          }}>
+            {item.category}
+          </span>
+          <span style={{ fontSize: "11px", color: "#a0a0b0" }}>{item.date}</span>
+        </div>
+
+        {/* 제목: 2줄로 제한하여 카드 높이 일정하게 유지 */}
+        <h3 style={{ 
+          fontSize: "17px", fontWeight: "800", marginBottom: "8px", lineHeight: "1.4", color: "#1a1a2e",
+          display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" 
         }}>
-          {item.category}
-        </span>
-        <span style={{ color: "#999", fontSize: "13px" }}>{item.date}</span>
+          {item.title}
+        </h3>
+
+        {/* 요약: 3줄로 제한 */}
+        <p style={{ 
+          fontSize: "14px", color: "#5a5a7a", lineHeight: "1.5", 
+          display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" 
+        }}>
+          {item.summary}
+        </p>
       </div>
-
-      <h3 style={{ 
-        fontSize: "19px", 
-        fontWeight: "800", 
-        lineHeight: "1.4", 
-        color: "#1a1a2e",
-        margin: 0,
-        height: "54px", // 두 줄 높이 고정
-        overflow: "hidden",
-        display: "-webkit-box",
-        WebkitLineClamp: 2,
-        WebkitBoxOrient: "vertical"
-      }}>
-        {item.title}
-      </h3>
-
-      <p style={{ 
-        fontSize: "15px", 
-        color: "#555", 
-        lineHeight: "1.6",
-        margin: 0,
-        overflow: "hidden",
-        display: "-webkit-box",
-        WebkitLineClamp: 3,
-        WebkitBoxOrient: "vertical"
-      }}>
-        {item.summary}
-      </p>
-
-      <div style={{ 
-        marginTop: "auto", 
-        paddingTop: "16px", 
-        borderTop: "1px solid #f9f9f9",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        color: "#0046ff",
-        fontWeight: "bold",
-        fontSize: "14px"
-      }}>
-        <span>{item.source}</span>
-        <span>자세히 보기 →</span>
+      
+      {/* 하단 화살표만 남겨서 폭을 좁혀도 깔끔함 */}
+      <div style={{ marginTop: "16px", display: "flex", justifyContent: "flex-end", borderTop: "1px solid #f8f8fa", paddingTop: "12px" }}>
+        <span style={{ fontSize: "13px", fontWeight: "800", color: "#0046ff", display: "flex", alignItems: "center", gap: "4px" }}>
+          자세히 보기 →
+        </span>
       </div>
     </div>
   );
