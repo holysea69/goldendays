@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Category, inferEmoji } from "./newsData";
 
 export default function NewsModal({ item, onClose, onUpdate }: any) {
   const [isEditing, setIsEditing] = useState(false);
@@ -23,28 +22,37 @@ export default function NewsModal({ item, onClose, onUpdate }: any) {
     setIsEditing(false);
   };
 
-  // 1. 원문보기 함수
+  // 1. [수정됨] 절대 튕기지 않는 원문보기 함수
   const handleOpenSource = (e: React.MouseEvent) => {
-    e.preventDefault(); // 기본 링크 동작 방지
-    e.stopPropagation(); // 이벤트 전파 방지
-    if (item.url) {
-      window.open(item.url, "_blank", "noopener,noreferrer");
-    } else {
+    e.preventDefault();  // 기본 클릭 동작(새로고침) 차단
+    e.stopPropagation(); // 뒷배경 클릭 방지
+
+    if (!item.url || item.url.trim() === "") {
       alert("원문 링크가 없습니다.");
+      return;
     }
+
+    let finalUrl = item.url.trim();
+    
+    // 주소에 http가 없으면 강제로 붙여서 무조건 외부 사이트로 열리게 만듦
+    if (!finalUrl.startsWith("http://") && !finalUrl.startsWith("https://")) {
+      finalUrl = "https://" + finalUrl;
+    }
+
+    window.open(finalUrl, "_blank", "noopener,noreferrer");
   };
 
-  // 2. 골든이 상담하기 함수
+  // 2. [수정됨] 새로 바꾼 챗봇(오렌지색 버튼)과 연결되도록 수정된 골든이 상담 함수
   const handleAskGolden = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     
-    // 모달을 닫고 우측 하단 챗봇 버튼을 클릭하게 하거나 상담창을 유도합니다.
+    // 모달을 닫습니다.
     onClose();
     
-    // 약간의 지연 후 챗봇을 열거나 안내 메시지를 띄울 수 있습니다.
+    // 0.1초 뒤에 오렌지색 챗봇 버튼(chatbot-btn)을 자동으로 클릭합니다.
     setTimeout(() => {
-      const chatbotBtn = document.querySelector('button[style*="fixed"]') as HTMLButtonElement;
+      const chatbotBtn = document.querySelector('.chatbot-btn') as HTMLButtonElement;
       if (chatbotBtn) chatbotBtn.click();
     }, 100);
   };
@@ -103,7 +111,7 @@ export default function NewsModal({ item, onClose, onUpdate }: any) {
                 <button onClick={onClose} style={{ flex: 1, padding: "14px", borderRadius: "12px", border: "1px solid #ddd", background: "#fff", fontWeight: "700", cursor: "pointer" }}>닫기</button>
                 <button 
                   onClick={handleAskGolden}
-                  style={{ flex: 2, padding: "14px", borderRadius: "12px", background: "#0046ff", color: "#fff", fontWeight: "700", border: "none", cursor: "pointer" }}
+                  style={{ flex: 2, padding: "14px", borderRadius: "12px", background: "#FF6B00", color: "#fff", fontWeight: "700", border: "none", cursor: "pointer", fontSize: "16px" }}
                 >
                   🤖 골든이 상담하기
                 </button>
