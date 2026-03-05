@@ -1,27 +1,34 @@
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const apiKey = process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY;
-
-  if (!apiKey) {
-    return NextResponse.json({ reply: "API 키가 설정되지 않았습니다." });
-  }
-
   try {
-    // 이 키로 사용할 수 있는 모든 모델 목록을 구글 서버에 요청합니다.
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
-    const data = await response.json();
+    const { message } = await req.json();
+    
+    const apiKey = process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY;
 
-    if (!response.ok) {
-      return NextResponse.json({ reply: `키 권한 오류: ${data.error?.message || "알 수 없는 에러"}` });
+    if (!apiKey) {
+      return NextResponse.json({ reply: "Vercel에 API 키가 등록되지 않았습니다." }, { status: 500 });
     }
 
-    // 모델 이름만 뽑아서 화면(채팅창)에 보여줍니다.
-    const modelNames = data.models.map((m: any) => m.name.replace('models/', '')).join(", ");
+    // 구글 공식 라이브러리로 안전하게 연결
+    const genAI = new GoogleGenerativeAI(apiKey);
     
-    return NextResponse.json({ reply: `[내 키로 사용 가능한 모델들] ${modelNames}` });
+    // [핵심 해결 포인트] 선생님의 키에 존재하는 최신 모델로 정확히 이름 맞춤!
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+
+    const prompt = `당신은 시니어 뉴스 서비스 '골든 데이즈'의 친절한 상담원 '골든이'입니다. 어르신들께 따뜻하고 명확하게 존댓말로 핵심만 답변해 주세요. 질문: ${message}`;
+
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
+
+    return NextResponse.json({ reply: text });
 
   } catch (error: any) {
-    return NextResponse.json({ reply: `진단 스크립트 에러: ${error.message}` });
+    console.error("Gemini SDK 에러:", error);
+    return NextResponse.json({ 
+      reply: `AI 연결이 지연되고 있습니다.' (에러: ${error.message})` 
+    }, { status: 500 });
   }
 }
