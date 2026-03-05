@@ -27,39 +27,61 @@ export default function NewsModal({ item, onClose }: NewsModalProps) {
       <div style={{
         backgroundColor: "#fff", width: "100%", maxWidth: "500px",
         maxHeight: "90vh", borderRadius: "28px", overflowY: "auto",
-        position: "relative", padding: "40px 24px"
+        position: "relative", padding: "40px 24px",
+        display: "flex", flexDirection: "column"
       }}>
         
-        {/* 닫기 X 아이콘 */}
-        <button onClick={onClose} style={{ position: "absolute", top: 20, right: 20, border: "none", background: "#f0f0f5", width: "36px", height: "36px", borderRadius: "50%", cursor: "pointer", color: "#666" }}>✕</button>
+        {/* 상단 닫기 X 아이콘 (보조) */}
+        <button 
+          onClick={onClose} 
+          style={{ position: "absolute", top: 20, right: 20, border: "none", background: "#f0f0f5", width: "36px", height: "36px", borderRadius: "50%", cursor: "pointer", color: "#666", zIndex: 10 }}
+        >✕</button>
 
-        <div style={{ marginBottom: "16px" }}><span style={{ padding: "6px 14px", borderRadius: "10px", backgroundColor: "#eef2ff", color: "#0046ff", fontSize: "14px", fontWeight: "bold" }}>💚 {item.category}</span></div>
+        <div style={{ marginBottom: "16px" }}>
+          <span style={{ padding: "6px 14px", borderRadius: "10px", backgroundColor: "#eef2ff", color: "#0046ff", fontSize: "14px", fontWeight: "bold" }}>
+            💚 {item.category}
+          </span>
+        </div>
 
-        <h2 style={{ fontSize: "22px", fontWeight: "900", marginBottom: "20px", lineHeight: "1.4", color: "#111" }}>{item.title}</h2>
+        <h2 style={{ fontSize: "22px", fontWeight: "900", marginBottom: "20px", lineHeight: "1.4", color: "#111" }}>
+          {item.title}
+        </h2>
 
-        {/* 본문 + 출처 결합 */}
+        {/* 본문 내용 */}
         <div style={{ fontSize: "18px", lineHeight: "1.8", color: "#333", marginBottom: "30px", whiteSpace: "pre-wrap" }}>
           {item.fullContent}
           
+          {/* 출처 표시 */}
           <div style={{ marginTop: "24px", fontSize: "16px", color: "#888", fontWeight: "700", textAlign: "right" }}>
             (출처: {item.source || "AI 뉴스"})
           </div>
         </div>
 
-        {/* 원문 보기 링크 */}
-        <div style={{ textAlign: "center", marginBottom: "30px" }}>
-          <button onClick={handleOpenLink} style={{ background: "none", border: "none", color: "#5a5a7a", textDecoration: "underline", fontSize: "14px", fontWeight: "700", cursor: "pointer" }}>
+        {/* 🌟 하단 버튼 재배치: 원문 보기와 닫기를 나란히 */}
+        <div style={{ 
+          display: "grid", 
+          gridTemplateColumns: "1fr 1fr", 
+          gap: "12px",
+          marginTop: "auto" // 내용이 적어도 항상 하단에 위치하도록
+        }}>
+          <button 
+            onClick={handleOpenLink}
+            style={{ 
+              padding: "16px", borderRadius: "16px", fontSize: "16px", fontWeight: "800", 
+              background: "#f3f4f9", color: "#5a5a7a", border: "1px solid #e2e2e9", cursor: "pointer" 
+            }}
+          >
             📰 원문 보기
           </button>
-        </div>
-
-        {/* 하단 메인 버튼 2개 */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1.5fr", gap: "12px" }}>
-          <button onClick={onClose} style={{ padding: "16px", borderRadius: "14px", fontSize: "16px", fontWeight: "800", background: "#fff", color: "#444", border: "1px solid #ddd", cursor: "pointer" }}>
+          
+          <button 
+            onClick={onClose} 
+            style={{ 
+              padding: "16px", borderRadius: "16px", fontSize: "16px", fontWeight: "800", 
+              background: "#1a1a2e", color: "#fff", border: "none", cursor: "pointer" 
+            }}
+          >
             닫기
-          </button>
-          <button style={{ padding: "16px", borderRadius: "14px", fontSize: "16px", fontWeight: "800", background: "linear-gradient(135deg, #ff8a00, #ff6b00)", color: "#fff", border: "none", cursor: "pointer", boxShadow: "0 4px 12px rgba(255, 107, 0, 0.2)" }}>
-            🤖 골든이와 상담하기
           </button>
         </div>
       </div>
