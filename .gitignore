@@ -1,3 +1,14 @@
 node_modules/
 .next/
 out/
+
+# 환경 변수 파일 (API 키 보호)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 기타 설정 파일
+.DS_Store
+*.local
