@@ -13,19 +13,18 @@ export default function Home() {
       overflow: "hidden", 
       backgroundColor: "#faf8f3",
       display: "flex",
-      flexDirection: "column" // 상단 바와 뉴스 영역을 세로로 배치
+      flexDirection: "column"
     }}>
       
-      {/* 🌟 1. 상단 고정 바로가기 바 (유튜브, 채팅방 추가) */}
+      {/* 🌟 상단 고정 바로가기 바 */}
       <div style={{
         padding: "12px 16px",
         backgroundColor: "#ffffff",
         borderBottom: "1px solid #eee",
         display: "flex",
         gap: "10px",
-        zIndex: 10 // 뉴스 위로 항상 떠 있게 설정
+        zIndex: 10
       }}>
-        {/* 건강 유튜브 버튼 */}
         <a
           href="https://www.youtube.com/watch?v=voklZaAIJjc&list=PLjlxfKqF4CuBPQ-10Z8160p3VsIZgvxX-"
           target="_blank"
@@ -50,7 +49,6 @@ export default function Home() {
           📺 건강 유튜브
         </a>
 
-        {/* 채팅방 버튼 */}
         <a
           href="https://t.me/CBSsenior_bot"
           target="_blank"
@@ -76,12 +74,10 @@ export default function Home() {
         </a>
       </div>
 
-      {/* 2. 뉴스 영역 (남은 화면 전체 사용) */}
       <div style={{ flex: 1, width: "100%", overflowY: "auto" }}>
         <NewsFeed />
       </div>
 
-      {/* 3. 챗봇 아이콘 */}
       <ChatBot />
 
     </main>
