@@ -41,16 +41,13 @@ export default function NewsFeed() {
       if (data) {
         const items = data.map((item: any, idx: number) => {
           const rawTitle = item.title || "제목 없음";
-          
-          // [수정 포인트] 제목 정제 로직 강화
-          // ' - ', ' | ', ' -' 등 다양한 형태의 출처 구분자를 찾아 그 뒤를 모두 제거합니다.
           const cleanTitle = rawTitle.split(/ - | \|| -/)[0].trim();
 
           return {
             ...item,
             id: item.id.toString(),
             category: item.category || "생활",
-            title: cleanTitle, // 깨끗하게 정제된 제목 적용
+            title: cleanTitle,
             url: item.url || "", 
             summary: (item.content || "").slice(0, 120) + "...", 
             fullContent: item.content || "",
@@ -115,7 +112,19 @@ export default function NewsFeed() {
             </button>
           </div>
 
-          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          {/* 카테고리 및 바로가기 버튼 영역 */}
+          <div style={{ 
+            display: "flex", 
+            gap: 8, 
+            flexWrap: "nowrap", 
+            overflowX: "auto", 
+            paddingBottom: "10px",
+            msOverflowStyle: "none", // IE/Edge
+            scrollbarWidth: "none",  // Firefox
+          }}>
+            <style>{`div::-webkit-scrollbar { display: none; }`}</style>
+            
+            {/* 1. 기본 카테고리 버튼들 */}
             {CATEGORIES.map((cat) => (
               <button
                 key={cat}
@@ -126,17 +135,61 @@ export default function NewsFeed() {
                   color: activeCategory === cat ? "#fff" : "#5a5a7a",
                   border: "1px solid #d0d8f0",
                   cursor: "pointer",
-                  transition: "all 0.2s ease"
+                  transition: "all 0.2s ease",
+                  whiteSpace: "nowrap"
                 }}
               >
                 {CAT_LABELS[cat]}
               </button>
             ))}
+
+            {/* 2. 구분선 (선택사항: 시각적 분리를 위해) */}
+            <div style={{ width: "1px", backgroundColor: "#e0d9cf", margin: "5px 4px" }}></div>
+
+            {/* 3. 📺 건강 유튜브 바로가기 */}
+            <a
+              href="https://www.youtube.com/watch?v=voklZaAIJjc&list=PLjlxfKqF4CuBPQ-10Z8160p3VsIZgvxX-"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                padding: "8px 18px", borderRadius: 20, fontSize: 15, fontWeight: 700,
+                backgroundColor: "#fff",
+                color: "#ff0000",
+                border: "1px solid #ffcccc",
+                textDecoration: "none",
+                display: "flex",
+                alignItems: "center",
+                whiteSpace: "nowrap",
+                boxShadow: "0 2px 4px rgba(255, 0, 0, 0.05)"
+              }}
+            >
+              📺 건강 유튜브
+            </a>
+
+            {/* 4. 💬 채팅방 바로가기 */}
+            <a
+              href="https://t.me/CBSsenior_bot"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                padding: "8px 18px", borderRadius: 20, fontSize: 15, fontWeight: 700,
+                backgroundColor: "#fff",
+                color: "#0088cc",
+                border: "1px solid #cce4ff",
+                textDecoration: "none",
+                display: "flex",
+                alignItems: "center",
+                whiteSpace: "nowrap",
+                boxShadow: "0 2px 4px rgba(0, 136, 204, 0.05)"
+              }}
+            >
+              💬 채팅방
+            </a>
           </div>
         </div>
       </header>
 
-      {/* 뉴스 그리드 영역 */}
+      {/* 뉴스 그리드 영역 (동일) */}
       <div style={{ flex: 1, overflowY: "auto", padding: "30px 20px" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 20 }}>
