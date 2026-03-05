@@ -19,7 +19,7 @@ export async function POST(request: Request) {
     // 2. 여러 개의 데이터를 한꺼번에 Supabase에 저장 (Bulk Insert)
     const { data, error } = await supabase
       .from('news')
-      .insert(
+      .upsert(
         newsData.map((news: any) => ({
           title: news.title || "제목 없는 뉴스",
           content: news.content || news.summary || "본문 내용이 없습니다.",
