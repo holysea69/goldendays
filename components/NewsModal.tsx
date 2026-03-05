@@ -22,35 +22,22 @@ export default function NewsModal({ item, onClose, onUpdate }: any) {
     setIsEditing(false);
   };
 
-  // 1. [수정됨] 절대 튕기지 않는 원문보기 함수
-  const handleOpenSource = (e: React.MouseEvent) => {
-    e.preventDefault();  // 기본 클릭 동작(새로고침) 차단
-    e.stopPropagation(); // 뒷배경 클릭 방지
-
-    if (!item.url || item.url.trim() === "") {
-      alert("원문 링크가 없습니다.");
-      return;
+  // [수정됨] 렌더링될 때 링크 주소를 미리 완벽하게 조립해 둡니다.
+  const getValidUrl = (url: string) => {
+    if (!url) return "";
+    const trimmed = url.trim();
+    if (!trimmed.startsWith("http://") && !trimmed.startsWith("https://")) {
+      return "https://" + trimmed;
     }
-
-    let finalUrl = item.url.trim();
-    
-    // 주소에 http가 없으면 강제로 붙여서 무조건 외부 사이트로 열리게 만듦
-    if (!finalUrl.startsWith("http://") && !finalUrl.startsWith("https://")) {
-      finalUrl = "https://" + finalUrl;
-    }
-
-    window.open(finalUrl, "_blank", "noopener,noreferrer");
+    return trimmed;
   };
+  const finalUrl = getValidUrl(item.url);
 
-  // 2. [수정됨] 새로 바꾼 챗봇(오렌지색 버튼)과 연결되도록 수정된 골든이 상담 함수
+  // 챗봇 열기 함수
   const handleAskGolden = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    
-    // 모달을 닫습니다.
     onClose();
-    
-    // 0.1초 뒤에 오렌지색 챗봇 버튼(chatbot-btn)을 자동으로 클릭합니다.
     setTimeout(() => {
       const chatbotBtn = document.querySelector('.chatbot-btn') as HTMLButtonElement;
       if (chatbotBtn) chatbotBtn.click();
@@ -90,12 +77,28 @@ export default function NewsModal({ item, onClose, onUpdate }: any) {
         <div style={{ padding: "15px 20px", display: "flex", flexDirection: "column", gap: "10px", borderTop: "1px solid #eee", backgroundColor: "#fff" }}>
           {!isEditing && (
             <div style={{ display: "flex", gap: "10px" }}>
-              <button 
-                onClick={handleOpenSource}
-                style={{ flex: 2, padding: "14px", borderRadius: "12px", background: "#f0f2f5", color: "#1a1a2e", fontWeight: "700", border: "none", cursor: "pointer", fontSize: "16px" }}
-              >
-                📰 원문보기
-              </button>
+              {/* [핵심 변경] 자바스크립트 대신 가장 확실한 HTML 링크(a 태그)를 버튼처럼 꾸밈 */}
+              {finalUrl ? (
+                <a 
+                  href={finalUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ 
+                    flex: 2, padding: "14px", borderRadius: "12px", background: "#f0f2f5", 
+                    color: "#1a1a2e", fontWeight: "700", textDecoration: "none", 
+                    display: "flex", justifyContent: "center", alignItems: "center", fontSize: "16px" 
+                  }}
+                >
+                  📰 원문보기
+                </a>
+              ) : (
+                <button 
+                  onClick={() => alert("이 기사는 원문 링크가 제공되지 않습니다.")}
+                  style={{ flex: 2, padding: "14px", borderRadius: "12px", background: "#f0f2f5", color: "#1a1a2e", fontWeight: "700", border: "none", cursor: "pointer", fontSize: "16px" }}
+                >
+                  📰 원문보기 (링크 없음)
+                </button>
+              )}
               <button onClick={() => setIsEditing(true)} style={{ flex: 1, padding: "14px", borderRadius: "12px", border: "1px solid #ddd", background: "#fff", cursor: "pointer" }}>✏️</button>
             </div>
           )}
