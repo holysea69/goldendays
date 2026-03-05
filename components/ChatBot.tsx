@@ -9,7 +9,6 @@ export default function ChatBot() {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // 새 메시지가 오면 항상 아래로 자동 스크롤
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -38,9 +37,23 @@ export default function ChatBot() {
     }
   };
 
+  // [핵심 추가] AI의 답변 기호를 예쁘게 꾸며주는 번역기 함수
+  const formatMessage = (text: string) => {
+    if (!text) return { __html: "" };
+    let formatted = text;
+    // 1. 구분선(---)을 실제 점선으로 변경
+    formatted = formatted.replace(/---/g, '<hr style="border: 0; border-top: 1px dashed #ccc; margin: 15px 0;" />');
+    // 2. 글머리 기호(*)를 보기 좋은 동그라미(•)로 변경
+    formatted = formatted.replace(/(?:^|\n)\*\s/g, '\n• ');
+    // 3. **굵은 글씨**를 진짜 굵게, 그리고 색상(주황색) 포인트 주기
+    formatted = formatted.replace(/\*\*(.*?)\*\*/g, '<strong style="color: #d95b00; font-weight: 900;">$1</strong>');
+    // 4. 줄바꿈(\n)을 html 태그(<br/>)로 변경하여 띄어쓰기 보장
+    formatted = formatted.replace(/\n/g, '<br />');
+    return { __html: formatted };
+  };
+
   return (
     <>
-      {/* 반응형 CSS 스타일 */}
       <style>{`
         .chatbot-btn {
           position: fixed;
@@ -80,8 +93,6 @@ export default function ChatBot() {
           overflow: hidden;
           border: 1px solid #eee;
         }
-        
-        /* 모바일 최적화 (화면이 작을 때) */
         @media (max-width: 600px) {
           .chatbot-btn {
             bottom: 20px;
@@ -93,14 +104,13 @@ export default function ChatBot() {
             bottom: 0;
             right: 0;
             width: 100%;
-            height: 100dvh; /* 모바일 브라우저 주소창 고려 */
+            height: 100dvh;
             max-height: 100dvh;
             border-radius: 0;
           }
         }
       `}</style>
 
-      {/* 닫혀 있을 때 (호출 버튼) */}
       {!isOpen && (
         <button className="chatbot-btn" onClick={() => setIsOpen(true)}>
           <span style={{ fontSize: "24px" }}>🤖</span> 
@@ -108,10 +118,8 @@ export default function ChatBot() {
         </button>
       )}
 
-      {/* 열려 있을 때 (채팅 창) */}
       {isOpen && (
         <div className="chatbot-window">
-          {/* 헤더 */}
           <div style={{
             background: "#1a1a2e", padding: "20px", display: "flex", 
             justifyContent: "space-between", alignItems: "center", color: "white"
@@ -131,20 +139,17 @@ export default function ChatBot() {
             </button>
           </div>
 
-          {/* 대화 내용 영역 */}
           <div style={{ flex: 1, overflowY: "auto", padding: "20px", display: "flex", flexDirection: "column", gap: "16px" }}>
-            {/* 첫 인사말 */}
             <div style={{ display: "flex", gap: "10px", alignItems: "flex-start" }}>
               <div style={{ fontSize: "24px", marginTop: "4px" }}>🤖</div>
               <div style={{
-                background: "white", padding: "14px 18px", borderRadius: "2px 20px 20px 20px",
-                boxShadow: "0 2px 8px rgba(0,0,0,0.05)", fontSize: "16px", color: "#333", lineHeight: "1.5"
+                background: "white", padding: "16px 20px", borderRadius: "2px 20px 20px 20px",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.05)", fontSize: "16px", color: "#333", lineHeight: "1.6"
               }}>
-                안녕하세요! 골든 데이즈의 인공지능 상담원 <b>골든이</b>입니다.<br/>오늘 어떤 뉴스가 궁금하신가요?
+                안녕하세요! 골든 데이즈의 인공지능 상담원 <strong style={{color: "#d95b00"}}>골든이</strong>입니다.<br/>오늘 어떤 뉴스가 궁금하신가요?
               </div>
             </div>
 
-            {/* 주고받은 메시지들 */}
             {messages.map((msg, idx) => (
               <div key={idx} style={{ 
                 display: "flex", 
@@ -153,23 +158,24 @@ export default function ChatBot() {
               }}>
                 {msg.role === "ai" && <div style={{ fontSize: "24px", marginTop: "4px" }}>🤖</div>}
                 
-                <div style={{
-                  background: msg.role === "user" ? "#FF6B00" : "white",
-                  color: msg.role === "user" ? "white" : "#333",
-                  padding: "14px 18px",
-                  borderRadius: msg.role === "user" ? "20px 2px 20px 20px" : "2px 20px 20px 20px",
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
-                  maxWidth: "80%",
-                  fontSize: "16px",
-                  lineHeight: "1.5",
-                  wordBreak: "keep-all"
-                }}>
-                  {msg.content}
-                </div>
+                <div 
+                  style={{
+                    background: msg.role === "user" ? "#FF6B00" : "white",
+                    color: msg.role === "user" ? "white" : "#333",
+                    padding: "16px 20px",
+                    borderRadius: msg.role === "user" ? "20px 2px 20px 20px" : "2px 20px 20px 20px",
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+                    maxWidth: "85%",
+                    fontSize: "16px",
+                    lineHeight: "1.7", // 줄간격을 넓혀서 읽기 편하게
+                    wordBreak: "keep-all"
+                  }}
+                  // AI 답변인 경우 번역기를 통과시키고, 사용자 질문은 그대로 출력
+                  dangerouslySetInnerHTML={msg.role === "ai" ? formatMessage(msg.content) : { __html: msg.content }}
+                />
               </div>
             ))}
             
-            {/* 로딩 표시 */}
             {isLoading && (
               <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
                 <div style={{ fontSize: "24px" }}>🤖</div>
@@ -181,7 +187,6 @@ export default function ChatBot() {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* 입력 영역 */}
           <div style={{ padding: "16px", background: "white", borderTop: "1px solid #eee", display: "flex", gap: "10px" }}>
             <input
               type="text"
