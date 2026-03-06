@@ -12,7 +12,6 @@ export default function EmailSubscription() {
       return;
     }
 
-
     setLoading(true);
     // n8n Webhook의 Production URL로 교체하세요
     const webhookUrl = "https://n8n.mygolden.kr/webhook/subscribe";
