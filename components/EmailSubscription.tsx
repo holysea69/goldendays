@@ -14,7 +14,7 @@ export default function EmailSubscription() {
 
     setLoading(true);
     // n8n Webhook의 Production URL로 교체하세요
-    const webhookUrl = "http://34.64.227.59:5678/webhook/subscribe";
+    const webhookUrl = "https://n8n.mygolden.kr/webhook/subscribe";
 
     try {
       const response = await fetch(webhookUrl, {
