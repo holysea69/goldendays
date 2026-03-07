@@ -29,14 +29,18 @@
   padding: 0;
 }
 
+/* 🟢 [수정] 스크롤 허용을 위해 height 제한을 풀고 최소 높이만 설정합니다. */
 html {
-  height: 100%;
+  min-height: 100%;
   font-size: 16px;
+  scroll-behavior: smooth;
 }
 
 body {
-  height: 100%;
-  overflow: hidden;
+  /* 🟢 [수정] overflow: hidden 제거! 이제 스크롤이 됩니다. */
+  min-height: 100vh;
+  overflow-y: auto; 
+  overflow-x: hidden; /* 가로 흔들림 방지 */
   background-color: var(--golden-beige);
   font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic',
     '나눔고딕', sans-serif;
@@ -45,13 +49,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Next.js 루트 div가 전체 높이를 차지하도록 보장 */
+/* 🟢 [수정] Next.js 루트 div도 높이 제한을 해제합니다. */
 #__next,
 [data-nextjs-router] {
-  height: 100%;
+  min-height: 100%;
 }
 
-/* 스크롤바 스타일 */
+/* --- 스크롤바 스타일 (유지) --- */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -70,14 +74,10 @@ body {
   background: var(--golden-blue);
 }
 
-/* 뉴스 자동 스크롤 애니메이션 */
+/* --- 애니메이션 및 기타 스타일 (유지) --- */
 @keyframes scrollUp {
-  0% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(-50%);
-  }
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
 }
 
 .news-scroll-wrapper {
@@ -88,62 +88,34 @@ body {
   animation-play-state: paused;
 }
 
-/* 마이크 버튼 펄스 */
 @keyframes micPulse {
-  0%, 100% {
-    box-shadow: 0 0 0 0 rgba(0, 70, 255, 0.4);
-  }
-  50% {
-    box-shadow: 0 0 0 14px rgba(0, 70, 255, 0);
-  }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0, 70, 255, 0.4); }
+  50% { box-shadow: 0 0 0 14px rgba(0, 70, 255, 0); }
 }
 
 .mic-recording {
   animation: micPulse 1.5s ease-in-out infinite;
 }
 
-/* 채팅 말풍선 애니메이션 */
 @keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .chat-bubble {
   animation: slideUp 0.35s ease-out;
 }
 
-/* 모달 오버레이 */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.modal-overlay {
-  animation: fadeIn 0.2s ease-out;
-}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.modal-overlay { animation: fadeIn 0.2s ease-out; }
 
 @keyframes slideUpModal {
-  from {
-    opacity: 0;
-    transform: scale(0.95) translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
+  from { opacity: 0; transform: scale(0.95) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
-.modal-content {
-  animation: slideUpModal 0.3s ease-out;
-}
+.modal-content { animation: slideUpModal 0.3s ease-out; }
 
-/* 카드 호버 효과 */
 .news-card {
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   cursor: pointer;
@@ -154,19 +126,9 @@ body {
   box-shadow: 0 12px 40px rgba(0, 70, 255, 0.18);
 }
 
-/* 스켈레톤 로딩 펄스 */
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.45; }
-}
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-/* 새로고침 버튼 스피너 */
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-
-/* 타이핑 점 애니메이션 */
 @keyframes typingDot {
   0%, 60%, 100% { opacity: 0.2; transform: translateY(0); }
   30% { opacity: 1; transform: translateY(-6px); }
@@ -176,62 +138,25 @@ body {
 .typing-dot:nth-child(2) { animation: typingDot 1.2s infinite 0.2s; }
 .typing-dot:nth-child(3) { animation: typingDot 1.2s infinite 0.4s; }
 
-/* 골든이 취재 중 — 프로그레스 바 슬라이드 */
 @keyframes progressSlide {
-  0%   { width: 0%;   margin-left: 0%; }
-  50%  { width: 60%;  margin-left: 20%; }
-  100% { width: 0%;   margin-left: 100%; }
+  0% { width: 0%; margin-left: 0%; }
+  50% { width: 60%; margin-left: 20%; }
+  100% { width: 0%; margin-left: 100%; }
 }
 
-/* ── n8n HTML 본문 스타일 (dangerouslySetInnerHTML 대상) ── */
-.n8n-html-content h1,
-.n8n-html-content h2,
-.n8n-html-content h3 {
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: #1a1a2e;
-  margin: 1.2em 0 0.6em;
-  line-height: 1.4;
+/* --- n8n 콘텐츠 스타일 (유지) --- */
+.n8n-html-content h1, .n8n-html-content h2, .n8n-html-content h3 {
+  font-size: 1.4rem; font-weight: 800; color: #1a1a2e; margin: 1.2em 0 0.6em; line-height: 1.4;
 }
 .n8n-html-content p {
-  font-size: 1.35rem;
-  color: #2a2a4a;
-  line-height: 2.0;
-  margin-bottom: 1.1em;
-  word-break: keep-all;
+  font-size: 1.35rem; color: #2a2a4a; line-height: 2.0; margin-bottom: 1.1em; word-break: keep-all;
 }
-.n8n-html-content ul,
-.n8n-html-content ol {
-  padding-left: 1.6em;
-  margin-bottom: 1.1em;
-}
-.n8n-html-content li {
-  font-size: 1.3rem;
-  color: #2a2a4a;
-  line-height: 1.9;
-  margin-bottom: 0.4em;
-}
-.n8n-html-content strong,
-.n8n-html-content b {
-  font-weight: 800;
-  color: #0046ff;
-}
-.n8n-html-content a {
-  color: #0046ff;
-  text-decoration: underline;
-}
-.n8n-html-content hr {
-  border: none;
-  border-top: 1.5px solid #e0d9cf;
-  margin: 1.4em 0;
-}
+.n8n-html-content ul, .n8n-html-content ol { padding-left: 1.6em; margin-bottom: 1.1em; }
+.n8n-html-content li { font-size: 1.3rem; color: #2a2a4a; line-height: 1.9; margin-bottom: 0.4em; }
+.n8n-html-content strong, .n8n-html-content b { font-weight: 800; color: #0046ff; }
+.n8n-html-content a { color: #0046ff; text-decoration: underline; }
+.n8n-html-content hr { border: none; border-top: 1.5px solid #e0d9cf; margin: 1.4em 0; }
 .n8n-html-content blockquote {
-  border-left: 5px solid #0046ff;
-  background: #f0f4ff;
-  border-radius: 0 12px 12px 0;
-  padding: 12px 18px;
-  margin: 1em 0;
-  font-size: 1.25rem;
-  color: #0046ff;
-  font-weight: 700;
+  border-left: 5px solid #0046ff; background: #f0f4ff; border-radius: 0 12px 12px 0;
+  padding: 12px 18px; margin: 1em 0; font-size: 1.25rem; color: #0046ff; font-weight: 700;
 }
