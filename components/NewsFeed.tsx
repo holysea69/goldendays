@@ -56,10 +56,11 @@ export default function NewsFeed() {
     setFilteredNews(category === "전체" ? news : news.filter(item => item.category === category));
   };
 
-  // [핵심 로직 보존] 제목 정리
+  // [핵심 로직 보존] 제목 정리 - HTML 태그 제거 후 앞부분만 반환
   const getCleanTitle = (fullTitle: string) => {
     if (!fullTitle) return "";
-    return fullTitle.split(/\s*[-–—]\s*/)[0].trim();
+    const noHtml = fullTitle.replace(/<[^>]+>/g, "").trim();
+    return noHtml.split(/\s*[-–—]\s*/)[0].trim();
   };
 
   // HTML 태그 제거 (미리보기용 - 평문 반환)
@@ -173,9 +174,9 @@ export default function NewsFeed() {
 
       <section className="max-w-6xl mx-auto px-6">
         
-        {/* 2. 카테고리 필터 영역 - 2행 4열 그리드, 버튼 내부 줄바꿈 없음 */}
-        <div className="bg-gradient-to-br from-white to-amber-50/30 border border-amber-200/60 p-4 rounded-2xl mb-10 shadow-[0_4px_20px_-4px_rgba(201,152,42,0.12)]">
-          <div className="grid grid-cols-4 gap-2">
+        {/* 2. 카테고리 필터 영역 - 모바일: 가로 스크롤, 데스크톱: 2행 4열 그리드 */}
+        <div className="bg-gradient-to-br from-white to-amber-50/30 border border-amber-200/60 p-4 rounded-2xl mb-10 shadow-[0_4px_20px_-4px_rgba(201,152,42,0.12)] overflow-hidden">
+          <div className="flex flex-nowrap gap-2 overflow-x-auto overflow-y-hidden scrollbar-hide pb-1 -mx-1 px-1 md:grid md:grid-cols-4 md:flex-none md:overflow-visible md:mx-0 md:px-0 md:pb-0">
             {categoryConfig.map((cat) => {
               const isActive = !cat.isLink && selectedCategory === cat.name;
               const btnClass = isActive
@@ -188,10 +189,10 @@ export default function NewsFeed() {
                     href={cat.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-[15px] transition-all border shadow-sm no-underline bg-rose-50 border-rose-200 text-rose-800 hover:bg-rose-600 hover:text-white hover:border-rose-500 whitespace-nowrap overflow-hidden"
+                    className="flex-shrink-0 min-w-[100px] md:min-w-0 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold text-[15px] transition-all border shadow-sm no-underline bg-rose-50 border-rose-200 text-rose-800 hover:bg-rose-600 hover:text-white hover:border-rose-500 whitespace-nowrap"
                   >
-                    <span className="text-[17px] flex-shrink-0">{cat.icon}</span>
-                    <span className="truncate">{cat.name}</span>
+                    <span className="text-[17px]">{cat.icon}</span>
+                    {cat.name}
                   </a>
                 );
               }
@@ -199,10 +200,10 @@ export default function NewsFeed() {
                 <button
                   key={cat.name}
                   onClick={() => handleCategoryClick(cat.name)}
-                  className={`flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-[15px] transition-all border shadow-sm whitespace-nowrap overflow-hidden ${btnClass} hover:opacity-90`}
+                  className={`flex-shrink-0 min-w-[100px] md:min-w-0 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold text-[15px] transition-all border shadow-sm whitespace-nowrap ${btnClass} hover:opacity-90`}
                 >
-                  <span className="text-[17px] flex-shrink-0">{cat.icon}</span>
-                  <span className="truncate">{cat.name}</span>
+                  <span className="text-[17px]">{cat.icon}</span>
+                  {cat.name}
                 </button>
               );
             })}
