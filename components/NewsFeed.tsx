@@ -62,6 +62,49 @@ export default function NewsFeed() {
     return fullTitle.split(/\s*[-–—]\s*/)[0].trim();
   };
 
+  // HTML 태그 제거 (미리보기용 - 평문 반환)
+  const stripHtml = (raw: string): string => {
+    if (!raw) return "";
+    return raw
+      .replace(/\*\*(.+?)\*\*/g, "$1") // Markdown **볼드** 제거
+      .replace(/<br\s*\/?>/gi, "\n")
+      .replace(/<\/p>\s*<p[^>]*>/gi, "\n")
+      .replace(/<[^>]+>/g, "")
+      .replace(/&nbsp;/g, " ")
+      .replace(/&amp;/g, "&")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/\s+/g, " ")
+      .trim();
+  };
+
+  // HTML 태그 제거 및 구조화된 본문으로 변환
+  const formatArticleContent = (raw: string): string[] => {
+    if (!raw) return [];
+    const text = raw
+      .replace(/\*\*(.+?)\*\*/g, "$1") // Markdown 볼드(**텍스트**) 제거, 내용만 유지
+      .replace(/<br\s*\/?>/gi, "\n")
+      .replace(/<\/p>\s*<p[^>]*>/gi, "\n\n")
+      .replace(/<\/p>/gi, "\n\n")
+      .replace(/<p[^>]*>/gi, "")
+      .replace(/<\/div>\s*<div[^>]*>/gi, "\n\n")
+      .replace(/<\/div>/gi, "\n")
+      .replace(/<div[^>]*>/gi, "")
+      .replace(/<[^>]+>/g, "")
+      .replace(/&nbsp;/g, " ")
+      .replace(/&amp;/g, "&")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/\n{3,}/g, "\n\n")
+      .trim();
+    const paragraphs = text.split(/\n\n+/).filter((p) => p.trim());
+    return paragraphs.length > 0 ? paragraphs : (text ? [text] : []);
+  };
+
   if (loading) return (
     <div className="text-center p-20 text-[#0F172A] font-bold text-[20px] bg-[#F1F5F9] min-h-screen border-2 border-[#E2E8F0] rounded-2xl mx-4">
       소식을 정성껏 모으고 있습니다... 😊
@@ -185,7 +228,7 @@ export default function NewsFeed() {
                 </h3>
                 
                 <p className="text-[#475569] text-[18px] leading-[1.75] mb-8 line-clamp-3 flex-1 break-keep font-medium">
-                  {item.content}
+                  {stripHtml(item.content)}
                 </p>
 
                 <div className="flex justify-between items-center pt-6 border-t-2 border-[#E2E8F0]">
@@ -217,11 +260,32 @@ export default function NewsFeed() {
                 <span className="text-[#CBD5E1]">|</span>
                 <span className="font-bold text-[#1E3A8A]">출처: {selectedNews.source}</span>
               </div>
-              <div className="text-[#334155] text-[21px] leading-[1.9] whitespace-pre-wrap break-keep font-medium">{selectedNews.content}</div>
+              <div className="text-[#334155] text-[21px] leading-[1.9] break-keep font-medium space-y-5">
+                {formatArticleContent(selectedNews.content).map((paragraph, i) => {
+                  const emojis = ["📌", "💡", "✨", "🔹", "⭐", "●", "◆", "◎", "✓", "📎"];
+                  const num = (i % 10) + 1;
+                  const emoji = emojis[i % emojis.length];
+                  return (
+                    <div key={i} className="flex gap-3 items-start">
+                      <span className="flex-shrink-0 flex items-center gap-1.5 text-xl" aria-hidden>
+                        <span className="text-amber-600 font-bold">{num}.</span>
+                        <span>{emoji}</span>
+                      </span>
+                      <p className="whitespace-pre-wrap flex-1 min-w-0">{paragraph}</p>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
             <div className="p-8 bg-white border-t-2 border-[#E2E8F0] flex gap-4">
-              <button onClick={() => setSelectedNews(null)} className="flex-1 py-5 bg-[#F1F5F9] text-[#334155] border-2 border-[#CBD5E1] rounded-2xl font-bold text-[19px] hover:bg-[#E2E8F0] transition-colors">닫기</button>
-              <a href={selectedNews.url} target="_blank" rel="noopener noreferrer" className="flex-1 py-5 bg-[#1E3A8A] text-white rounded-2xl font-bold text-[19px] text-center shadow-lg hover:bg-[#1E40AF] transition-colors">기사 원문 보기</a>
+              <button onClick={() => setSelectedNews(null)} className="flex-1 py-5 bg-[#F1F5F9] text-[#334155] border-2 border-[#CBD5E1] rounded-2xl font-bold text-[19px] hover:bg-[#E2E8F0] transition-colors">
+                닫기
+              </button>
+              {selectedNews.url?.trim() && selectedNews.source?.trim() !== "골든데이즈 AI" && (
+                <a href={selectedNews.url} target="_blank" rel="noopener noreferrer" className="flex-1 py-5 bg-[#1E3A8A] text-white rounded-2xl font-bold text-[19px] text-center shadow-lg hover:bg-[#1E40AF] transition-colors">
+                  기사 원문 보기
+                </a>
+              )}
             </div>
           </div>
         </div>
