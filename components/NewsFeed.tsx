@@ -116,10 +116,10 @@ export default function NewsFeed() {
     <main className="pb-20 font-sans">
       
       {/* 1. 상단 헤더: 로고 + 타이틀 + 구독창 */}
-      <div className="max-w-6xl mx-auto px-8 py-12 flex flex-col md:flex-row justify-between items-center md:items-end gap-8 mb-10 bg-gradient-to-br from-white via-[#FFFBEB] to-[#FEF3C7]/30 rounded-3xl border border-amber-200/60 shadow-[0_8px_40px_-12px_rgba(201,152,42,0.15)]">
-        <div className="flex items-center gap-5">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-10 md:py-12 flex flex-col md:flex-row justify-between items-center md:items-end gap-6 md:gap-8 mb-8 md:mb-10 bg-gradient-to-br from-white via-[#FFFBEB] to-[#FEF3C7]/30 rounded-2xl md:rounded-3xl border border-amber-200/60 shadow-[0_8px_40px_-12px_rgba(201,152,42,0.15)]">
+        <div className="flex items-center gap-4 sm:gap-5 w-full md:w-auto justify-center md:justify-start">
           {/* 골든데이즈 로고 - 따뜻한 골드 톤의 해/빛 */}
-          <div className="flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20">
+          <div className="flex-shrink-0 w-14 h-14 sm:w-[72px] sm:h-[72px] md:w-20 md:h-20">
             <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-md">
               <defs>
                 <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -146,37 +146,37 @@ export default function NewsFeed() {
               ))}
             </svg>
           </div>
-          <div>
-            <h1 className="text-[38px] sm:text-[44px] font-black leading-tight tracking-tight">
-              <span className="bg-gradient-to-r from-[#92400E] via-[#B45309] to-[#92400E] bg-clip-text text-transparent" style={{ fontStyle: "italic", letterSpacing: "-0.02em" }}>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-[32px] sm:text-[38px] md:text-[44px] font-black leading-tight tracking-tight">
+              <span className="bg-gradient-to-r from-[#92400E] via-[#B45309] to-[#92400E] bg-clip-text text-transparent whitespace-nowrap" style={{ fontStyle: "italic", letterSpacing: "-0.02em" }}>
                 골든데이즈
               </span>
             </h1>
-            <p className="text-amber-800/80 text-base sm:text-lg font-medium tracking-wide mt-1">
+            <p className="text-amber-800/80 text-sm sm:text-base md:text-lg font-medium tracking-wide mt-1 break-keep">
               시니어들을 위한 따뜻한 최신 정보
             </p>
           </div>
         </div>
 
-        <div className="w-full md:w-auto">
-          <div className="flex items-center bg-white/90 backdrop-blur-sm border border-amber-200 rounded-2xl px-4 py-2 shadow-lg shadow-amber-900/5 min-w-[300px] sm:min-w-[340px]">
+        <div className="w-full md:w-auto md:flex-shrink-0">
+          <div className="flex items-center bg-white/90 backdrop-blur-sm border border-amber-200 rounded-xl md:rounded-2xl px-3 py-2 shadow-lg shadow-amber-900/5 w-full min-w-0 md:min-w-[340px]">
             <input 
               type="email" 
-              placeholder="이메일 입력 후 최신정보" 
-              className="flex-1 px-4 py-3 bg-transparent outline-none text-[#1E293B] placeholder:text-amber-700/50 font-medium text-[17px] focus:ring-0"
+              placeholder="이메일로 최신정보 받기" 
+              className="flex-1 min-w-0 px-3 sm:px-4 py-3 bg-transparent outline-none text-[#1E293B] placeholder:text-amber-700/50 font-medium text-[15px] sm:text-[17px] focus:ring-0"
             />
-            <button className="bg-gradient-to-r from-amber-500 to-amber-600 text-white px-5 py-2.5 rounded-xl font-bold hover:from-amber-600 hover:to-amber-700 transition-all shadow-md hover:shadow-lg shadow-amber-900/20">
+            <button className="flex-shrink-0 bg-gradient-to-r from-amber-500 to-amber-600 text-white px-4 sm:px-5 py-2.5 rounded-lg md:rounded-xl font-bold text-[15px] sm:text-base hover:from-amber-600 hover:to-amber-700 transition-all shadow-md hover:shadow-lg shadow-amber-900/20">
               구독하기
             </button>
           </div>
         </div>
       </div>
 
-      <section className="max-w-6xl mx-auto px-6">
+      <section className="max-w-6xl mx-auto px-4 sm:px-6">
         
         {/* 2. 카테고리 필터 영역 - 모바일: 가로 스크롤, 데스크톱: 2행 4열 그리드 */}
-        <div className="bg-gradient-to-br from-white to-amber-50/30 border border-amber-200/60 p-4 rounded-2xl mb-10 shadow-[0_4px_20px_-4px_rgba(201,152,42,0.12)] overflow-hidden">
-          <div className="flex flex-nowrap gap-2 overflow-x-auto overflow-y-hidden scrollbar-hide pb-1 -mx-1 px-1 md:grid md:grid-cols-4 md:flex-none md:overflow-visible md:mx-0 md:px-0 md:pb-0">
+        <div className="bg-gradient-to-br from-white to-amber-50/30 border border-amber-200/60 p-4 rounded-2xl mb-8 md:mb-10 shadow-[0_4px_20px_-4px_rgba(201,152,42,0.12)] -mx-4 sm:mx-0 overflow-visible">
+          <div className="flex flex-nowrap gap-2 overflow-x-auto overflow-y-hidden scrollbar-hide pb-2 -mx-2 pl-2 pr-4 sm:mx-0 sm:px-0 md:grid md:grid-cols-4 md:flex-none md:overflow-visible md:pb-0 md:pr-0">
             {categoryConfig.map((cat) => {
               const isActive = !cat.isLink && selectedCategory === cat.name;
               const btnClass = isActive

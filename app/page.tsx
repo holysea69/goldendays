@@ -10,8 +10,8 @@ export default function Home() {
         기존의 중앙 정렬 헤더와 구독 컴포넌트를 삭제했습니다. 
         이제 타이틀과 구독창은 NewsFeedSection 안에서 가로로 출력됩니다. 
       */}
-      <section className="bg-[#F8FAFC] border-t-2 border-b-2 border-[#CBD5E1]">
-        <div className="max-w-7xl mx-auto">
+      <section className="bg-[#F8FAFC] border-t-2 border-b-2 border-[#CBD5E1] px-4 sm:px-6 md:px-8">
+        <div className="max-w-7xl mx-auto w-full">
           <NewsFeedSection />
         </div>
       </section>
