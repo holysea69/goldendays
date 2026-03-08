@@ -107,8 +107,40 @@ export default function NewsFeed() {
   };
 
   if (loading) return (
-    <div className="text-center p-20 text-[#0F172A] font-bold text-[20px] bg-[#F1F5F9] min-h-screen border-2 border-[#E2E8F0] rounded-2xl mx-4">
-      소식을 정성껏 모으고 있습니다... 😊
+    <div className="min-h-screen bg-gradient-to-br from-white via-[#FFFBEB] to-[#FEF3C7]/30 flex flex-col items-center justify-center p-8 border border-amber-200/60 rounded-2xl mx-4">
+      <div className="flex items-center gap-4 mb-8">
+        <div className="w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0">
+          <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-md">
+            <defs>
+              <linearGradient id="goldGradientLoading" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#F59E0B" />
+                <stop offset="50%" stopColor="#D97706" />
+                <stop offset="100%" stopColor="#B45309" />
+              </linearGradient>
+              <linearGradient id="glowGradientLoading" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#FEF3C7" />
+                <stop offset="100%" stopColor="#FDE68A" />
+              </linearGradient>
+            </defs>
+            <circle cx="40" cy="40" r="28" fill="url(#glowGradientLoading)" stroke="url(#goldGradientLoading)" strokeWidth="3" />
+            <circle cx="40" cy="40" r="18" fill="url(#goldGradientLoading)" />
+            {[0, 90, 180, 270].map((deg, i) => (
+              <g key={i} transform={`rotate(${deg} 40 40)`}>
+                <rect x="38" y="12" width="4" height="12" rx="2" fill="url(#goldGradientLoading)" opacity="0.9" />
+              </g>
+            ))}
+          </svg>
+        </div>
+        <div className="text-left">
+          <h1 className="text-[28px] sm:text-[34px] font-black bg-gradient-to-r from-[#92400E] via-[#B45309] to-[#92400E] bg-clip-text text-transparent" style={{ fontStyle: "italic", letterSpacing: "-0.02em" }}>
+            골든데이즈
+          </h1>
+          <p className="text-amber-800/80 text-sm sm:text-base font-medium mt-0.5">시니어들을 위한 따뜻한 최신 정보</p>
+        </div>
+      </div>
+      <p className="text-[#0F172A] font-bold text-[18px] sm:text-[20px]">
+        소식을 정성껏 모으고 있습니다... 😊
+      </p>
     </div>
   );
 
@@ -246,50 +278,86 @@ export default function NewsFeed() {
         </div>
       </section>
 
-      {/* 4. 상세 보기 모달 [핵심 기능 유지] */}
+      {/* 4. 상세 보기 모달 - 모바일: 하단시트, PC: 중앙 모달 (원래 스타일) */}
       {selectedNews && (
-        <div className="fixed inset-0 bg-black/70 flex items-end sm:items-center justify-center z-[2000] p-0 sm:p-4">
-          <div className="bg-white w-full max-w-2xl max-h-[95vh] sm:max-h-none rounded-t-3xl sm:rounded-[40px] shadow-[0_24px_64px_rgba(0,0,0,0.25)] border-2 border-b-0 sm:border-b-2 border-[#E2E8F0] overflow-hidden animate-in zoom-in-95 duration-200 flex flex-col">
-            <div className="p-4 sm:p-8 border-b-2 border-[#E2E8F0] flex justify-between items-center bg-[#F8FAFC] flex-shrink-0">
-              <span className="bg-[#1E3A8A] text-white px-3 py-1.5 sm:px-5 sm:py-2 rounded-full font-black text-[14px] sm:text-[16px]">{selectedNews.category}</span>
-              <button onClick={() => setSelectedNews(null)} className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full bg-white border-2 border-[#CBD5E1] text-[#475569] text-xl sm:text-2xl hover:text-[#0F172A] hover:border-[#94A3B8] shadow-sm transition-colors">✕</button>
-            </div>
-            <div className="p-5 sm:p-10 flex-1 min-h-0 overflow-y-auto">
-              <h2 className="text-[22px] sm:text-[30px] font-bold text-[#0F172A] mb-4 sm:mb-6 leading-tight break-keep">{getCleanTitle(selectedNews.title)}</h2>
-              <div className="flex items-center gap-3 text-[#64748B] text-[14px] sm:text-[17px] mb-6 sm:mb-10 border-b-2 border-[#E2E8F0] pb-4 sm:pb-5 font-semibold">
-                <span>{new Date(selectedNews.created_at).toLocaleDateString()}</span>
-                <span className="text-[#CBD5E1]">|</span>
-                <span className="font-bold text-[#1E3A8A]">출처: {selectedNews.source}</span>
+        <>
+          {/* 모바일: 하단 시트 스타일 */}
+          <div className="sm:hidden fixed inset-0 bg-black/70 z-[2000] flex flex-col justify-end">
+            <div className="bg-white w-full max-h-[95vh] rounded-t-3xl border-2 border-b-0 border-[#E2E8F0] overflow-hidden flex flex-col animate-in slide-in-from-bottom duration-200">
+              <div className="p-4 border-b-2 border-[#E2E8F0] flex justify-between items-center bg-[#F8FAFC] flex-shrink-0">
+                <span className="bg-[#1E3A8A] text-white px-3 py-1.5 rounded-full font-black text-[14px]">{selectedNews.category}</span>
+                <button onClick={() => setSelectedNews(null)} className="w-10 h-10 flex items-center justify-center rounded-full bg-white border-2 border-[#CBD5E1] text-[#475569] text-xl">✕</button>
               </div>
-              <div className="text-[#334155] text-[17px] sm:text-[21px] leading-[1.85] break-keep font-medium space-y-4 sm:space-y-5">
-                {formatArticleContent(selectedNews.content).map((paragraph, i) => {
-                  const emojis = ["📌", "💡", "✨", "🔹", "⭐", "●", "◆", "◎", "✓", "📎"];
-                  const num = (i % 10) + 1;
-                  const emoji = emojis[i % emojis.length];
-                  return (
-                    <div key={i} className="flex gap-2 sm:gap-3 items-start">
-                      <span className="flex-shrink-0 flex items-center gap-1 sm:gap-1.5 text-base sm:text-xl" aria-hidden>
-                        <span className="text-amber-600 font-bold">{num}.</span>
-                        <span>{emoji}</span>
-                      </span>
-                      <p className="whitespace-pre-wrap flex-1 min-w-0">{paragraph}</p>
-                    </div>
-                  );
-                })}
+              <div className="p-5 flex-1 min-h-0 overflow-y-auto">
+                <h2 className="text-[22px] font-bold text-[#0F172A] mb-4 leading-tight break-keep">{getCleanTitle(selectedNews.title)}</h2>
+                <div className="flex items-center gap-3 text-[#64748B] text-[14px] mb-6 border-b-2 border-[#E2E8F0] pb-4 font-semibold">
+                  <span>{new Date(selectedNews.created_at).toLocaleDateString()}</span>
+                  <span className="text-[#CBD5E1]">|</span>
+                  <span className="font-bold text-[#1E3A8A]">출처: {selectedNews.source}</span>
+                </div>
+                <div className="text-[#334155] text-[17px] leading-[1.85] break-keep font-medium space-y-4">
+                  {formatArticleContent(selectedNews.content).map((paragraph, i) => {
+                    const emojis = ["📌", "💡", "✨", "🔹", "⭐", "●", "◆", "◎", "✓", "📎"];
+                    const emoji = emojis[i % emojis.length];
+                    return (
+                      <div key={i} className="flex gap-2 items-start">
+                        <span className="flex-shrink-0 flex items-center gap-1 text-base" aria-hidden>
+                          <span className="text-amber-600 font-bold">{(i % 10) + 1}.</span>
+                          <span>{emoji}</span>
+                        </span>
+                        <p className="whitespace-pre-wrap flex-1 min-w-0">{paragraph}</p>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-            <div className="p-4 sm:p-8 bg-white border-t-2 border-[#E2E8F0] flex gap-3 sm:gap-4 flex-shrink-0">
-              <button onClick={() => setSelectedNews(null)} className="flex-1 py-3 sm:py-5 bg-[#F1F5F9] text-[#334155] border-2 border-[#CBD5E1] rounded-xl sm:rounded-2xl font-bold text-[15px] sm:text-[19px] hover:bg-[#E2E8F0] transition-colors">
-                닫기
-              </button>
-              {selectedNews.url?.trim() && selectedNews.source?.trim() !== "골든데이즈 AI" && (
-                <a href={selectedNews.url} target="_blank" rel="noopener noreferrer" className="flex-1 py-3 sm:py-5 bg-[#1E3A8A] text-white rounded-xl sm:rounded-2xl font-bold text-[15px] sm:text-[19px] text-center shadow-lg hover:bg-[#1E40AF] transition-colors">
-                  기사 원문 보기
-                </a>
-              )}
+              <div className="p-4 bg-white border-t-2 border-[#E2E8F0] flex gap-3 flex-shrink-0">
+                <button onClick={() => setSelectedNews(null)} className="flex-1 py-3 bg-[#F1F5F9] text-[#334155] border-2 border-[#CBD5E1] rounded-xl font-bold text-[15px]">닫기</button>
+                {selectedNews.url?.trim() && selectedNews.source?.trim() !== "골든데이즈 AI" && (
+                  <a href={selectedNews.url} target="_blank" rel="noopener noreferrer" className="flex-1 py-3 bg-[#1E3A8A] text-white rounded-xl font-bold text-[15px] text-center">기사 원문 보기</a>
+                )}
+              </div>
             </div>
           </div>
-        </div>
+          {/* PC: 중앙 모달 (원래 레이아웃) */}
+          <div className="hidden sm:flex fixed inset-0 bg-black/70 items-center justify-center z-[2000] p-4">
+            <div className="bg-white w-full max-w-2xl rounded-[40px] shadow-[0_24px_64px_rgba(0,0,0,0.25)] border-2 border-[#E2E8F0] overflow-hidden animate-in zoom-in-95 duration-200">
+              <div className="p-8 border-b-2 border-[#E2E8F0] flex justify-between items-center bg-[#F8FAFC]">
+                <span className="bg-[#1E3A8A] text-white px-5 py-2 rounded-full font-black text-[16px]">{selectedNews.category}</span>
+                <button onClick={() => setSelectedNews(null)} className="w-12 h-12 flex items-center justify-center rounded-full bg-white border-2 border-[#CBD5E1] text-[#475569] text-2xl hover:text-[#0F172A] hover:border-[#94A3B8] shadow-sm">✕</button>
+              </div>
+              <div className="p-10 max-h-[65vh] overflow-y-auto">
+                <h2 className="text-[30px] font-bold text-[#0F172A] mb-6 leading-tight break-keep">{getCleanTitle(selectedNews.title)}</h2>
+                <div className="flex items-center gap-3 text-[#64748B] text-[17px] mb-10 border-b-2 border-[#E2E8F0] pb-5 font-semibold">
+                  <span>{new Date(selectedNews.created_at).toLocaleDateString()}</span>
+                  <span className="text-[#CBD5E1]">|</span>
+                  <span className="font-bold text-[#1E3A8A]">출처: {selectedNews.source}</span>
+                </div>
+                <div className="text-[#334155] text-[21px] leading-[1.9] break-keep font-medium space-y-5">
+                  {formatArticleContent(selectedNews.content).map((paragraph, i) => {
+                    const emojis = ["📌", "💡", "✨", "🔹", "⭐", "●", "◆", "◎", "✓", "📎"];
+                    const emoji = emojis[i % emojis.length];
+                    return (
+                      <div key={i} className="flex gap-3 items-start">
+                        <span className="flex-shrink-0 flex items-center gap-1.5 text-xl" aria-hidden>
+                          <span className="text-amber-600 font-bold">{(i % 10) + 1}.</span>
+                          <span>{emoji}</span>
+                        </span>
+                        <p className="whitespace-pre-wrap flex-1 min-w-0">{paragraph}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+              <div className="p-8 bg-white border-t-2 border-[#E2E8F0] flex gap-4">
+                <button onClick={() => setSelectedNews(null)} className="flex-1 py-5 bg-[#F1F5F9] text-[#334155] border-2 border-[#CBD5E1] rounded-2xl font-bold text-[19px] hover:bg-[#E2E8F0]">닫기</button>
+                {selectedNews.url?.trim() && selectedNews.source?.trim() !== "골든데이즈 AI" && (
+                  <a href={selectedNews.url} target="_blank" rel="noopener noreferrer" className="flex-1 py-5 bg-[#1E3A8A] text-white rounded-2xl font-bold text-[19px] text-center shadow-lg hover:bg-[#1E40AF]">기사 원문 보기</a>
+                )}
+              </div>
+            </div>
+          </div>
+        </>
       )}
     </main>
   );
