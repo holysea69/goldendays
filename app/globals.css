@@ -75,6 +75,14 @@ body {
   background: var(--golden-blue);
 }
 
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* --- 애니메이션 및 기타 스타일 (유지) --- */
 @keyframes scrollUp {
   0% { transform: translateY(0); }

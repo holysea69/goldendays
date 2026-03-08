@@ -13,11 +13,14 @@ interface NewsItem {
 }
 
 const categoryConfig = [
-  { name: "전체", icon: "📋" },
-  { name: "복지", icon: "💙" },
-  { name: "건강", icon: "💎" },
-  { name: "재테크", icon: "📈" },
-  { name: "일자리", icon: "👤" },
+  { name: "전체", icon: "📋", bg: "bg-slate-100", bgActive: "bg-slate-700", border: "border-slate-300", text: "text-slate-700", textActive: "text-white" },
+  { name: "복지", icon: "💙", bg: "bg-sky-50", bgActive: "bg-sky-600", border: "border-sky-200", text: "text-sky-800", textActive: "text-white" },
+  { name: "건강", icon: "💎", bg: "bg-emerald-50", bgActive: "bg-emerald-600", border: "border-emerald-200", text: "text-emerald-800", textActive: "text-white" },
+  { name: "재테크", icon: "📈", bg: "bg-amber-50", bgActive: "bg-amber-600", border: "border-amber-200", text: "text-amber-800", textActive: "text-white" },
+  { name: "일자리", icon: "👤", bg: "bg-violet-50", bgActive: "bg-violet-600", border: "border-violet-200", text: "text-violet-800", textActive: "text-white" },
+  { name: "생활정보", icon: "🏠", bg: "bg-teal-50", bgActive: "bg-teal-600", border: "border-teal-200", text: "text-teal-800", textActive: "text-white" },
+  { name: "문화", icon: "🎭", bg: "bg-fuchsia-50", bgActive: "bg-fuchsia-600", border: "border-fuchsia-200", text: "text-fuchsia-800", textActive: "text-white" },
+  { name: "건강 유튜브", icon: "▶️", bg: "bg-rose-50", border: "border-rose-200", text: "text-rose-800", url: "https://www.youtube.com/watch?v=sUE9ad87RpI&list=PLjlxfKqF4CuBPQ-10Z8160p3VsIZgvxX-", isLink: true },
 ];
 
 export default function NewsFeed() {
@@ -127,23 +130,39 @@ export default function NewsFeed() {
 
       <section className="max-w-6xl mx-auto px-6">
         
-        {/* 2. 카테고리 필터 영역 */}
-        <div className="bg-white border-2 border-[#94A3B8] p-6 rounded-[28px] mb-10 shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
-          <div className="flex flex-wrap justify-center gap-4">
-            {categoryConfig.map((cat) => (
-              <button
-                key={cat.name}
-                onClick={() => handleCategoryClick(cat.name)}
-                className={`flex items-center gap-2 px-7 py-3 rounded-2xl font-bold text-[18px] transition-all border-2 shadow-sm ${
-                  selectedCategory === cat.name
-                    ? "bg-[#1E3A8A] text-white border-[#1E3A8A]" 
-                    : "bg-[#F8FAFC] text-[#334155] border-[#CBD5E1] hover:border-[#94A3B8]"
-                }`}
-              >
-                <span>{cat.icon}</span>
-                {cat.name}
-              </button>
-            ))}
+        {/* 2. 카테고리 필터 영역 - 2행 4열 그리드, 버튼 내부 줄바꿈 없음 */}
+        <div className="bg-gradient-to-br from-white to-amber-50/30 border border-amber-200/60 p-4 rounded-2xl mb-10 shadow-[0_4px_20px_-4px_rgba(201,152,42,0.12)]">
+          <div className="grid grid-cols-4 gap-2">
+            {categoryConfig.map((cat) => {
+              const isActive = !cat.isLink && selectedCategory === cat.name;
+              const btnClass = isActive
+                ? `${cat.bgActive} ${cat.textActive} border-transparent`
+                : `${cat.bg} ${cat.border} ${cat.text}`;
+              if (cat.isLink && cat.url) {
+                return (
+                  <a
+                    key={cat.name}
+                    href={cat.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-[15px] transition-all border shadow-sm no-underline bg-rose-50 border-rose-200 text-rose-800 hover:bg-rose-600 hover:text-white hover:border-rose-500 whitespace-nowrap overflow-hidden"
+                  >
+                    <span className="text-[17px] flex-shrink-0">{cat.icon}</span>
+                    <span className="truncate">{cat.name}</span>
+                  </a>
+                );
+              }
+              return (
+                <button
+                  key={cat.name}
+                  onClick={() => handleCategoryClick(cat.name)}
+                  className={`flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-[15px] transition-all border shadow-sm whitespace-nowrap overflow-hidden ${btnClass} hover:opacity-90`}
+                >
+                  <span className="text-[17px] flex-shrink-0">{cat.icon}</span>
+                  <span className="truncate">{cat.name}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
