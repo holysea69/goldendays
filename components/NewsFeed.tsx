@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 
 interface NewsItem {
   id: number;
@@ -190,7 +191,7 @@ export default function NewsFeed() {
           </div>
         </div>
 
-        <div className="w-full md:w-auto md:flex-shrink-0">
+        <div className="w-full md:w-auto md:flex-shrink-0 flex flex-col items-end gap-3">
           <div className="flex items-center bg-white/90 backdrop-blur-sm border border-amber-200 rounded-xl md:rounded-2xl px-3 py-2 shadow-lg shadow-amber-900/5 w-full min-w-0 md:min-w-[340px]">
             <input 
               type="email" 
@@ -201,6 +202,13 @@ export default function NewsFeed() {
               구독하기
             </button>
           </div>
+          <Link
+            href="/board"
+            className="inline-flex items-center gap-2 py-2.5 px-5 bg-[#1E3A8A] hover:bg-[#1E40AF] text-white text-base sm:text-lg font-bold rounded-xl transition-colors shadow-md"
+          >
+            <span>💬</span>
+            소통방(게시판)
+          </Link>
         </div>
       </div>
 

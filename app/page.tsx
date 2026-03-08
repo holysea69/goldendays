@@ -6,10 +6,6 @@ export default function Home() {
     // 시니어 가독성을 위해 명확한 대비의 배경과 섹션 구분을 적용했습니다.
     <main className="min-h-screen bg-[#E2E8F0] relative">
       
-      {/* [중복 제거 완료] 
-        기존의 중앙 정렬 헤더와 구독 컴포넌트를 삭제했습니다. 
-        이제 타이틀과 구독창은 NewsFeedSection 안에서 가로로 출력됩니다. 
-      */}
       <section className="bg-[#F8FAFC] border-t-2 border-b-2 border-[#CBD5E1] px-4 sm:px-6 md:px-8">
         <div className="max-w-7xl mx-auto w-full">
           <NewsFeedSection />
