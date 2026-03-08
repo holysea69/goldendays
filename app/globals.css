@@ -32,7 +32,7 @@
 /* 🟢 [수정] 스크롤 허용을 위해 height 제한을 풀고 최소 높이만 설정합니다. */
 html {
   min-height: 100%;
-  font-size: 16px;
+  font-size: 17px; /* 시니어 가독성을 위해 기본 크기 확대 */
   scroll-behavior: smooth;
 }
 
@@ -47,6 +47,7 @@ body {
   color: var(--golden-text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-weight: 500; /* 기본 글자 두께로 가독성 향상 */
 }
 
 /* 🟢 [수정] Next.js 루트 div도 높이 제한을 해제합니다. */
