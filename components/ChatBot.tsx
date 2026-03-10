@@ -69,22 +69,21 @@ export default function ChatBot() {
             <p className="text-orange-100 text-xs mt-1">따뜻한 마음으로 소통합니다</p>
           </div>
 
-          <div ref={scrollRef} className="flex-1 overflow-y-auto p-6 space-y-5 bg-orange-50/20">
+          <div ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto p-6 space-y-5 bg-orange-50/20">
             {messages.map((msg, idx) => (
               <div key={idx} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                <div className={`max-w-[85%] p-4 rounded-2xl text-[17px] leading-relaxed shadow-sm ${
+                <div className={`max-w-[85%] min-w-0 px-6 py-5 rounded-2xl text-[17px] leading-[1.7] shadow-sm break-words ${
                   msg.role === "user" 
                     ? "bg-orange-500 text-white rounded-tr-none" 
                     : "bg-white text-gray-800 rounded-tl-none border border-orange-100"
                 }`}>
-                  {/* 줄바꿈을 그대로 보여주기 위해 whitespace-pre-wrap 적용 */}
-                  <span className="whitespace-pre-wrap">{msg.content}</span>
+                  <span className="whitespace-pre-wrap break-words">{msg.content}</span>
                 </div>
               </div>
             ))}
             {isLoading && (
               <div className="flex justify-start">
-                <div className="bg-white border border-orange-100 p-4 rounded-2xl text-orange-400 font-bold text-sm animate-pulse">골든이가 생각하고 있어요...</div>
+                <div className="bg-white border border-orange-100 px-6 py-5 rounded-2xl text-orange-400 font-bold text-sm animate-pulse">골든이가 생각하고 있어요...</div>
               </div>
             )}
           </div>

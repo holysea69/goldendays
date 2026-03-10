@@ -35,7 +35,7 @@ export async function POST(request: Request) {
         newsData.map((news: any) => ({
           title: news.title || "제목 없음",
           content: news.content || news.summary || "내용 없음",
-          url: news.url || "#",
+          url: news.url || null,
           category: news.category || '생활',
           source: news.source || 'AI 뉴스'
         })),

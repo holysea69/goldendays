@@ -321,7 +321,7 @@ export default function NewsFeed() {
               </div>
               <div className="p-4 bg-white border-t-2 border-[#E2E8F0] flex gap-3 flex-shrink-0">
                 <button onClick={() => setSelectedNews(null)} className="flex-1 py-3 bg-[#F1F5F9] text-[#334155] border-2 border-[#CBD5E1] rounded-xl font-bold text-[15px]">닫기</button>
-                {selectedNews.url?.trim() && selectedNews.source?.trim() !== "골든데이즈 AI" && (
+                {selectedNews.url?.trim() && selectedNews.url?.trim() !== "#" && selectedNews.source?.trim() !== "골든데이즈 AI" && (
                   <a href={selectedNews.url} target="_blank" rel="noopener noreferrer" className="flex-1 py-3 bg-[#1E3A8A] text-white rounded-xl font-bold text-[15px] text-center">기사 원문 보기</a>
                 )}
               </div>
@@ -359,7 +359,7 @@ export default function NewsFeed() {
               </div>
               <div className="p-8 bg-white border-t-2 border-[#E2E8F0] flex gap-4">
                 <button onClick={() => setSelectedNews(null)} className="flex-1 py-5 bg-[#F1F5F9] text-[#334155] border-2 border-[#CBD5E1] rounded-2xl font-bold text-[19px] hover:bg-[#E2E8F0]">닫기</button>
-                {selectedNews.url?.trim() && selectedNews.source?.trim() !== "골든데이즈 AI" && (
+                {selectedNews.url?.trim() && selectedNews.url?.trim() !== "#" && selectedNews.source?.trim() !== "골든데이즈 AI" && (
                   <a href={selectedNews.url} target="_blank" rel="noopener noreferrer" className="flex-1 py-5 bg-[#1E3A8A] text-white rounded-2xl font-bold text-[19px] text-center shadow-lg hover:bg-[#1E40AF]">기사 원문 보기</a>
                 )}
               </div>
