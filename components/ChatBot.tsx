@@ -27,26 +27,30 @@ export default function ChatBot() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("https://n8n.mygolden.kr/webhook/chatbot", {
+      const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt: currentInput }),
       });
 
-      if (!response.ok) throw new Error(`서버 연결 오류: ${response.status}`);
+      const data = await response.json();
 
-      // n8n에서 Text 응답으로 설정했으므로 .text()로 읽습니다.
-      const aiAnswer = await response.text();
+      if (!response.ok) {
+        const msg = (data && typeof data.error === "string") ? data.error : "통신이 원활하지 않습니다. 잠시 후 다시 시도해 주세요.";
+        throw new Error(msg);
+      }
+
+      const aiAnswer = (data && typeof data.reply === "string") ? data.reply : "대답을 준비하는 중에 잠시 깜빡했네요. 다시 말씀해주시겠어요?";
 
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: aiAnswer || "대답을 준비하는 중에 잠시 깜빡했네요. 다시 말씀해주시겠어요?" }
+        { role: "assistant", content: aiAnswer }
       ]);
     } catch (error) {
-      console.error("챗봇 에러:", error);
+      console.error(error);
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: "선생님, 잠시 연결이 원활하지 않아요. 다시 시도해주시겠어요? 😥" }
+        { role: "assistant", content: "통신이 원활하지 않습니다. 잠시 후 다시 시도해 주세요." }
       ]);
     } finally {
       setIsLoading(false);

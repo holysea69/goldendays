@@ -1,34 +1,42 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from "next/server";
+
+const CHATBOT_WEBHOOK_URL = "http://137.131.7.173:5678/webhook/chatbot";
 
 export async function POST(req: Request) {
   try {
-    const { message } = await req.json();
-    
-    const apiKey = process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY;
+    const body = await req.json();
+    const { prompt } = body;
 
-    if (!apiKey) {
-      return NextResponse.json({ reply: "Vercel에 API 키가 등록되지 않았습니다." }, { status: 500 });
+    if (!prompt || typeof prompt !== "string" || !prompt.trim()) {
+      return NextResponse.json(
+        { error: "메시지는 필수입니다." },
+        { status: 400 }
+      );
     }
 
-    // 구글 공식 라이브러리로 안전하게 연결
-    const genAI = new GoogleGenerativeAI(apiKey);
-    
-    // [핵심 해결 포인트] 선생님의 키에 존재하는 최신 모델로 정확히 이름 맞춤!
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+    const response = await fetch(CHATBOT_WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt: prompt.trim() }),
+    });
 
-    const prompt = `당신은 시니어 뉴스 서비스 '골든 데이즈'의 친절한 상담원 '골든이'입니다. 어르신들께 따뜻하고 명확하게 존댓말로 핵심만 답변해 주세요. 질문: ${message}`;
+    if (!response.ok) {
+      const text = await response.text();
+      const error = new Error(`[Chat Proxy] n8n webhook HTTP ${response.status}: ${text}`);
+      console.error(error);
+      return NextResponse.json(
+        { error: "챗봇 서버 연결이 원활하지 않습니다." },
+        { status: response.status }
+      );
+    }
 
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const text = response.text();
-
-    return NextResponse.json({ reply: text });
-
-  } catch (error: any) {
-    console.error("Gemini SDK 에러:", error);
-    return NextResponse.json({ 
-      reply: `AI 연결이 지연되고 있습니다.' (에러: ${error.message})` 
-    }, { status: 500 });
+    const reply = await response.text();
+    return NextResponse.json({ reply: reply || "대답을 준비하는 중에 잠시 깜빡했네요. 다시 말씀해주시겠어요?" });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { error: "통신이 원활하지 않습니다. 잠시 후 다시 시도해 주세요." },
+      { status: 500 }
+    );
   }
 }
