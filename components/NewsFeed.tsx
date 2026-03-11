@@ -197,11 +197,11 @@ export default function NewsFeed() {
   return (
     <main className="pb-20 font-sans">
       
-      {/* 1. 상단 헤더: 로고 + 타이틀 + 구독창 */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-10 md:py-12 flex flex-col md:flex-row justify-between items-center md:items-end gap-6 md:gap-8 mb-8 md:mb-10 bg-gradient-to-br from-white via-[#FFFBEB] to-[#FEF3C7]/30 rounded-2xl md:rounded-3xl border border-amber-200/60 shadow-[0_8px_40px_-12px_rgba(201,152,42,0.15)]">
-        <div className="flex items-center gap-4 sm:gap-5 w-full md:w-auto justify-center md:justify-start">
+      {/* 1. 상단 헤더: 로고 + 타이틀 + 구독창 - 모바일 높이 축소 */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 py-4 sm:py-8 md:py-12 flex flex-col md:flex-row justify-between items-center md:items-end gap-4 sm:gap-6 md:gap-8 mb-4 sm:mb-8 md:mb-10 bg-gradient-to-br from-white via-[#FFFBEB] to-[#FEF3C7]/30 rounded-2xl md:rounded-3xl border border-amber-200/60 shadow-[0_8px_40px_-12px_rgba(201,152,42,0.15)]">
+        <div className="flex items-center gap-3 sm:gap-5 w-full md:w-auto justify-center md:justify-start">
           {/* 골든데이즈 로고 - 따뜻한 골드 톤의 해/빛 */}
-          <div className="flex-shrink-0 w-14 h-14 sm:w-[72px] sm:h-[72px] md:w-20 md:h-20">
+          <div className="flex-shrink-0 w-12 h-12 sm:w-[72px] sm:h-[72px] md:w-20 md:h-20">
             <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-md">
               <defs>
                 <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -229,7 +229,7 @@ export default function NewsFeed() {
             </svg>
           </div>
           <div className="min-w-0 flex-1">
-            <h1 className="text-[32px] sm:text-[38px] md:text-[44px] font-black leading-tight tracking-tight">
+            <h1 className="text-[26px] sm:text-[38px] md:text-[44px] font-black leading-tight tracking-tight">
               <span className="bg-gradient-to-r from-[#92400E] via-[#B45309] to-[#92400E] bg-clip-text text-transparent whitespace-nowrap" style={{ fontStyle: "italic", letterSpacing: "-0.02em" }}>
                 골든데이즈
               </span>
@@ -240,21 +240,21 @@ export default function NewsFeed() {
           </div>
         </div>
 
-        <div className="w-full md:w-auto md:flex-shrink-0 flex flex-col items-end gap-3">
-          <form onSubmit={handleSubscribe} className="flex items-center bg-white/90 backdrop-blur-sm border border-amber-200 rounded-xl md:rounded-2xl px-3 py-2 shadow-lg shadow-amber-900/5 w-full min-w-0 md:min-w-[340px]">
+        <div className="w-full md:w-auto md:flex-shrink-0 flex flex-col items-end gap-2 sm:gap-3">
+          <form onSubmit={handleSubscribe} className="flex items-center bg-white/90 backdrop-blur-sm border border-amber-200 rounded-lg sm:rounded-xl md:rounded-2xl px-2 sm:px-3 py-1.5 sm:py-2 shadow-lg shadow-amber-900/5 w-full min-w-0 md:min-w-[340px]">
             <input 
               type="email" 
               value={subscribeEmail}
               onChange={(e) => setSubscribeEmail(e.target.value)}
-              placeholder="이메일로 최신정보 받기" 
-              className="flex-1 min-w-0 px-3 sm:px-4 py-3 bg-transparent outline-none text-[#1E293B] placeholder:text-amber-700/50 font-medium text-[15px] sm:text-[17px] focus:ring-0"
+              placeholder="이메일 작성하기" 
+              className="flex-1 min-w-0 px-2 sm:px-4 py-2 sm:py-3 bg-transparent outline-none text-[#1E293B] placeholder:text-amber-700/50 font-medium text-[14px] sm:text-[17px] focus:ring-0"
               required
               disabled={subscribeStatus === "loading"}
             />
             <button 
               type="submit"
               disabled={subscribeStatus === "loading"}
-              className="flex-shrink-0 bg-gradient-to-r from-amber-500 to-amber-600 text-white px-4 sm:px-5 py-2.5 rounded-lg md:rounded-xl font-bold text-[15px] sm:text-base hover:from-amber-600 hover:to-amber-700 transition-all shadow-md hover:shadow-lg shadow-amber-900/20 disabled:opacity-70 disabled:cursor-not-allowed"
+              className="flex-shrink-0 bg-gradient-to-r from-amber-500 to-amber-600 text-white px-3 sm:px-5 py-2 sm:py-2.5 rounded-lg md:rounded-xl font-bold text-[13px] sm:text-base hover:from-amber-600 hover:to-amber-700 transition-all shadow-md hover:shadow-lg shadow-amber-900/20 disabled:opacity-70 disabled:cursor-not-allowed"
             >
               {subscribeStatus === "loading" ? "전송 중..." : "구독하기"}
             </button>
@@ -264,12 +264,12 @@ export default function NewsFeed() {
               <button
                 type="button"
                 onClick={(e) => { e.stopPropagation(); setJobMenuOpen((v) => !v); }}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 sm:gap-2 py-3 px-3 sm:px-6 bg-orange-500 hover:bg-orange-600 text-white text-base sm:text-lg font-bold rounded-xl transition-colors shadow-md"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-1 sm:gap-2 py-2.5 sm:py-3 px-2 sm:px-6 bg-orange-500 hover:bg-orange-600 text-white text-sm sm:text-lg font-bold rounded-xl transition-colors shadow-md whitespace-nowrap"
                 aria-expanded={jobMenuOpen}
                 aria-haspopup="true"
               >
                 <span>💼</span>
-                <span className="truncate">일자리 찾기</span>
+                일자리 찾기
               </button>
               {jobMenuOpen && (
                 <div className="absolute left-0 right-0 sm:left-auto sm:right-0 mt-2 min-w-[220px] py-2 bg-white rounded-xl shadow-lg border-2 border-amber-200 z-[100] animate-in fade-in slide-in-from-top-2 duration-200">
@@ -290,10 +290,10 @@ export default function NewsFeed() {
             </div>
             <Link
               href="/board"
-              className="flex-1 sm:flex-initial min-w-0 inline-flex items-center justify-center gap-1.5 sm:gap-2 py-3 px-3 sm:px-6 bg-[#1E3A8A] hover:bg-[#1E40AF] text-white text-base sm:text-lg font-bold rounded-xl transition-colors shadow-md"
+              className="flex-1 sm:flex-initial min-w-0 inline-flex items-center justify-center gap-1 sm:gap-2 py-2.5 sm:py-3 px-2 sm:px-6 bg-[#1E3A8A] hover:bg-[#1E40AF] text-white text-sm sm:text-lg font-bold rounded-xl transition-colors shadow-md whitespace-nowrap"
             >
               <span>💬</span>
-              <span className="truncate">소통방(게시판)</span>
+              소통방(게시판)
             </Link>
           </div>
         </div>
@@ -301,9 +301,9 @@ export default function NewsFeed() {
 
       <section className="max-w-6xl mx-auto px-4 sm:px-6">
         
-        {/* 2. 카테고리 필터 영역 - 모바일: 가로 스크롤, 데스크톱: 2행 4열 그리드 */}
-        <div className="bg-gradient-to-br from-white to-amber-50/30 border border-amber-200/60 p-4 rounded-2xl mb-8 md:mb-10 shadow-[0_4px_20px_-4px_rgba(201,152,42,0.12)] -mx-4 sm:mx-0 overflow-visible">
-          <div className="flex flex-nowrap gap-2 overflow-x-auto overflow-y-hidden scrollbar-hide pb-2 -mx-2 pl-2 pr-4 sm:mx-0 sm:px-0 md:grid md:grid-cols-4 md:flex-none md:overflow-visible md:pb-0 md:pr-0">
+        {/* 2. 카테고리 필터 영역 - 모바일: 가로 스크롤/높이 축소, 데스크톱: 2행 4열 그리드 */}
+        <div className="bg-gradient-to-br from-white to-amber-50/30 border border-amber-200/60 p-2 sm:p-4 rounded-xl sm:rounded-2xl mb-4 sm:mb-8 md:mb-10 shadow-[0_4px_20px_-4px_rgba(201,152,42,0.12)] -mx-4 sm:mx-0 overflow-visible">
+          <div className="flex flex-nowrap gap-1.5 sm:gap-2 overflow-x-auto overflow-y-hidden scrollbar-hide pb-1.5 sm:pb-2 -mx-2 pl-2 pr-4 sm:mx-0 sm:px-0 md:grid md:grid-cols-4 md:flex-none md:overflow-visible md:pb-0 md:pr-0">
             {categoryConfig.map((cat) => {
               const isActive = !cat.isLink && selectedCategory === cat.name;
               const btnClass = isActive
@@ -316,7 +316,7 @@ export default function NewsFeed() {
                     href={cat.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-shrink-0 min-w-[100px] md:min-w-0 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold text-[15px] transition-all border shadow-sm no-underline bg-rose-50 border-rose-200 text-rose-800 hover:bg-rose-600 hover:text-white hover:border-rose-500 whitespace-nowrap"
+                    className="flex-shrink-0 min-w-[90px] sm:min-w-[100px] md:min-w-0 flex items-center justify-center gap-1.5 sm:gap-2 py-2 sm:py-3 px-3 sm:px-4 rounded-lg sm:rounded-xl font-bold text-[13px] sm:text-[15px] transition-all border shadow-sm no-underline bg-rose-50 border-rose-200 text-rose-800 hover:bg-rose-600 hover:text-white hover:border-rose-500 whitespace-nowrap"
                   >
                     <span className="text-[17px]">{cat.icon}</span>
                     {cat.name}
@@ -327,7 +327,7 @@ export default function NewsFeed() {
                 <button
                   key={cat.name}
                   onClick={() => handleCategoryClick(cat.name)}
-                  className={`flex-shrink-0 min-w-[100px] md:min-w-0 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold text-[15px] transition-all border shadow-sm whitespace-nowrap ${btnClass} hover:opacity-90`}
+                  className={`flex-shrink-0 min-w-[90px] sm:min-w-[100px] md:min-w-0 flex items-center justify-center gap-1.5 sm:gap-2 py-2 sm:py-3 px-3 sm:px-4 rounded-lg sm:rounded-xl font-bold text-[13px] sm:text-[15px] transition-all border shadow-sm whitespace-nowrap ${btnClass} hover:opacity-90`}
                 >
                   <span className="text-[17px]">{cat.icon}</span>
                   {cat.name}
