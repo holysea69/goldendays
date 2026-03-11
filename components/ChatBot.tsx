@@ -55,18 +55,31 @@ export default function ChatBot() {
 
   return (
     <div className="fixed bottom-6 right-6 z-[999]">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-16 h-16 bg-orange-500 rounded-full shadow-2xl flex items-center justify-center text-white text-3xl hover:rotate-12 transition-all active:scale-90"
-      >
-        {isOpen ? "✕" : "🤖"}
-      </button>
+      {!isOpen && (
+        <button
+          type="button"
+          onClick={() => setIsOpen(true)}
+          className="w-16 h-16 bg-orange-500 rounded-full shadow-2xl flex items-center justify-center text-white text-3xl hover:rotate-12 transition-all active:scale-90"
+        >
+          🤖
+        </button>
+      )}
 
       {isOpen && (
         <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-h-[80vh] md:top-auto md:left-auto md:bottom-24 md:right-8 md:translate-x-0 md:translate-y-0 md:w-[400px] md:h-[580px] md:max-h-[580px] z-[1000] bg-white rounded-2xl md:rounded-[32px] shadow-2xl border border-orange-100 flex flex-col overflow-hidden animate-in fade-in duration-200">
-          <div className="bg-orange-500 p-4 md:p-6 text-white text-center flex-shrink-0">
-            <h3 className="font-bold text-lg md:text-xl">골든이와 상담하기</h3>
-            <p className="text-orange-100 text-xs mt-1">따뜻한 마음으로 소통합니다</p>
+          <div className="bg-orange-500 p-4 md:p-6 text-white flex items-center justify-between gap-2 flex-shrink-0">
+            <div className="flex-1 text-center">
+              <h3 className="font-bold text-lg md:text-xl">골든이와 상담하기</h3>
+              <p className="text-orange-100 text-xs mt-1">따뜻한 마음으로 소통합니다</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setIsOpen(false)}
+              className="w-8 h-8 md:w-9 md:h-9 flex items-center justify-center rounded-full border border-white/70 text-sm md:text-base hover:bg-white/10 transition-colors"
+              aria-label="챗봇 닫기"
+            >
+              ✕
+            </button>
           </div>
 
           <div ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-4 md:p-6 space-y-5 bg-orange-50/20">
