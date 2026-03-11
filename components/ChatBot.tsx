@@ -88,20 +88,20 @@ export default function ChatBot() {
             )}
           </div>
 
-          <div className="p-4 md:p-5 bg-white border-t border-gray-100 flex gap-2 flex-shrink-0">
+          <div className="w-full box-border px-5 py-4 md:py-5 bg-white border-t border-gray-100 flex flex-row items-center gap-3 flex-shrink-0">
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSend()}
               placeholder="무엇이든 물어보세요..."
-              className="flex-1 bg-gray-50 border-none rounded-2xl px-5 py-3 outline-none focus:ring-2 focus:ring-orange-500 text-[16px]"
+              className="flex-1 min-w-0 bg-gray-50 border-none rounded-2xl px-5 py-3 outline-none focus:ring-2 focus:ring-orange-500 text-[16px]"
               disabled={isLoading}
             />
             <button 
               onClick={handleSend} 
               disabled={isLoading}
-              className="bg-orange-100 text-orange-600 px-4 py-2 rounded-xl font-bold hover:bg-orange-200 transition-colors"
+              className="shrink-0 bg-orange-100 text-orange-600 px-4 py-2 rounded-xl font-bold hover:bg-orange-200 transition-colors"
             >
               전송
             </button>
