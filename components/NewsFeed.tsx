@@ -30,6 +30,36 @@ export default function NewsFeed() {
   const [selectedCategory, setSelectedCategory] = useState("전체");
   const [loading, setLoading] = useState(true);
   const [selectedNews, setSelectedNews] = useState<NewsItem | null>(null);
+  const [subscribeEmail, setSubscribeEmail] = useState("");
+  const [subscribeStatus, setSubscribeStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
+  const SUBSCRIBE_WEBHOOK_URL = "https://n8n.mygolden.kr/webhook/subscribe";
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const email = subscribeEmail.trim();
+    if (!email) return;
+    setSubscribeStatus("loading");
+    try {
+      const response = await fetch(SUBSCRIBE_WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, date: new Date().toISOString() }),
+      });
+      if (response.ok) {
+        setSubscribeStatus("success");
+        setSubscribeEmail("");
+        alert("구독 신청이 완료되었습니다! 💌");
+      } else {
+        throw new Error();
+      }
+    } catch {
+      setSubscribeStatus("error");
+      alert("죄송합니다. 잠시 후 다시 시도해 주세요.");
+    } finally {
+      setSubscribeStatus("idle");
+    }
+  };
 
   // [핵심 로직 보존] 데이터 페칭
   useEffect(() => {
@@ -192,16 +222,24 @@ export default function NewsFeed() {
         </div>
 
         <div className="w-full md:w-auto md:flex-shrink-0 flex flex-col items-end gap-3">
-          <div className="flex items-center bg-white/90 backdrop-blur-sm border border-amber-200 rounded-xl md:rounded-2xl px-3 py-2 shadow-lg shadow-amber-900/5 w-full min-w-0 md:min-w-[340px]">
+          <form onSubmit={handleSubscribe} className="flex items-center bg-white/90 backdrop-blur-sm border border-amber-200 rounded-xl md:rounded-2xl px-3 py-2 shadow-lg shadow-amber-900/5 w-full min-w-0 md:min-w-[340px]">
             <input 
               type="email" 
+              value={subscribeEmail}
+              onChange={(e) => setSubscribeEmail(e.target.value)}
               placeholder="이메일로 최신정보 받기" 
               className="flex-1 min-w-0 px-3 sm:px-4 py-3 bg-transparent outline-none text-[#1E293B] placeholder:text-amber-700/50 font-medium text-[15px] sm:text-[17px] focus:ring-0"
+              required
+              disabled={subscribeStatus === "loading"}
             />
-            <button className="flex-shrink-0 bg-gradient-to-r from-amber-500 to-amber-600 text-white px-4 sm:px-5 py-2.5 rounded-lg md:rounded-xl font-bold text-[15px] sm:text-base hover:from-amber-600 hover:to-amber-700 transition-all shadow-md hover:shadow-lg shadow-amber-900/20">
-              구독하기
+            <button 
+              type="submit"
+              disabled={subscribeStatus === "loading"}
+              className="flex-shrink-0 bg-gradient-to-r from-amber-500 to-amber-600 text-white px-4 sm:px-5 py-2.5 rounded-lg md:rounded-xl font-bold text-[15px] sm:text-base hover:from-amber-600 hover:to-amber-700 transition-all shadow-md hover:shadow-lg shadow-amber-900/20 disabled:opacity-70 disabled:cursor-not-allowed"
+            >
+              {subscribeStatus === "loading" ? "전송 중..." : "구독하기"}
             </button>
-          </div>
+          </form>
           <Link
             href="/board"
             className="inline-flex items-center gap-2 py-2.5 px-5 bg-[#1E3A8A] hover:bg-[#1E40AF] text-white text-base sm:text-lg font-bold rounded-xl transition-colors shadow-md"

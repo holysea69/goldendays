@@ -6,13 +6,14 @@ export default function EmailSubscription() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
+  const SUBSCRIBE_WEBHOOK_URL = "https://n8n.mygolden.kr/webhook/subscribe";
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("loading");
 
     try {
-      // n8n 웹훅으로 POST 요청 (이메일 전송)
-      const response = await fetch("https://n8n.mygolden.kr/webhook/subscribe", {
+      const response = await fetch(SUBSCRIBE_WEBHOOK_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email, date: new Date().toISOString() }),
