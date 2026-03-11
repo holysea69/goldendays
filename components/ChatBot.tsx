@@ -63,13 +63,13 @@ export default function ChatBot() {
       </button>
 
       {isOpen && (
-        <div className="absolute bottom-20 right-0 w-[350px] sm:w-[400px] h-[580px] bg-white rounded-[32px] shadow-2xl border border-orange-100 flex flex-col overflow-hidden animate-in slide-in-from-bottom-5">
-          <div className="bg-orange-500 p-6 text-white text-center">
-            <h3 className="font-bold text-xl">골든이와 상담하기</h3>
+        <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-h-[80vh] md:top-auto md:left-auto md:bottom-24 md:right-8 md:translate-x-0 md:translate-y-0 md:w-[400px] md:h-[580px] md:max-h-[580px] z-[1000] bg-white rounded-2xl md:rounded-[32px] shadow-2xl border border-orange-100 flex flex-col overflow-hidden animate-in fade-in duration-200">
+          <div className="bg-orange-500 p-4 md:p-6 text-white text-center flex-shrink-0">
+            <h3 className="font-bold text-lg md:text-xl">골든이와 상담하기</h3>
             <p className="text-orange-100 text-xs mt-1">따뜻한 마음으로 소통합니다</p>
           </div>
 
-          <div ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto p-6 space-y-5 bg-orange-50/20">
+          <div ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-4 md:p-6 space-y-5 bg-orange-50/20">
             {messages.map((msg, idx) => (
               <div key={idx} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                 <div className={`max-w-[85%] min-w-0 px-6 py-5 rounded-2xl text-[17px] leading-[1.7] shadow-sm break-words ${
@@ -88,7 +88,7 @@ export default function ChatBot() {
             )}
           </div>
 
-          <div className="p-5 bg-white border-t border-gray-100 flex gap-2">
+          <div className="p-4 md:p-5 bg-white border-t border-gray-100 flex gap-2 flex-shrink-0">
             <input
               type="text"
               value={input}
