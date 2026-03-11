@@ -6,7 +6,7 @@ export default function EmailSubscription() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
-  const SUBSCRIBE_WEBHOOK_URL = "https://n8n.mygolden.kr/webhook/subscribe";
+  const SUBSCRIBE_WEBHOOK_URL = "http://137.131.7.173:5678/webhook/subscribe";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,14 +25,13 @@ export default function EmailSubscription() {
         alert("구독 신청이 완료되었습니다! 💌");
       } else {
         const text = await response.text();
-        console.error("[구독 전송 실패] URL:", SUBSCRIBE_WEBHOOK_URL, "status:", response.status, "body:", text);
-        throw new Error(`HTTP ${response.status}`);
+        const error = new Error(`HTTP ${response.status}: ${text}`);
+        console.error(error);
+        throw error;
       }
     } catch (err) {
       setStatus("error");
-      if (err instanceof Error && !err.message.startsWith("HTTP ")) {
-        console.error("[구독 전송 실패] URL:", SUBSCRIBE_WEBHOOK_URL, "error:", err);
-      }
+      console.error(err);
       alert("죄송합니다. 잠시 후 다시 시도해 주세요.");
     } finally {
       setStatus("idle");
