@@ -259,17 +259,17 @@ export default function NewsFeed() {
               {subscribeStatus === "loading" ? "전송 중..." : "구독하기"}
             </button>
           </form>
-          <div className="flex flex-wrap gap-3 items-center justify-end">
-            <div ref={jobMenuRef} className="relative">
+          <div className="flex flex-row w-full sm:w-auto gap-2 sm:gap-3 items-stretch justify-stretch sm:justify-end flex-nowrap">
+            <div ref={jobMenuRef} className="relative flex-1 sm:flex-initial min-w-0">
               <button
                 type="button"
                 onClick={(e) => { e.stopPropagation(); setJobMenuOpen((v) => !v); }}
-                className="inline-flex items-center gap-2 py-3 px-6 bg-orange-500 hover:bg-orange-600 text-white text-lg font-bold rounded-xl transition-colors shadow-md"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 sm:gap-2 py-3 px-3 sm:px-6 bg-orange-500 hover:bg-orange-600 text-white text-base sm:text-lg font-bold rounded-xl transition-colors shadow-md"
                 aria-expanded={jobMenuOpen}
                 aria-haspopup="true"
               >
                 <span>💼</span>
-                일자리 찾기
+                <span className="truncate">일자리 찾기</span>
               </button>
               {jobMenuOpen && (
                 <div className="absolute left-0 right-0 sm:left-auto sm:right-0 mt-2 min-w-[220px] py-2 bg-white rounded-xl shadow-lg border-2 border-amber-200 z-[100] animate-in fade-in slide-in-from-top-2 duration-200">
@@ -290,10 +290,10 @@ export default function NewsFeed() {
             </div>
             <Link
               href="/board"
-              className="inline-flex items-center gap-2 py-3 px-6 bg-[#1E3A8A] hover:bg-[#1E40AF] text-white text-lg font-bold rounded-xl transition-colors shadow-md"
+              className="flex-1 sm:flex-initial min-w-0 inline-flex items-center justify-center gap-1.5 sm:gap-2 py-3 px-3 sm:px-6 bg-[#1E3A8A] hover:bg-[#1E40AF] text-white text-base sm:text-lg font-bold rounded-xl transition-colors shadow-md"
             >
               <span>💬</span>
-              소통방(게시판)
+              <span className="truncate">소통방(게시판)</span>
             </Link>
           </div>
         </div>
@@ -337,34 +337,33 @@ export default function NewsFeed() {
           </div>
         </div>
 
-        {/* 3. 뉴스 카드 목록 (제목 전체 노출 수정) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* 3. 뉴스 카드 목록 (제목 전체 노출 수정) - 모바일 레이아웃 최적화 */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
           {filteredNews.map((item, index) => (
             <div 
               key={item.id || index} 
-              className="group bg-white rounded-[32px] border-2 border-[#CBD5E1] shadow-[0_4px_20px_rgba(0,0,0,0.1)] overflow-hidden hover:shadow-[0_8px_32px_rgba(30,58,138,0.15)] hover:border-[#94A3B8] transition-all duration-300 flex flex-col cursor-pointer h-full"
+              className="group bg-white rounded-2xl sm:rounded-[32px] border-2 border-[#CBD5E1] shadow-[0_4px_20px_rgba(0,0,0,0.1)] overflow-hidden hover:shadow-[0_8px_32px_rgba(30,58,138,0.15)] hover:border-[#94A3B8] transition-all duration-300 flex flex-col cursor-pointer h-full min-w-0"
               onClick={() => setSelectedNews(item)}
             >
-              <div className="p-8 flex-1 flex flex-col">
-                <span className="text-[#1E3A8A] text-[15px] font-black bg-[#E0E7FF] px-4 py-2 rounded-lg w-fit mb-5 border border-[#C7D2FE]">
+              <div className="p-4 sm:p-6 md:p-8 flex-1 flex flex-col min-w-0">
+                <span className="text-[#1E3A8A] text-[13px] sm:text-[15px] font-black bg-[#E0E7FF] px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg w-fit mb-3 sm:mb-5 border border-[#C7D2FE]">
                   {item.category}
                 </span>
                 
-                {/* [핵심 수정] line-clamp와 고정 높이를 제거하여 제목을 모두 보여줍니다. */}
-                <h3 className="text-[23px] font-bold text-[#0F172A] mb-5 leading-snug break-keep group-hover:text-[#1E3A8A] transition-colors">
+                <h3 className="text-[18px] sm:text-[20px] md:text-[23px] font-bold text-[#0F172A] mb-3 sm:mb-5 leading-snug break-keep overflow-hidden group-hover:text-[#1E3A8A] transition-colors">
                   {getCleanTitle(item.title)}
                 </h3>
                 
-                <p className="text-[#475569] text-[18px] leading-[1.75] mb-8 line-clamp-3 flex-1 break-keep font-medium">
+                <p className="text-[#475569] text-[15px] sm:text-[17px] md:text-[18px] leading-[1.6] sm:leading-[1.75] mb-4 sm:mb-8 line-clamp-3 flex-1 break-keep font-medium min-w-0 overflow-hidden">
                   {stripHtml(item.content)}
                 </p>
 
-                <div className="flex justify-between items-center pt-6 border-t-2 border-[#E2E8F0]">
-                  <span className="text-[#64748B] text-[16px] font-semibold">
+                <div className="flex justify-between items-center pt-4 sm:pt-6 border-t-2 border-[#E2E8F0] flex-shrink-0">
+                  <span className="text-[#64748B] text-[14px] sm:text-[16px] font-semibold truncate min-w-0 mr-2">
                     {new Date(item.created_at).toLocaleDateString()}
                   </span>
-                  <div className="text-[#1E3A8A] font-bold text-[18px] flex items-center gap-1">
-                    자세히 보기 <span className="text-xl">›</span>
+                  <div className="text-[#1E3A8A] font-bold text-[15px] sm:text-[18px] flex items-center gap-1 flex-shrink-0">
+                    자세히 보기 <span className="text-lg sm:text-xl">›</span>
                   </div>
                 </div>
               </div>
