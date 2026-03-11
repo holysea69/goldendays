@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 
 interface NewsItem {
@@ -32,6 +32,23 @@ export default function NewsFeed() {
   const [selectedNews, setSelectedNews] = useState<NewsItem | null>(null);
   const [subscribeEmail, setSubscribeEmail] = useState("");
   const [subscribeStatus, setSubscribeStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [jobMenuOpen, setJobMenuOpen] = useState(false);
+
+  const jobLinks = [
+    { label: "노인 일자리 여기", url: "https://www.seniorro.or.kr/noin/main.do" },
+    { label: "고용24", url: "https://www.work24.go.kr/cm/main.do" },
+  ] as const;
+  const jobMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const closeOnOutside = (e: MouseEvent) => {
+      if (jobMenuRef.current && !jobMenuRef.current.contains(e.target as Node)) {
+        setJobMenuOpen(false);
+      }
+    };
+    if (jobMenuOpen) document.addEventListener("click", closeOnOutside);
+    return () => document.removeEventListener("click", closeOnOutside);
+  }, [jobMenuOpen]);
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -242,13 +259,43 @@ export default function NewsFeed() {
               {subscribeStatus === "loading" ? "전송 중..." : "구독하기"}
             </button>
           </form>
-          <Link
-            href="/board"
-            className="inline-flex items-center gap-2 py-2.5 px-5 bg-[#1E3A8A] hover:bg-[#1E40AF] text-white text-base sm:text-lg font-bold rounded-xl transition-colors shadow-md"
-          >
-            <span>💬</span>
-            소통방(게시판)
-          </Link>
+          <div className="flex flex-wrap gap-3 items-center justify-end">
+            <div ref={jobMenuRef} className="relative">
+              <button
+                type="button"
+                onClick={(e) => { e.stopPropagation(); setJobMenuOpen((v) => !v); }}
+                className="inline-flex items-center gap-2 py-3 px-6 bg-orange-500 hover:bg-orange-600 text-white text-lg font-bold rounded-xl transition-colors shadow-md"
+                aria-expanded={jobMenuOpen}
+                aria-haspopup="true"
+              >
+                <span>💼</span>
+                일자리 찾기
+              </button>
+              {jobMenuOpen && (
+                <div className="absolute left-0 right-0 sm:left-auto sm:right-0 mt-2 min-w-[220px] py-2 bg-white rounded-xl shadow-lg border-2 border-amber-200 z-[100] animate-in fade-in slide-in-from-top-2 duration-200">
+                  {jobLinks.map((item) => (
+                    <a
+                      key={item.url}
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block w-full text-left py-4 px-5 text-lg font-bold text-[#1E293B] hover:bg-amber-50 border-b border-amber-100 last:border-b-0 first:rounded-t-lg last:rounded-b-lg transition-colors"
+                      onClick={() => setJobMenuOpen(false)}
+                    >
+                      {item.label}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+            <Link
+              href="/board"
+              className="inline-flex items-center gap-2 py-3 px-6 bg-[#1E3A8A] hover:bg-[#1E40AF] text-white text-lg font-bold rounded-xl transition-colors shadow-md"
+            >
+              <span>💬</span>
+              소통방(게시판)
+            </Link>
+          </div>
         </div>
       </div>
 
