@@ -33,15 +33,13 @@ export default function NewsFeed() {
   const [subscribeEmail, setSubscribeEmail] = useState("");
   const [subscribeStatus, setSubscribeStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
-  const SUBSCRIBE_WEBHOOK_URL = "http://137.131.7.173:5678/webhook/subscribe";
-
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
     const email = subscribeEmail.trim();
     if (!email) return;
     setSubscribeStatus("loading");
     try {
-      const response = await fetch(SUBSCRIBE_WEBHOOK_URL, {
+      const response = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, date: new Date().toISOString() }),

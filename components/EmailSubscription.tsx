@@ -6,14 +6,12 @@ export default function EmailSubscription() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
-  const SUBSCRIBE_WEBHOOK_URL = "http://137.131.7.173:5678/webhook/subscribe";
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("loading");
 
     try {
-      const response = await fetch(SUBSCRIBE_WEBHOOK_URL, {
+      const response = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email, date: new Date().toISOString() }),
