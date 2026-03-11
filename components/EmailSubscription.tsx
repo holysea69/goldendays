@@ -24,10 +24,15 @@ export default function EmailSubscription() {
         setEmail("");
         alert("구독 신청이 완료되었습니다! 💌");
       } else {
-        throw new Error();
+        const text = await response.text();
+        console.error("[구독 전송 실패] URL:", SUBSCRIBE_WEBHOOK_URL, "status:", response.status, "body:", text);
+        throw new Error(`HTTP ${response.status}`);
       }
     } catch (err) {
       setStatus("error");
+      if (err instanceof Error && !err.message.startsWith("HTTP ")) {
+        console.error("[구독 전송 실패] URL:", SUBSCRIBE_WEBHOOK_URL, "error:", err);
+      }
       alert("죄송합니다. 잠시 후 다시 시도해 주세요.");
     } finally {
       setStatus("idle");
