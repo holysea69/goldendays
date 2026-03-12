@@ -13,6 +13,14 @@ interface NewsItem {
   created_at: string;
 }
 
+const FEATURED_VIDEO_CONFIG = {
+  youtubeId: "voklZaAIJjc",
+  badgeLabel: "추천 영상",
+  title: "",
+  description: "",
+  isEnabled: true,
+};
+
 const categoryConfig = [
   { name: "전체", icon: "📋", bg: "bg-slate-100", bgActive: "bg-slate-700", border: "border-slate-300", text: "text-slate-700", textActive: "text-white" },
   { name: "복지", icon: "💙", bg: "bg-sky-50", bgActive: "bg-sky-600", border: "border-sky-200", text: "text-sky-800", textActive: "text-white" },
@@ -33,6 +41,8 @@ export default function NewsFeed() {
   const [subscribeEmail, setSubscribeEmail] = useState("");
   const [subscribeStatus, setSubscribeStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [jobMenuOpen, setJobMenuOpen] = useState(false);
+  const [featuredVideoMeta, setFeaturedVideoMeta] = useState<{ title?: string; description?: string } | null>(null);
+  const [featuredVideoLoading, setFeaturedVideoLoading] = useState(false);
 
   const jobLinks = [
     { label: "노인 일자리 여기", url: "https://www.seniorro.or.kr/noin/main.do" },
@@ -79,6 +89,20 @@ export default function NewsFeed() {
       setSubscribeStatus("idle");
     }
   };
+
+  // 유튜브 영상 메타데이터 자동 페칭 (noembed)
+  useEffect(() => {
+    if (!FEATURED_VIDEO_CONFIG.isEnabled || !FEATURED_VIDEO_CONFIG.youtubeId) return;
+    const url = `https://noembed.com/embed?url=https://www.youtube.com/watch?v=${FEATURED_VIDEO_CONFIG.youtubeId}`;
+    setFeaturedVideoLoading(true);
+    fetch(url)
+      .then((res) => res.json())
+      .then((data: { title?: string }) => {
+        setFeaturedVideoMeta({ title: data?.title ?? undefined });
+      })
+      .catch(() => setFeaturedVideoMeta(null))
+      .finally(() => setFeaturedVideoLoading(false));
+  }, [FEATURED_VIDEO_CONFIG.youtubeId, FEATURED_VIDEO_CONFIG.isEnabled]);
 
   // [핵심 로직 보존] 데이터 페칭
   useEffect(() => {
@@ -339,6 +363,39 @@ export default function NewsFeed() {
 
         {/* 3. 뉴스 카드 목록 (제목 전체 노출 수정) - 모바일 레이아웃 최적화 */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+          {FEATURED_VIDEO_CONFIG.isEnabled && (
+            <div className="group bg-white rounded-2xl sm:rounded-[32px] border-2 border-[#CBD5E1] shadow-xl overflow-hidden hover:shadow-2xl hover:border-[#94A3B8] hover:-translate-y-2 transition-all duration-300 flex flex-col min-h-[480px] h-full min-w-0">
+              {/* 영상 영역 - 전체 카드 높이의 정확히 1/2 */}
+              <div className="relative w-full flex-1 min-h-0 bg-[#0F172A] overflow-hidden">
+                <iframe
+                  src={`https://www.youtube.com/embed/${FEATURED_VIDEO_CONFIG.youtubeId}?rel=0`}
+                  title={FEATURED_VIDEO_CONFIG.title?.trim() || featuredVideoMeta?.title || FEATURED_VIDEO_CONFIG.badgeLabel}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="absolute inset-0 w-full h-full min-w-0 min-h-0"
+                />
+              </div>
+              {/* 텍스트 영역 - 전체 카드 높이의 1/2 (pt 최소화로 영상과 배지 간격 최소화) */}
+              <div className="flex-1 min-h-0 flex flex-col bg-white border-t border-slate-200/80 overflow-auto">
+                <div className="pt-2 sm:pt-3 px-10 pb-10 flex flex-col flex-1">
+                  {/* 배지 - badgeLabel만 사용 (날짜 없음) */}
+                  <span className="text-white text-xs sm:text-[13px] font-bold bg-orange-500 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-md w-fit mb-3 sm:mb-4">
+                    {FEATURED_VIDEO_CONFIG.badgeLabel}
+                  </span>
+                  {/* 제목 - 뉴스 카드와 동일한 폰트 크기 */}
+                  <h3 className="text-[18px] sm:text-[20px] md:text-[23px] font-bold text-[#0F172A] mb-3 sm:mb-5 leading-snug break-keep overflow-hidden">
+                    {featuredVideoLoading
+                      ? "영상 정보를 불러오는 중..."
+                      : (FEATURED_VIDEO_CONFIG.title?.trim() || featuredVideoMeta?.title || "")}
+                  </h3>
+                  {/* 설명 - 뉴스 카드 본문 요약과 동일한 폰트 크기 */}
+                  <p className="text-[#475569] text-[15px] sm:text-[17px] md:text-[18px] leading-[1.6] sm:leading-[1.75] break-keep line-clamp-3 font-medium">
+                    {FEATURED_VIDEO_CONFIG.description?.trim() || featuredVideoMeta?.description || ""}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
           {filteredNews.map((item, index) => (
             <div 
               key={item.id || index} 
