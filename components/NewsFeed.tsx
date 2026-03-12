@@ -375,21 +375,21 @@ export default function NewsFeed() {
                   className="absolute inset-0 w-full h-full min-w-0 min-h-0"
                 />
               </div>
-              {/* 텍스트 영역 - 전체 카드 높이의 1/2 (pt 최소화로 영상과 배지 간격 최소화) */}
+              {/* 텍스트 영역 - 뉴스 카드와 동일한 패딩(p-4 sm:p-6 md:p-8)으로 가로폭 확보 */}
               <div className="flex-1 min-h-0 flex flex-col bg-white border-t border-slate-200/80 overflow-auto">
-                <div className="pt-2 sm:pt-3 px-10 pb-10 flex flex-col flex-1">
+                <div className="pt-2 sm:pt-3 px-4 sm:px-6 md:px-8 pb-4 sm:pb-6 md:pb-8 flex flex-col flex-1 w-full min-w-0 text-left">
                   {/* 배지 - badgeLabel만 사용 (날짜 없음) */}
                   <span className="text-white text-xs sm:text-[13px] font-bold bg-orange-500 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-md w-fit mb-3 sm:mb-4">
                     {FEATURED_VIDEO_CONFIG.badgeLabel}
                   </span>
-                  {/* 제목 - 뉴스 카드와 동일한 폰트 크기 */}
-                  <h3 className="text-[18px] sm:text-[20px] md:text-[23px] font-bold text-[#0F172A] mb-3 sm:mb-5 leading-snug break-keep overflow-hidden">
+                  {/* 제목 - 뉴스 카드와 동일: 왼쪽 정렬, 카드 전체 가로폭 활용 */}
+                  <h3 className="text-[18px] sm:text-[20px] md:text-[23px] font-bold text-[#0F172A] mb-3 sm:mb-5 leading-snug break-keep overflow-hidden text-left w-full">
                     {featuredVideoLoading
                       ? "영상 정보를 불러오는 중..."
                       : (FEATURED_VIDEO_CONFIG.title?.trim() || featuredVideoMeta?.title || "")}
                   </h3>
-                  {/* 설명 - 뉴스 카드 본문 요약과 동일한 폰트 크기 */}
-                  <p className="text-[#475569] text-[15px] sm:text-[17px] md:text-[18px] leading-[1.6] sm:leading-[1.75] break-keep line-clamp-3 font-medium">
+                  {/* 설명 - 뉴스 카드 본문 요약과 동일한 폰트 크기, 왼쪽 정렬 */}
+                  <p className="text-[#475569] text-[15px] sm:text-[17px] md:text-[18px] leading-[1.6] sm:leading-[1.75] break-keep line-clamp-3 font-medium text-left w-full min-w-0">
                     {FEATURED_VIDEO_CONFIG.description?.trim() || featuredVideoMeta?.description || ""}
                   </p>
                 </div>
