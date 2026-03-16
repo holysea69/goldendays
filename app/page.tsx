@@ -1,3 +1,4 @@
+import Link from "next/link";
 import NewsFeedSection from "../components/NewsFeed";
 import ChatBot from "../components/ChatBot";
 
@@ -12,8 +13,11 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="py-20 text-center text-[#475569] font-semibold text-[17px] bg-white border-t-2 border-[#E2E8F0]">
-        <p>© 2026 골든데이즈. All rights reserved.</p>
+      <footer className="py-20 text-center bg-white border-t-2 border-[#E2E8F0]">
+        <p className="text-[#475569] font-semibold text-[17px]">© 2026 골든데이즈. All rights reserved.</p>
+        <Link href="/privacy" className="inline-block mt-3 text-slate-400 text-base hover:text-slate-600 hover:underline transition-colors">
+          개인정보처리방침
+        </Link>
       </footer>
 
       <ChatBot />
