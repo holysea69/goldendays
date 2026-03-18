@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import MorningBriefing from "./MorningBriefing";
 
 interface NewsItem {
   id: number;
@@ -229,9 +230,9 @@ export default function NewsFeed() {
   return (
     <main className="pb-20 font-sans">
       
-      {/* 1. 상단 헤더: 로고 + 타이틀 + 구독창 - 모바일 높이 축소 */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 py-4 sm:py-8 md:py-12 flex flex-col md:flex-row justify-between items-center md:items-end gap-4 sm:gap-6 md:gap-8 mb-4 sm:mb-8 md:mb-10 bg-gradient-to-br from-white via-[#FFFBEB] to-[#FEF3C7]/30 rounded-2xl md:rounded-3xl border border-amber-200/60 shadow-[0_8px_40px_-12px_rgba(201,152,42,0.15)]">
-        <div className="flex items-center gap-3 sm:gap-5 w-full md:w-auto justify-center md:justify-start">
+      {/* 1. 상단 헤더: 로고 + 타이틀 + 구독창 - 상단 여백 최소화 */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-5 md:px-8 pt-1.5 sm:pt-3 md:pt-4 pb-3 sm:pb-4 md:pb-5 flex flex-col md:flex-row justify-between items-stretch md:items-start gap-3 sm:gap-4 md:gap-5 mb-2 sm:mb-3 md:mb-4 bg-gradient-to-br from-white via-[#FFFBEB] to-[#FEF3C7]/30 rounded-2xl md:rounded-3xl border border-amber-200/60 shadow-[0_8px_40px_-12px_rgba(201,152,42,0.15)]">
+        <div className="flex items-start gap-3 sm:gap-4 w-full md:w-auto justify-start">
           {/* 골든데이즈 로고 - 따뜻한 골드 톤의 해/빛 */}
           <div className="flex-shrink-0 w-12 h-12 sm:w-[72px] sm:h-[72px] md:w-20 md:h-20">
             <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-md">
@@ -261,6 +262,9 @@ export default function NewsFeed() {
             </svg>
           </div>
           <div className="min-w-0 flex-1">
+            <p className="text-[11px] sm:text-xs md:text-sm text-amber-700/70 font-semibold tracking-[0.15em] uppercase mb-1">
+              오늘의 시니어 브리핑
+            </p>
             <h1 className="text-[26px] sm:text-[38px] md:text-[44px] font-black leading-tight tracking-tight">
               <span className="bg-gradient-to-r from-[#92400E] via-[#B45309] to-[#92400E] bg-clip-text text-transparent whitespace-nowrap" style={{ fontStyle: "italic", letterSpacing: "-0.02em" }}>
                 골든데이즈
@@ -272,7 +276,7 @@ export default function NewsFeed() {
           </div>
         </div>
 
-        <div className="w-full md:w-auto md:flex-shrink-0 flex flex-col items-end gap-2 sm:gap-3">
+        <div className="w-full md:w-auto md:flex-shrink-0 flex flex-col items-end gap-2 sm:gap-2.5">
           <form onSubmit={handleSubscribe} className="flex items-center bg-white/90 backdrop-blur-sm border border-amber-200 rounded-lg sm:rounded-xl md:rounded-2xl px-2 sm:px-3 py-1.5 sm:py-2 shadow-lg shadow-amber-900/5 w-full min-w-0 md:min-w-[340px]">
             <input 
               type="email" 
@@ -291,7 +295,7 @@ export default function NewsFeed() {
               {subscribeStatus === "loading" ? "전송 중..." : "구독하기"}
             </button>
           </form>
-          <div className="flex flex-row w-full sm:w-auto gap-2 sm:gap-3 items-stretch justify-stretch sm:justify-end flex-nowrap">
+          <div className="flex flex-row w-full sm:w-auto gap-2 sm:gap-2.5 items-stretch justify-stretch sm:justify-end flex-nowrap">
             <div ref={jobMenuRef} className="relative flex-1 sm:flex-initial min-w-0">
               <button
                 type="button"
@@ -328,11 +332,17 @@ export default function NewsFeed() {
               소통방(게시판)
             </Link>
           </div>
+
+          {/* 조간 브리핑 버튼 (일자리 찾기/소통방 바로 아래) */}
+          <div className="w-full sm:w-auto mt-1 sm:mt-1.5 flex justify-stretch sm:justify-end">
+            <div className="w-full sm:w-[260px]">
+              <MorningBriefing />
+            </div>
+          </div>
         </div>
       </div>
 
       <section className="max-w-6xl mx-auto px-4 sm:px-6">
-        
         {/* 2. 카테고리 필터 영역 - 모바일: 가로 스크롤/높이 축소, 데스크톱: 2행 4열 그리드 */}
         <div className="bg-gradient-to-br from-white to-amber-50/30 border border-amber-200/60 p-2 sm:p-4 rounded-xl sm:rounded-2xl mb-4 sm:mb-8 md:mb-10 shadow-[0_4px_20px_-4px_rgba(201,152,42,0.12)] -mx-4 sm:mx-0 overflow-visible">
           <div className="flex flex-nowrap gap-1.5 sm:gap-2 overflow-x-auto overflow-y-hidden scrollbar-hide pb-1.5 sm:pb-2 -mx-2 pl-2 pr-4 sm:mx-0 sm:px-0 md:grid md:grid-cols-4 md:flex-none md:overflow-visible md:pb-0 md:pr-0">
