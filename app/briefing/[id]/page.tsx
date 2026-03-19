@@ -7,6 +7,7 @@ import { Newspaper } from "lucide-react";
 
 interface MorningBriefingItem {
   id: string | number;
+  title?: string;
   date: string;
   news_brief: string;
   created_at?: string;
