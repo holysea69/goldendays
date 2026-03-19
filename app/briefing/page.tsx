@@ -67,7 +67,7 @@ export default function BriefingPage() {
 
         {loading && (
           <div className="rounded-2xl bg-white/80 border border-slate-200 p-6 text-center text-slate-500 text-base sm:text-lg">
-            석간 브리핑을 불러오는 중입니다...
+            뉴스 브리핑을 불러오는 중입니다.
           </div>
         )}
 

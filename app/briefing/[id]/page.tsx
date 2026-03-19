@@ -103,7 +103,7 @@ export default function BriefingDetailPage() {
     return (
       <main className="min-h-screen bg-[#E5EDF7] flex items-center justify-center p-6">
         <div className="rounded-2xl bg-white/80 border border-slate-200 p-6 text-slate-600 text-base font-semibold">
-          석간 브리핑을 불러오는 중입니다...
+          뉴스 브리핑을 불러오는 중입니다.
         </div>
       </main>
     );
