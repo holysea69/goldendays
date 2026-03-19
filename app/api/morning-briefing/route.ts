@@ -18,6 +18,7 @@ export async function GET() {
     const mapped =
       (data || []).map((row: any) => ({
         id: row.id,
+        title: row.title,
         date: row.created_at,
         news_brief: row.content,
         created_at: row.created_at,

@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { Newspaper } from "lucide-react";
 
-const BRIEFING_LABEL = "\uD83D\uDCF0 \uC870\uAC04 \uBE0C\uB9AC\uD551";
+const BRIEFING_LABEL = "\uD83D\uDCF0 \uB274\uC2A4 \uBE0C\uB9AC\uD551";
 
 export default function MorningBriefing() {
   return (
