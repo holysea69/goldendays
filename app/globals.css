@@ -44,10 +44,10 @@ body {
   background-color: var(--golden-beige);
   font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic',
     '나눔고딕', sans-serif;
+  font-weight: 500; /* Noto Sans KR Medium */
   color: var(--golden-text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-weight: 500; /* 기본 글자 두께로 가독성 향상 */
 }
 
 /* 🟢 [수정] Next.js 루트 div도 높이 제한을 해제합니다. */

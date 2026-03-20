@@ -1,5 +1,13 @@
 import type { Metadata } from "next";
+import { Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
+
+const notoSansKR = Noto_Sans_KR({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  variable: "--font-noto-sans-kr",
+});
 
 export const metadata: Metadata = {
   title: "골든데이즈 - 시니어 전용 복지·건강·재테크 플랫폼",
@@ -14,9 +22,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    // 폰트(notoSansKR) 적용 코드를 모두 제거한 순수한 HTML입니다.
-    <html lang="ko">
-      <body>{children}</body>
+    <html lang="ko" className={notoSansKR.variable}>
+      <body className={`${notoSansKR.className} font-medium`}>{children}</body>
     </html>
   );
 }
