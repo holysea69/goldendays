@@ -114,6 +114,15 @@ export default function BriefingPage() {
             ← 메인으로
           </Link>
         </div>
+
+        <footer className="mt-10 sm:mt-14 pt-8 border-t border-slate-200/80 text-center">
+          <p className="text-sm sm:text-base text-slate-700">
+            © 2026 Golden Days. 본 브리핑은 기획자가 직접 검수한 콘텐츠입니다.
+          </p>
+          <p className="mt-[10px] text-[11px] text-[#666] opacity-80">
+            App Version 1.0.1 (Build 2) | 안정성 업데이트 완료
+          </p>
+        </footer>
       </div>
     </main>
   );
