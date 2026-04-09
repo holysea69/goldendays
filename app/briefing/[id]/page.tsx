@@ -246,8 +246,8 @@ ${String.raw`
     background: var(--paper);
     color: var(--ink);
     font-family: var(--sans);
-    font-size: 15px;
-    line-height: 1.75;
+    font-size: 15.5px;
+    line-height: 1.8;
     min-height: 100vh;
   }
 
@@ -787,7 +787,8 @@ ${String.raw`
 </main>
 
 <footer>
-<p>석간 브리핑 · ${escapeHtml(footerDateText)} · 편집 기준 오후 12시 이후 &nbsp; |&nbsp; 본 브리핑은 각 언론사 보도를 바탕으로 편집되었습니다</p>
+<p>© 2026 Golden Days. 본 브리핑은 기획자가 직접 검수한 콘텐츠입니다.</p>
+<p style="margin-top: 10px; font-size: 11px; color: #666; opacity: 0.8;">App Version 1.0.2 (Build 3) | 가독성 최적화 및 안정성 향상</p>
 </footer>
 
 </body>
