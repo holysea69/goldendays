@@ -235,15 +235,15 @@ export default function NewsFeed() {
           1. 스티키 네비게이션
       ══════════════════════════════════════════ */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-slate-200 shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14 sm:h-16 gap-4">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16 sm:h-20 gap-4">
           {/* 로고 */}
-          <div className="flex items-center gap-2.5 flex-shrink-0">
-            <SunLogo size={34} />
+          <div className="flex items-center gap-3 flex-shrink-0">
+            <SunLogo size={44} />
             <div>
-              <div className="text-[15px] sm:text-[17px] font-black italic text-amber-700 leading-tight" style={{ letterSpacing: "-0.02em" }}>
+              <div className="text-[18px] sm:text-[21px] font-black italic text-amber-700 leading-tight" style={{ letterSpacing: "-0.02em" }}>
                 골든데이즈
               </div>
-              <div className="hidden sm:block text-[10px] text-slate-400 font-medium leading-tight">
+              <div className="hidden sm:block text-[12px] text-slate-400 font-medium leading-tight">
                 시니어 정보 플랫폼
               </div>
             </div>
@@ -252,7 +252,7 @@ export default function NewsFeed() {
           {/* 구독 CTA */}
           <button
             onClick={() => document.getElementById("subscribe-section")?.scrollIntoView({ behavior: "smooth" })}
-            className="flex-shrink-0 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-[13px] sm:text-[14px] font-bold px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-lg transition-all shadow-sm"
+            className="flex-shrink-0 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-[15px] sm:text-[16px] font-bold px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg transition-all shadow-sm"
           >
             뉴스레터 구독
           </button>
@@ -264,16 +264,16 @@ export default function NewsFeed() {
       ══════════════════════════════════════════ */}
       <section className="bg-gradient-to-br from-amber-50 via-white to-emerald-50 px-4 sm:px-6 py-10 sm:py-14 border-b border-slate-100">
         <div className="max-w-3xl mx-auto text-center">
-          <span className="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-800 text-[12px] sm:text-[13px] font-bold px-3.5 py-1.5 rounded-full mb-5 border border-emerald-200">
+          <span className="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-800 text-[14px] sm:text-[16px] font-bold px-4 py-2 rounded-full mb-5 border border-emerald-200">
             ✦ 시니어를 위한 따뜻한 최신 정보
           </span>
-          <h1 className="text-[26px] sm:text-[34px] md:text-[40px] font-black text-slate-900 leading-tight mb-3 break-keep">
+          <h1 className="text-[30px] sm:text-[38px] md:text-[46px] font-black text-slate-900 leading-tight mb-4 break-keep">
             황금기를 더 알차게,{" "}
             <span className="italic bg-gradient-to-r from-amber-700 to-amber-500 bg-clip-text text-transparent">
               골든데이즈
             </span>
           </h1>
-          <p className="text-[15px] sm:text-[17px] text-slate-500 font-medium leading-relaxed mb-8 break-keep">
+          <p className="text-[17px] sm:text-[20px] text-slate-500 font-medium leading-relaxed mb-8 break-keep">
             복지 혜택부터 건강, 재테크, 일자리까지<br />
             50+ 세대에 꼭 필요한 정보를 매일 전해드립니다.
           </p>
@@ -283,7 +283,7 @@ export default function NewsFeed() {
             {/* 주 CTA */}
             <Link
               href="/briefing"
-              className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold text-[15px] sm:text-[16px] px-5 sm:px-7 py-3 rounded-xl shadow-md hover:shadow-lg transition-all"
+              className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold text-[17px] sm:text-[18px] px-6 sm:px-8 py-3.5 rounded-xl shadow-md hover:shadow-lg transition-all"
             >
               <Newspaper className="w-4 h-4 sm:w-5 sm:h-5" />
               뉴스 브리핑
@@ -294,7 +294,7 @@ export default function NewsFeed() {
               <button
                 type="button"
                 onClick={(e) => { e.stopPropagation(); setJobMenuOpen(v => !v); }}
-                className="inline-flex items-center gap-2 bg-white hover:bg-slate-50 active:scale-95 text-slate-700 font-bold text-[15px] sm:text-[16px] px-5 sm:px-7 py-3 rounded-xl border-2 border-slate-200 shadow-sm hover:shadow transition-all"
+                className="inline-flex items-center gap-2 bg-white hover:bg-slate-50 active:scale-95 text-slate-700 font-bold text-[17px] sm:text-[18px] px-6 sm:px-8 py-3.5 rounded-xl border-2 border-slate-200 shadow-sm hover:shadow transition-all"
                 aria-expanded={jobMenuOpen}
                 aria-haspopup="true"
               >
@@ -309,7 +309,7 @@ export default function NewsFeed() {
                       href={item.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="block py-3.5 px-5 text-[15px] font-bold text-slate-700 hover:bg-amber-50 border-b border-amber-100 last:border-b-0 transition-colors"
+                      className="block py-4 px-5 text-[16px] font-bold text-slate-700 hover:bg-amber-50 border-b border-amber-100 last:border-b-0 transition-colors"
                       onClick={() => setJobMenuOpen(false)}
                     >
                       {item.label}
@@ -322,7 +322,7 @@ export default function NewsFeed() {
             {/* 3순위 CTA */}
             <Link
               href="/board"
-              className="inline-flex items-center gap-2 bg-white hover:bg-slate-50 active:scale-95 text-slate-500 font-semibold text-[15px] sm:text-[16px] px-5 sm:px-7 py-3 rounded-xl border border-slate-200 transition-all"
+              className="inline-flex items-center gap-2 bg-white hover:bg-slate-50 active:scale-95 text-slate-500 font-semibold text-[17px] sm:text-[18px] px-6 sm:px-8 py-3.5 rounded-xl border border-slate-200 transition-all"
             >
               <span>💬</span>
               소통방
@@ -334,7 +334,7 @@ export default function NewsFeed() {
       {/* ══════════════════════════════════════════
           3. 카테고리 탭 (스티키, 가로 스크롤)
       ══════════════════════════════════════════ */}
-      <div className="sticky top-14 sm:top-16 z-40 bg-white border-b border-slate-200 shadow-[0_1px_0_0_#e2e8f0]">
+      <div className="sticky top-16 sm:top-20 z-40 bg-white border-b border-slate-200 shadow-[0_1px_0_0_#e2e8f0]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="flex gap-2 overflow-x-auto scrollbar-hide py-3">
             {categoryConfig.map(cat => {
@@ -346,9 +346,9 @@ export default function NewsFeed() {
                     href={cat.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-[13px] sm:text-[14px] font-bold border transition-all bg-rose-50 border-rose-200 text-rose-700 hover:bg-rose-600 hover:text-white hover:border-rose-600 whitespace-nowrap"
+                    className="flex-shrink-0 inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full text-[15px] sm:text-[16px] font-bold border transition-all bg-rose-50 border-rose-200 text-rose-700 hover:bg-rose-600 hover:text-white hover:border-rose-600 whitespace-nowrap"
                   >
-                    <span className="text-[15px]">{cat.icon}</span>
+                    <span className="text-[18px]">{cat.icon}</span>
                     {cat.name}
                   </a>
                 );
@@ -357,13 +357,13 @@ export default function NewsFeed() {
                 <button
                   key={cat.name}
                   onClick={() => handleCategoryClick(cat.name)}
-                  className={`flex-shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-[13px] sm:text-[14px] font-bold border transition-all whitespace-nowrap ${
+                  className={`flex-shrink-0 inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full text-[15px] sm:text-[16px] font-bold border transition-all whitespace-nowrap ${
                     isActive
                       ? `${"bgActive" in cat ? cat.bgActive : "bg-slate-700"} text-white border-transparent shadow-sm`
                       : `${cat.bg} ${cat.text} ${cat.border} hover:opacity-75`
                   }`}
                 >
-                  <span className="text-[15px]">{cat.icon}</span>
+                  <span className="text-[18px]">{cat.icon}</span>
                   {cat.name}
                 </button>
               );
@@ -397,10 +397,10 @@ export default function NewsFeed() {
                 )}
               </div>
               <div className="p-5 flex-1 flex flex-col">
-                <span className="inline-block bg-rose-50 text-rose-700 border border-rose-200 text-[12px] font-bold px-3 py-1 rounded-full mb-3 w-fit">
+                <span className="inline-block bg-rose-50 text-rose-700 border border-rose-200 text-[14px] font-bold px-3 py-1.5 rounded-full mb-3 w-fit">
                   ▶ 추천 영상
                 </span>
-                <h3 className="text-[16px] sm:text-[18px] font-bold text-slate-800 leading-snug break-keep flex-1">
+                <h3 className="text-[18px] sm:text-[21px] font-bold text-slate-800 leading-snug break-keep flex-1">
                   {featuredVideoLoading ? "영상 불러오는 중..." : (featuredVideo?.title || "")}
                 </h3>
               </div>
@@ -416,26 +416,26 @@ export default function NewsFeed() {
             >
               <div className="p-5 sm:p-6 flex-1 flex flex-col">
                 <div className="flex items-center justify-between mb-3 gap-2">
-                  <span className={`inline-block text-[12px] font-bold px-3 py-1 rounded-full flex-shrink-0 ${getCategoryBadge(item.category)}`}>
+                  <span className={`inline-block text-[14px] font-bold px-3 py-1.5 rounded-full flex-shrink-0 ${getCategoryBadge(item.category)}`}>
                     {item.category}
                   </span>
-                  <span className="text-[12px] text-slate-400 flex-shrink-0">
+                  <span className="text-[13px] text-slate-400 flex-shrink-0">
                     {new Date(item.created_at).toLocaleDateString()}
                   </span>
                 </div>
 
-                <h3 className="text-[17px] sm:text-[19px] font-bold text-slate-900 leading-snug mb-3 break-keep group-hover:text-emerald-700 transition-colors line-clamp-2 flex-shrink-0">
+                <h3 className="text-[19px] sm:text-[21px] font-bold text-slate-900 leading-snug mb-3 break-keep group-hover:text-emerald-700 transition-colors line-clamp-2 flex-shrink-0">
                   {getCleanTitle(item.title)}
                 </h3>
 
-                <p className="text-[14px] sm:text-[15px] text-slate-500 leading-relaxed flex-1 line-clamp-3 break-keep font-medium min-w-0">
+                <p className="text-[16px] sm:text-[17px] text-slate-500 leading-relaxed flex-1 line-clamp-3 break-keep font-medium min-w-0">
                   {stripHtml(item.content)}
                 </p>
 
                 <div className="mt-4 pt-4 border-t border-slate-100 flex justify-between items-center flex-shrink-0">
-                  <span className="text-[12px] text-slate-400 truncate mr-2">{item.source}</span>
-                  <span className="text-[13px] font-bold text-emerald-600 flex items-center gap-0.5 flex-shrink-0">
-                    자세히 보기 <span className="text-base">›</span>
+                  <span className="text-[13px] text-slate-400 truncate mr-2">{item.source}</span>
+                  <span className="text-[15px] font-bold text-emerald-600 flex items-center gap-0.5 flex-shrink-0">
+                    자세히 보기 <span className="text-lg">›</span>
                   </span>
                 </div>
               </div>
@@ -449,9 +449,9 @@ export default function NewsFeed() {
       ══════════════════════════════════════════ */}
       <section id="subscribe-section" className="bg-emerald-800 text-white py-12 sm:py-16 px-4 sm:px-6">
         <div className="max-w-2xl mx-auto text-center">
-          <div className="text-3xl mb-3">📬</div>
-          <h2 className="text-[20px] sm:text-[24px] font-black mb-2">무료 뉴스레터 구독</h2>
-          <p className="text-emerald-200 text-[14px] sm:text-[16px] mb-8 font-medium leading-relaxed">
+          <div className="text-4xl mb-4">📬</div>
+          <h2 className="text-[24px] sm:text-[28px] font-black mb-3">무료 뉴스레터 구독</h2>
+          <p className="text-emerald-200 text-[16px] sm:text-[18px] mb-8 font-medium leading-relaxed">
             매일 아침, 꼭 알아야 할 시니어 정보를 이메일로 전해드립니다.
           </p>
           <form
@@ -463,14 +463,14 @@ export default function NewsFeed() {
               value={subscribeEmail}
               onChange={e => setSubscribeEmail(e.target.value)}
               placeholder="이메일 주소를 입력해 주세요"
-              className="flex-1 px-4 py-3 sm:py-3.5 rounded-xl bg-white/15 border border-white/30 text-white placeholder:text-emerald-300 font-medium text-[15px] focus:outline-none focus:border-white focus:bg-white/20 transition-colors"
+              className="flex-1 px-4 py-3.5 rounded-xl bg-white/15 border border-white/30 text-white placeholder:text-emerald-300 font-medium text-[17px] focus:outline-none focus:border-white focus:bg-white/20 transition-colors"
               required
               disabled={subscribeStatus === "loading"}
             />
             <button
               type="submit"
               disabled={subscribeStatus === "loading"}
-              className="flex-shrink-0 bg-amber-400 hover:bg-amber-300 active:scale-95 text-amber-900 font-black text-[15px] px-6 py-3 sm:py-3.5 rounded-xl transition-all shadow-md disabled:opacity-60"
+              className="flex-shrink-0 bg-amber-400 hover:bg-amber-300 active:scale-95 text-amber-900 font-black text-[17px] px-7 py-3.5 rounded-xl transition-all shadow-md disabled:opacity-60"
             >
               {subscribeStatus === "loading" ? "전송 중..." : "구독하기"}
             </button>
@@ -487,27 +487,27 @@ export default function NewsFeed() {
           <div className="sm:hidden fixed inset-0 bg-black/70 z-[2000] flex flex-col justify-end modal-overlay">
             <div className="bg-white w-full max-h-[95vh] rounded-t-3xl border-t border-x border-slate-200 overflow-hidden flex flex-col modal-content">
               <div className="p-4 border-b border-slate-200 flex justify-between items-center bg-slate-50 flex-shrink-0">
-                <span className={`inline-block text-[13px] font-bold px-3 py-1.5 rounded-full ${getCategoryBadge(selectedNews.category)}`}>
+                <span className={`inline-block text-[15px] font-bold px-3 py-1.5 rounded-full ${getCategoryBadge(selectedNews.category)}`}>
                   {selectedNews.category}
                 </span>
                 <button
                   onClick={() => setSelectedNews(null)}
-                  className="w-9 h-9 flex items-center justify-center rounded-full bg-white border border-slate-200 text-slate-500 text-lg"
+                  className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-slate-200 text-slate-500 text-xl"
                 >✕</button>
               </div>
               <div className="p-5 flex-1 min-h-0 overflow-y-auto">
-                <h2 className="text-[20px] font-bold text-slate-900 mb-4 leading-tight break-keep">
+                <h2 className="text-[22px] font-bold text-slate-900 mb-4 leading-tight break-keep">
                   {getCleanTitle(selectedNews.title)}
                 </h2>
-                <div className="flex items-center gap-3 text-slate-400 text-[13px] mb-5 border-b border-slate-100 pb-4">
+                <div className="flex items-center gap-3 text-slate-400 text-[15px] mb-5 border-b border-slate-100 pb-4">
                   <span>{new Date(selectedNews.created_at).toLocaleDateString()}</span>
                   <span>|</span>
                   <span className="font-semibold text-slate-600">출처: {selectedNews.source}</span>
                 </div>
-                <div className="text-slate-700 text-[16px] leading-[1.85] break-keep space-y-4">
+                <div className="text-slate-700 text-[17px] leading-[1.9] break-keep space-y-4">
                   {formatArticleContent(selectedNews.content).map((paragraph, i) => (
                     <div key={i} className="flex gap-2 items-start">
-                      <span className="flex-shrink-0 flex items-center gap-1 text-base" aria-hidden>
+                      <span className="flex-shrink-0 flex items-center gap-1 text-lg" aria-hidden>
                         <span className="text-amber-600 font-bold">{(i % 10) + 1}.</span>
                         <span>{emojis[i % emojis.length]}</span>
                       </span>
@@ -519,14 +519,14 @@ export default function NewsFeed() {
               <div className="p-4 bg-white border-t border-slate-200 flex gap-3 flex-shrink-0">
                 <button
                   onClick={() => setSelectedNews(null)}
-                  className="flex-1 py-3 bg-slate-100 text-slate-600 border border-slate-200 rounded-xl font-bold text-[15px] hover:bg-slate-200 transition-colors"
+                  className="flex-1 py-3.5 bg-slate-100 text-slate-600 border border-slate-200 rounded-xl font-bold text-[17px] hover:bg-slate-200 transition-colors"
                 >닫기</button>
                 {selectedNews.url?.trim() && selectedNews.url?.trim() !== "#" && selectedNews.source?.trim() !== "골든데이즈 AI" && (
                   <a
                     href={selectedNews.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 py-3 bg-emerald-600 text-white rounded-xl font-bold text-[15px] text-center hover:bg-emerald-700 transition-colors"
+                    className="flex-1 py-3.5 bg-emerald-600 text-white rounded-xl font-bold text-[17px] text-center hover:bg-emerald-700 transition-colors"
                   >기사 원문 보기</a>
                 )}
               </div>
@@ -537,27 +537,27 @@ export default function NewsFeed() {
           <div className="hidden sm:flex fixed inset-0 bg-black/70 items-center justify-center z-[2000] p-4 modal-overlay">
             <div className="bg-white w-full max-w-2xl rounded-3xl shadow-2xl border border-slate-200 overflow-hidden modal-content">
               <div className="p-7 border-b border-slate-200 flex justify-between items-center bg-slate-50">
-                <span className={`inline-block text-[14px] font-bold px-4 py-2 rounded-full ${getCategoryBadge(selectedNews.category)}`}>
+                <span className={`inline-block text-[16px] font-bold px-4 py-2 rounded-full ${getCategoryBadge(selectedNews.category)}`}>
                   {selectedNews.category}
                 </span>
                 <button
                   onClick={() => setSelectedNews(null)}
-                  className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-slate-200 text-slate-500 text-xl hover:text-slate-900 hover:border-slate-300 shadow-sm transition-colors"
+                  className="w-11 h-11 flex items-center justify-center rounded-full bg-white border border-slate-200 text-slate-500 text-2xl hover:text-slate-900 hover:border-slate-300 shadow-sm transition-colors"
                 >✕</button>
               </div>
               <div className="p-8 max-h-[65vh] overflow-y-auto">
-                <h2 className="text-[26px] font-bold text-slate-900 mb-5 leading-tight break-keep">
+                <h2 className="text-[28px] font-bold text-slate-900 mb-5 leading-tight break-keep">
                   {getCleanTitle(selectedNews.title)}
                 </h2>
-                <div className="flex items-center gap-3 text-slate-400 text-[15px] mb-8 border-b border-slate-100 pb-5">
+                <div className="flex items-center gap-3 text-slate-400 text-[16px] mb-8 border-b border-slate-100 pb-5">
                   <span>{new Date(selectedNews.created_at).toLocaleDateString()}</span>
                   <span>|</span>
                   <span className="font-semibold text-slate-600">출처: {selectedNews.source}</span>
                 </div>
-                <div className="text-slate-700 text-[19px] sm:text-[20px] leading-[1.9] break-keep space-y-5">
+                <div className="text-slate-700 text-[20px] sm:text-[21px] leading-[2.0] break-keep space-y-5">
                   {formatArticleContent(selectedNews.content).map((paragraph, i) => (
                     <div key={i} className="flex gap-3 items-start">
-                      <span className="flex-shrink-0 flex items-center gap-1.5 text-xl" aria-hidden>
+                      <span className="flex-shrink-0 flex items-center gap-1.5 text-2xl" aria-hidden>
                         <span className="text-amber-600 font-bold">{(i % 10) + 1}.</span>
                         <span>{emojis[i % emojis.length]}</span>
                       </span>
@@ -569,14 +569,14 @@ export default function NewsFeed() {
               <div className="p-7 bg-white border-t border-slate-200 flex gap-4">
                 <button
                   onClick={() => setSelectedNews(null)}
-                  className="flex-1 py-4 bg-slate-100 text-slate-600 border border-slate-200 rounded-2xl font-bold text-[17px] hover:bg-slate-200 transition-colors"
+                  className="flex-1 py-4 bg-slate-100 text-slate-600 border border-slate-200 rounded-2xl font-bold text-[18px] hover:bg-slate-200 transition-colors"
                 >닫기</button>
                 {selectedNews.url?.trim() && selectedNews.url?.trim() !== "#" && selectedNews.source?.trim() !== "골든데이즈 AI" && (
                   <a
                     href={selectedNews.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 py-4 bg-emerald-600 text-white rounded-2xl font-bold text-[17px] text-center shadow hover:bg-emerald-700 transition-colors"
+                    className="flex-1 py-4 bg-emerald-600 text-white rounded-2xl font-bold text-[18px] text-center shadow hover:bg-emerald-700 transition-colors"
                   >기사 원문 보기</a>
                 )}
               </div>

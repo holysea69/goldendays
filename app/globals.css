@@ -44,7 +44,7 @@
 
 html {
   min-height: 100%;
-  font-size: 17px; /* 시니어 가독성 */
+  font-size: 18px; /* 시니어 가독성 — 일반 사이트보다 20% 크게 */
   scroll-behavior: smooth;
 }
 
