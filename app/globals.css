@@ -10,15 +10,28 @@
 }
 
 :root {
-  --golden-blue: #0046ff;
-  --golden-blue-dark: #0035cc;
-  --golden-blue-light: #e8f0ff;
-  --golden-beige: #faf8f3;
-  --golden-beige-dark: #ede8df;
-  --golden-beige-card: #fffdf9;
-  --golden-gold: #c8982a;
-  --golden-text: #1a1a2e;
-  --golden-text-muted: #5a5a7a;
+  /* 메인 컬러: 에메랄드 그린 */
+  --primary:         #059669;
+  --primary-dark:    #047857;
+  --primary-light:   #d1fae5;
+
+  /* 브랜드 골드 (로고·강조) */
+  --gold:            #d97706;
+  --gold-light:      #fef3c7;
+
+  /* 텍스트 */
+  --text-primary:    #0f172a;
+  --text-secondary:  #475569;
+  --text-muted:      #94a3b8;
+
+  /* 배경 */
+  --bg-page:         #f8fafc;
+  --bg-card:         #ffffff;
+  --bg-subtle:       #f1f5f9;
+
+  /* 테두리 */
+  --border:          #e2e8f0;
+  --border-strong:   #cbd5e1;
 }
 
 *,
@@ -29,143 +42,118 @@
   padding: 0;
 }
 
-/* 🟢 [수정] 스크롤 허용을 위해 height 제한을 풀고 최소 높이만 설정합니다. */
 html {
   min-height: 100%;
-  font-size: 17px; /* 시니어 가독성을 위해 기본 크기 확대 */
+  font-size: 17px; /* 시니어 가독성 */
   scroll-behavior: smooth;
 }
 
 body {
-  /* 🟢 [수정] overflow: hidden 제거! 이제 스크롤이 됩니다. */
   min-height: 100vh;
-  overflow-y: auto; 
-  overflow-x: hidden; /* 가로 흔들림 방지 */
-  background-color: var(--golden-beige);
-  font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic',
-    '나눔고딕', sans-serif;
-  font-weight: 500; /* Noto Sans KR Medium */
-  color: var(--golden-text);
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: var(--bg-page);
+  font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', '나눔고딕', sans-serif;
+  font-weight: 500;
+  color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* 🟢 [수정] Next.js 루트 div도 높이 제한을 해제합니다. */
 #__next,
 [data-nextjs-router] {
   min-height: 100%;
 }
 
-/* --- 스크롤바 스타일 (유지) --- */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--golden-beige-dark);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #b0b8d0;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--golden-blue);
-}
+/* ── 스크롤바 ── */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-subtle); border-radius: 4px; }
+::-webkit-scrollbar-thumb { background: #b0b8d0; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
+.scrollbar-hide::-webkit-scrollbar { display: none; }
 
-/* --- 애니메이션 및 기타 스타일 (유지) --- */
-@keyframes scrollUp {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-50%); }
-}
-
-.news-scroll-wrapper {
-  animation: scrollUp 60s linear infinite;
-}
-
-.news-scroll-wrapper:hover {
-  animation-play-state: paused;
-}
-
-@keyframes micPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(0, 70, 255, 0.4); }
-  50% { box-shadow: 0 0 0 14px rgba(0, 70, 255, 0); }
-}
-
-.mic-recording {
-  animation: micPulse 1.5s ease-in-out infinite;
-}
-
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.chat-bubble {
-  animation: slideUp 0.35s ease-out;
-}
-
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-.modal-overlay { animation: fadeIn 0.2s ease-out; }
-
-@keyframes slideUpModal {
-  from { opacity: 0; transform: scale(0.95) translateY(20px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
-}
-
-.modal-content { animation: slideUpModal 0.3s ease-out; }
-
+/* ── 뉴스 카드 호버 ── */
 .news-card {
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   cursor: pointer;
 }
-
 .news-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0, 70, 255, 0.18);
+  box-shadow: 0 12px 32px rgba(5, 150, 105, 0.12);
 }
 
-@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
-@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+/* ── 모달 애니메이션 ── */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.modal-overlay { animation: fadeIn 0.2s ease-out; }
 
+@keyframes slideUpModal {
+  from { opacity: 0; transform: scale(0.96) translateY(16px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.modal-content { animation: slideUpModal 0.28s ease-out; }
+
+/* ── 챗봇 마이크 애니메이션 ── */
+@keyframes micPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(5, 150, 105, 0.4); }
+  50%       { box-shadow: 0 0 0 14px rgba(5, 150, 105, 0); }
+}
+.mic-recording { animation: micPulse 1.5s ease-in-out infinite; }
+
+/* ── 챗봇 버블 ── */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.chat-bubble { animation: slideUp 0.35s ease-out; }
+
+/* ── 타이핑 인디케이터 ── */
 @keyframes typingDot {
   0%, 60%, 100% { opacity: 0.2; transform: translateY(0); }
-  30% { opacity: 1; transform: translateY(-6px); }
+  30%           { opacity: 1;   transform: translateY(-6px); }
 }
-
 .typing-dot:nth-child(1) { animation: typingDot 1.2s infinite 0s; }
 .typing-dot:nth-child(2) { animation: typingDot 1.2s infinite 0.2s; }
 .typing-dot:nth-child(3) { animation: typingDot 1.2s infinite 0.4s; }
 
-@keyframes progressSlide {
-  0% { width: 0%; margin-left: 0%; }
-  50% { width: 60%; margin-left: 20%; }
-  100% { width: 0%; margin-left: 100%; }
-}
+/* ── 스핀 / 펄스 ── */
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-/* --- n8n 콘텐츠 스타일 (유지) --- */
-.n8n-html-content h1, .n8n-html-content h2, .n8n-html-content h3 {
-  font-size: 1.4rem; font-weight: 800; color: #1a1a2e; margin: 1.2em 0 0.6em; line-height: 1.4;
+/* ── n8n HTML 콘텐츠 ── */
+.n8n-html-content h1,
+.n8n-html-content h2,
+.n8n-html-content h3 {
+  font-size: 1.4rem; font-weight: 800; color: var(--text-primary);
+  margin: 1.2em 0 0.6em; line-height: 1.4;
 }
 .n8n-html-content p {
-  font-size: 1.35rem; color: #2a2a4a; line-height: 2.0; margin-bottom: 1.1em; word-break: keep-all;
+  font-size: 1.3rem; color: #2a2a4a; line-height: 2.0;
+  margin-bottom: 1.1em; word-break: keep-all;
 }
-.n8n-html-content ul, .n8n-html-content ol { padding-left: 1.6em; margin-bottom: 1.1em; }
-.n8n-html-content li { font-size: 1.3rem; color: #2a2a4a; line-height: 1.9; margin-bottom: 0.4em; }
-.n8n-html-content strong, .n8n-html-content b { font-weight: 800; color: #0046ff; }
-.n8n-html-content a { color: #0046ff; text-decoration: underline; }
-.n8n-html-content hr { border: none; border-top: 1.5px solid #e0d9cf; margin: 1.4em 0; }
+.n8n-html-content ul,
+.n8n-html-content ol { padding-left: 1.6em; margin-bottom: 1.1em; }
+.n8n-html-content li { font-size: 1.25rem; color: #2a2a4a; line-height: 1.9; margin-bottom: 0.4em; }
+.n8n-html-content strong,
+.n8n-html-content b { font-weight: 800; color: var(--primary); }
+.n8n-html-content a { color: var(--primary); text-decoration: underline; }
+.n8n-html-content hr { border: none; border-top: 1.5px solid var(--border); margin: 1.4em 0; }
 .n8n-html-content blockquote {
-  border-left: 5px solid #0046ff; background: #f0f4ff; border-radius: 0 12px 12px 0;
-  padding: 12px 18px; margin: 1em 0; font-size: 1.25rem; color: #0046ff; font-weight: 700;
+  border-left: 5px solid var(--primary);
+  background: var(--primary-light);
+  border-radius: 0 12px 12px 0;
+  padding: 12px 18px; margin: 1em 0;
+  font-size: 1.2rem; color: var(--primary-dark); font-weight: 700;
 }
+
+/* ── 뉴스 스크롤 (자동 스크롤 보존) ── */
+@keyframes scrollUp {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+.news-scroll-wrapper { animation: scrollUp 60s linear infinite; }
+.news-scroll-wrapper:hover { animation-play-state: paused; }
