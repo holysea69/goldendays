@@ -262,7 +262,7 @@ export default function NewsFeed() {
       {/* ══════════════════════════════════════════
           2. 히어로 섹션
       ══════════════════════════════════════════ */}
-      <section className="bg-gradient-to-br from-amber-50 via-white to-emerald-50 px-4 sm:px-6 py-10 sm:py-14 border-b border-slate-100">
+      <section className="bg-gradient-to-br from-amber-50 via-white to-emerald-50 px-4 sm:px-6 py-10 sm:py-14 pb-28 sm:pb-14 border-b border-slate-100">
         <div className="max-w-3xl mx-auto text-center">
           <span className="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-800 text-[16px] sm:text-[18px] font-bold px-4 py-2 rounded-full mb-5 border border-emerald-200">
             ✦ 시니어를 위한 따뜻한 최신 정보
@@ -304,16 +304,16 @@ export default function NewsFeed() {
               {jobMenuOpen && (
                 <div className="absolute left-1/2 -translate-x-1/2 mt-2 min-w-[200px] bg-white rounded-xl shadow-xl border border-amber-200 z-[100] overflow-hidden">
                   {jobLinks.map(item => (
-                    <a
+                    <button
                       key={item.url}
-                      href={item.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block py-4 px-5 text-[16px] font-bold text-slate-700 hover:bg-amber-50 border-b border-amber-100 last:border-b-0 transition-colors"
-                      onClick={() => setJobMenuOpen(false)}
+                      onClick={() => {
+                        window.open(item.url, "_blank", "noopener,noreferrer");
+                        setJobMenuOpen(false);
+                      }}
+                      className="w-full text-left block py-4 px-5 text-[16px] font-bold text-slate-700 hover:bg-amber-50 border-b border-amber-100 last:border-b-0 transition-colors"
                     >
                       {item.label}
-                    </a>
+                    </button>
                   ))}
                 </div>
               )}
@@ -341,16 +341,14 @@ export default function NewsFeed() {
               const isActive = !("isLink" in cat && cat.isLink) && selectedCategory === cat.name;
               if ("isLink" in cat && cat.isLink && cat.url) {
                 return (
-                  <a
+                  <button
                     key={cat.name}
-                    href={cat.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    onClick={() => window.open(cat.url, "_blank", "noopener,noreferrer")}
                     className="flex-shrink-0 inline-flex items-center gap-1.5 px-5 py-3 rounded-full text-[17px] sm:text-[18px] font-bold border transition-all bg-rose-50 border-rose-200 text-rose-700 hover:bg-rose-600 hover:text-white hover:border-rose-600 whitespace-nowrap"
                   >
                     <span className="text-[20px]">{cat.icon}</span>
                     {cat.name}
-                  </a>
+                  </button>
                 );
               }
               return (
@@ -522,12 +520,10 @@ export default function NewsFeed() {
                   className="flex-1 py-4 bg-slate-100 text-slate-600 border border-slate-200 rounded-xl font-bold text-[19px] hover:bg-slate-200 transition-colors"
                 >닫기</button>
                 {selectedNews.url?.trim() && selectedNews.url?.trim() !== "#" && selectedNews.source?.trim() !== "골든데이즈 AI" && (
-                  <a
-                    href={selectedNews.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    onClick={() => window.open(selectedNews.url, "_blank", "noopener,noreferrer")}
                     className="flex-1 py-4 bg-emerald-600 text-white rounded-xl font-bold text-[19px] text-center hover:bg-emerald-700 transition-colors"
-                  >기사 원문 보기</a>
+                  >기사 원문 보기</button>
                 )}
               </div>
             </div>
@@ -572,12 +568,10 @@ export default function NewsFeed() {
                   className="flex-1 py-4 bg-slate-100 text-slate-600 border border-slate-200 rounded-2xl font-bold text-[18px] hover:bg-slate-200 transition-colors"
                 >닫기</button>
                 {selectedNews.url?.trim() && selectedNews.url?.trim() !== "#" && selectedNews.source?.trim() !== "골든데이즈 AI" && (
-                  <a
-                    href={selectedNews.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    onClick={() => window.open(selectedNews.url, "_blank", "noopener,noreferrer")}
                     className="flex-1 py-4 bg-emerald-600 text-white rounded-2xl font-bold text-[18px] text-center shadow hover:bg-emerald-700 transition-colors"
-                  >기사 원문 보기</a>
+                  >기사 원문 보기</button>
                 )}
               </div>
             </div>
