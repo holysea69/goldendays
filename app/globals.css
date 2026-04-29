@@ -58,6 +58,18 @@ body {
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Safe Area: 하단 홈 인디케이터 여백 */
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* 스티키 네비바: 상단 노치/상태바 여백 */
+.safe-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+/* 하단 고정 요소용 */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 #__next,

@@ -234,7 +234,7 @@ export default function NewsFeed() {
       {/* ══════════════════════════════════════════
           1. 스티키 네비게이션
       ══════════════════════════════════════════ */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-slate-200 shadow-sm">
+      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-slate-200 shadow-sm safe-top">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16 sm:h-20 gap-4">
           {/* 로고 */}
           <div className="flex items-center gap-3 flex-shrink-0">
