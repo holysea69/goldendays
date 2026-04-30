@@ -58,18 +58,16 @@ body {
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* Safe Area: 하단 홈 인디케이터 여백 */
-  padding-bottom: env(safe-area-inset-bottom);
 }
 
-/* 스티키 네비바: 상단 노치/상태바 여백 */
+/* 상단 노치/상태바 여백 */
 .safe-top {
   padding-top: env(safe-area-inset-top);
 }
 
-/* 하단 고정 요소용 */
+/* 하단 안드로이드 네비게이션바 + 홈 인디케이터 여백 (80px 여유 추가) */
 .safe-bottom {
-  padding-bottom: env(safe-area-inset-bottom);
+  padding-bottom: calc(env(safe-area-inset-bottom) + 80px);
 }
 
 #__next,

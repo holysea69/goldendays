@@ -262,7 +262,7 @@ export default function NewsFeed() {
       {/* ══════════════════════════════════════════
           2. 히어로 섹션
       ══════════════════════════════════════════ */}
-      <section className="bg-gradient-to-br from-amber-50 via-white to-emerald-50 px-4 sm:px-6 py-10 sm:py-14 pb-28 sm:pb-14 border-b border-slate-100">
+      <section className="bg-gradient-to-br from-amber-50 via-white to-emerald-50 px-4 sm:px-6 py-10 sm:py-14 pb-36 sm:pb-14 border-b border-slate-100">
         <div className="max-w-3xl mx-auto text-center">
           <span className="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-800 text-[16px] sm:text-[18px] font-bold px-4 py-2 rounded-full mb-5 border border-emerald-200">
             ✦ 시니어를 위한 따뜻한 최신 정보
@@ -445,7 +445,7 @@ export default function NewsFeed() {
       {/* ══════════════════════════════════════════
           5. 구독 배너 (하단)
       ══════════════════════════════════════════ */}
-      <section id="subscribe-section" className="bg-emerald-800 text-white py-12 sm:py-16 px-4 sm:px-6">
+      <section id="subscribe-section" className="bg-emerald-800 text-white py-12 sm:py-16 px-4 sm:px-6 safe-bottom">
         <div className="max-w-2xl mx-auto text-center">
           <div className="text-4xl mb-4">📬</div>
           <h2 className="text-[26px] sm:text-[30px] font-black mb-3">무료 뉴스레터 구독</h2>
